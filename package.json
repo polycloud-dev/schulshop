@@ -1,0 +1,12 @@
+{
+  "name": "schulshop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run dev-app",
+    "dev-app": "cd ./app && npm run dev"
+  },
+  "author": "",
+  "license": "ISC"
+}
