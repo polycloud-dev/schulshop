@@ -1,9 +1,0 @@
-{
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/api/checkout/update/[id]": "pages/api/checkout/update/[id].js",
-  "/": "pages/index.js",
-  "/api/checkout/create": "pages/api/checkout/create.js",
-  "/api/checkout/get/[id]": "pages/api/checkout/get/[id].js"
-}
