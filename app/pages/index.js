@@ -15,14 +15,18 @@ export default function Home({data}) {
 
     const [sessionId, setSessionId] = useState(undefined);
 
+    const [products, setProducts] = useState([]);
+
     useEffect(() => {
         fetch("/api/checkout/create")
             .then(res => res.json())
-            .then(json => setSessionId(json.sessionId))
-            .then(() => console.log(sessionId))
+            .then(json => {setSessionId(json.sessionId); return json.sessionId})
+            .then(id => {
+                fetch(`/api/checkout/get/${id}`)
+                    .then(res => res.json())
+                    .then(json => setProducts(json.products))
+            })
     }, [])
-
-    const [products, setProducts] = useState([]);
 
     const [spamTimer, setSpamTimer] = useState();
 
@@ -65,7 +69,7 @@ export default function Home({data}) {
                         <div className={styles.container}>
                             {products.length > 0 ? products.map(product => {
                                 return (
-                                    <div key={product.id} className={stylesCheckout.item}>
+                                    <div key={product.id + "" + Math.random()} className={stylesCheckout.item}>
                                         <img src={product.thumbnail} className={stylesCheckout.smallThumbnail}/>
                                         <p className={stylesCheckout.name}>{product.name}</p>
                                         <p className={stylesCheckout.tag}>Preis: <span>{product.price}€</span></p>

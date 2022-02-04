@@ -111,7 +111,9 @@ function createSession(ip) {
             "type": "session"
         }));
         await client.set(key(ip), JSON.stringify({
-            "sessionId": sessionId
+            "sessionId": sessionId,
+            "type": "user",
+            "username": key(ip)
         }));
         logClient.log(`Session created by ${key(ip)}. ID: ${sessionId}`);
         resolve({

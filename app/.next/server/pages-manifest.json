@@ -1,14 +1,9 @@
 {
   "/_app": "pages/_app.js",
-  "/admin": "pages/admin.js",
-  "/api/checkout": "pages/api/checkout.js",
-  "/api/checkout/create": "pages/api/checkout/create.js",
-  "/api/checkout/update/[id]": "pages/api/checkout/update/[id].js",
-  "/api/test": "pages/api/test.js",
-  "/checkout/[id]": "pages/checkout/[id].js",
-  "/error": "pages/error.html",
-  "/": "pages/index.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/404": "pages/404.html"
+  "/api/checkout/update/[id]": "pages/api/checkout/update/[id].js",
+  "/": "pages/index.js",
+  "/api/checkout/create": "pages/api/checkout/create.js",
+  "/api/checkout/get/[id]": "pages/api/checkout/get/[id].js"
 }
