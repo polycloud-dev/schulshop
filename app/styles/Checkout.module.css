@@ -105,3 +105,26 @@
     margin: 0 auto;
     object-fit: contain;
 }
+
+.return {
+    user-select: none;
+    margin: 0 auto;
+    margin-top: 1rem;
+    display: flex;
+    color: rgb(31, 31, 31);
+    transition: background-color .6s, box-shadow .6s;
+    width: fit-content;
+}
+
+.return:hover {
+    text-decoration: underline;
+    background-color: rgba(128, 128, 128, 0.062);
+    box-shadow: 3px 3px 18px 1px rgba(0, 0, 0, 0.13);
+}
+
+.return div {
+    height: 1.2rem;
+    width: 1.2rem;
+    margin: auto 0;
+    margin-right: .2rem;
+}

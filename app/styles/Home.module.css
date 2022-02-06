@@ -227,16 +227,18 @@
     height: 2.5rem;
     width: 2.5rem;
     margin: 0 .5rem;
-    /* transition: box-shadow .4s; */
+    transition: box-shadow .4s, background-color .4s;
 }
 
-/* .menuContainer img:hover {
-    box-shadow: 3px 3px 18px 1px rgba(0, 0, 0, 0.144);
+.menuContainer img:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    box-shadow: 3px 3px 18px 1px rgba(0, 0, 0, 0.14);
 }
 
 .menuContainer img:active {
+    background-color: rgba(0, 0, 0, 0.07);
     box-shadow: 3px 3px 18px 1px rgba(0, 0, 0, 0.212);
-} */
+}
 
 .header {
     display: flex;

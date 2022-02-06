@@ -39,7 +39,7 @@ function findAllSessions() {
 }
 
 function removeSession(id) {
-    if(!id) return new ApiError("no ID given!")
+    if(!id) return new ApiError("no ID given!", "id-missing")
     return new Promise(async resolve => {
         const client = await connectClient();
         const value = await client.get(id)
@@ -51,8 +51,8 @@ function removeSession(id) {
 }
 
 function setSessionState(id, state) {
-    if(!id) return new ApiError("no ID given!")
-    if(state !== 'pending' || state !== 'completed' || state !== 'canceled') return new ApiError(`unknown state '${state}'!`)
+    if(!id) return new ApiError("no ID given!", "id-missing")
+    if(state !== 'pending' || state !== 'completed' || state !== 'canceled') return new ApiError(`unknown state '${state}'!`, "unknown-state")
     return new Promise(async resolve => {
         const client = await connectClient();
         const value = await client.get(id);
@@ -68,12 +68,12 @@ function setSessionState(id, state) {
 }
 
 function updateSession(id, products) {
-    if(!id) return new ApiError("no ID given!")
-    if(!products) return new ApiError("no products given!")
+    if(!id) return new ApiError("no ID given!", "id-missing")
+    if(!products) return new ApiError("no products given!", "products-missing")
     return new Promise(async resolve => {
         const client = await connectClient();
         const res = await client.get(id);
-        if(!res) return resolve(new ApiError("session not found!"))
+        if(!res) return resolve(new ApiError("session not found!", "session-notfound"))
         const value = JSON.parse(res);
         value.products = products;
         var date = new Date();
@@ -86,7 +86,7 @@ function updateSession(id, products) {
 }
 
 function createSession(ip) {
-    if(!ip) return new ApiError("no IP given!")
+    if(!ip) return new ApiError("no IP given!", "id-missing")
     return new Promise(async resolve => {
         const client = await connectClient();
         const ipDataRaw = await client.get(key(ip));
@@ -152,11 +152,11 @@ function collectExpiredSessions() {
 }
 
 function getSession(id) {
-    if(!id) return new ApiError("no ID given!")
+    if(!id) return new ApiError("no ID given!", "id-missing")
     return new Promise(async resolve => {
         const client = await connectClient();
         const value = await client.get(id);
-        if(!value) return resolve(new ApiError("session not found!"))
+        if(!value) return resolve(new ApiError("session not found!", "session-notfound"))
         resolve(JSON.parse(value));
     })
 }
@@ -183,7 +183,7 @@ const sessions = {
             return new Promise(async resolve => {
                 this.worker = setTimeout(() => {
                     clearTimeout(this.worker)
-                    resolve(new ApiError('Timed out!', 504))
+                    resolve(new ApiError('Timed out!', "timeout", 504))
                 }, this.time);
                 const taskResult = await this.task()
                 resolve(taskResult)

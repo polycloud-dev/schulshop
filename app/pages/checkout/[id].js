@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 import sessions from "../../backend/sessions"
 
+import Image from 'next/image';
+
 export default function Checkout({session, productsSession}) {
 
     const [products, setProducts] = useState(productsSession);
@@ -29,11 +31,13 @@ export default function Checkout({session, productsSession}) {
     function saveSession() {
         if(!session) return;
         clearTimeout(spamTimer)
-        setSpamTimer(setTimeout(() => fetch(`/api/checkout/update/${sessionId}`, {
+        setSpamTimer(setTimeout(() => fetch(`/api/checkout/update/${session}`, {
             "method": "PUT",
             "body": JSON.stringify({
                 "products": products
             })
+        }).then(res => {
+            if(res.status !== 200) return window.location.href = `/error/database-timeout?from=/checkout/${session}`
         }), 2000));
     }
 
@@ -55,10 +59,12 @@ export default function Checkout({session, productsSession}) {
                     })}
                     
                 </div>
+                
                 <div className={styles.payment}>
                     <img draggable={false} alt="Bild nicht gefunden" src="https://img.icons8.com/pastel-glyph/64/000000/pay.png"/>
                     <img draggable={false} alt="Bild nicht gefunden" src="https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg"/>
                 </div>
+                <h4 onClick={() => window.location.href = '/'} className={styles.return}><div><Image draggable={false} src='/icon/return.svg' alt='return' height='100%' width='100%'/></div>zurück</h4>
             </div>
             <ToastContainer
                 position="bottom-left"
@@ -82,8 +88,9 @@ export async function getServerSideProps(context) {
         return sessions.get(sessionId)
     }).start();
     if(session instanceof Error) {
-        console.log(session.message);
-        return {"props": {}, "redirect": {"destination": "/error", "permanent": false}}
+        if(session.id === 'timeout') return {"props": {}, "redirect": {"destination": `/error/database-timeout?from=/checkout/${sessionId}`, "permanent": false}}
+        else if(session.id === 'session-notfound') return {"props": {}, "redirect": {"destination": `/error/session-notfound?from=/checkout/${sessionId}`, "permanent": false}}
+        else return {"props": {}, "redirect": {"destination": `/error/unknown?from=/checkout/${sessionId}`, "permanent": false}}
     }
     return {"props": {"session": sessionId, "productsSession": session.products}}
 }
