@@ -1,1 +1,1 @@
-docker-compose exec servicename sh
+docker-compose exec schulshop sh
