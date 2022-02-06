@@ -18,6 +18,14 @@ services:
     networks:
       - network
     container_name: redis-schulshop
+  backend:
+    build: ./backend
+    networks:
+      - network
+    container_name: backend-schulshop
+    depends_on:
+      - app
+      - redis
   # db:
   #   image: postgres
   #   restart: always

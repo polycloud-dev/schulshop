@@ -44,7 +44,7 @@ function removeSession(id) {
         const client = await connectClient();
         const value = await client.get(id)
         await client.del(id)
-        await client.del(key(value.ip))
+        await client.del(key(JSON.parse(value).ip))
         logClient.log(`Deleted Session ${id}!`);
         resolve()
     })
@@ -124,8 +124,31 @@ function createSession(ip) {
     })
 }
 
-function collectExpiredSessions() {
+function findAll() {
+    return new Promise(async resolve => {
+        const client = await connectClient();
+        const result = []
+        for await(const key of client.scanIterator()) {
+            const clientData = await client.get(key);
+            const value = JSON.parse(clientData);
+            value.id = key;
+            result.push(value);
+        }
+        resolve(result);
+    })
+}
 
+function collectExpiredSessions() {
+    return new Promise(async resolve => {
+        logClient.log('Collect expired sessions!');
+        const entries = await findAll()
+        const now = new Date().getTime();
+        await entries.forEach(async entry => {
+            const expireIn = Date.parse(entry.expireIn);
+            if(entry.type === 'session' && (isNaN(expireIn) || now >= Date.parse(entry.expireIn))) await removeSession(entry.id); 
+        });
+        resolve();
+    })
 }
 
 function getSession(id) {

@@ -29,12 +29,12 @@ export default function Checkout({session, productsSession}) {
     function saveSession() {
         if(!session) return;
         clearTimeout(spamTimer)
-        setSpamTimer(() => fetch(`/api/checkout/update/${session}`, {
+        setSpamTimer(setTimeout(() => fetch(`/api/checkout/update/${sessionId}`, {
             "method": "PUT",
             "body": JSON.stringify({
                 "products": products
             })
-        }), 2000);
+        }), 2000));
     }
 
     return (
