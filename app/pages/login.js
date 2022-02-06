@@ -28,7 +28,7 @@ export default function Login() {
         <div className={styles.center}>
             <div className={styles.form}>
                 <h1 className={failed ? styles.failed: null}>Login</h1>
-                <input autocomplete='off' type='username' id='username' placeholder='Benutzername'/>
+                <input autoComplete='off' type='username' id='username' placeholder='Benutzername'/>
                 <input id='password' type='password' placeholder='Passwort'/>
                 <input type='submit' className={styles.submit} onClick={login} value='Login'/>
             </div>

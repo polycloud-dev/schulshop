@@ -57,6 +57,9 @@ export default function Checkout({session, productsSession}) {
 
     return (
         <div className={styles.center}>
+            <Head>
+                <title>Checkout | Schulshop</title>
+            </Head>
             <div className={styles.main}>
                 <h2>Warenkorb | Kaufen</h2>
                 <div className={styles.container} id='productContainer'>

@@ -1,6 +1,11 @@
+import Head from 'next/head'
+
 export default function Success({id}) {
     return (
         <div>
+            <Head>
+                <title>Kauf | Schulshop</title>
+            </Head>
             <h1>Gekauft!</h1>
             <h2>Nummer: {id}</h2>
             <h4>Nummer benötigt, um Produkte in der Schule abzuholen!</h4>
