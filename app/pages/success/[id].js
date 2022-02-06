@@ -1,4 +1,4 @@
-export default function Admin({id}) {
+export default function Success({id}) {
     return (
         <div>
             <h1>Gekauft!</h1>
@@ -18,7 +18,10 @@ export async function getServerSideProps(context) {
     if(session instanceof Error) {
         if(session.id === 'timeout') return {"props": {}, "redirect": {"destination": `/error/database-timeout?from=/success/${sessionId}`, "permanent": false}}
         else if(session.id === 'session-notfound') return {"props": {}, "redirect": {"destination": `/error/session-notfound?from=/success/${sessionId}`, "permanent": false}}
-        else return {"props": {}, "redirect": {"destination": `/error/unknown?from=/success/${sessionId}`, "permanent": false}}
+        else {
+            logClient.error(session);
+            return {"props": {}, "redirect": {"destination": `/error/unknown?from=/success/${sessionId}`, "permanent": false}}
+        }
     }
     if(session.state === 'completed') return {"props": {"id": session.shortId}}
     else return {"props": {}, "redirect": {"destination": `/checkout/${sessionId}`, "permanent": false}}

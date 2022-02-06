@@ -13,6 +13,8 @@ services:
       # - db
     environment:
       - PRODUCTION=TRUE
+      - USERNAME=username
+      - PASSWORD=password
   redis:
     image: redis
     networks:

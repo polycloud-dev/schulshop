@@ -12,6 +12,9 @@ const flake = new FlakeId();
 
 const production = process.env['PRODUCTION'] === 'TRUE';
 
+const username = process.env['USERNAME'] ? process.env['USERNAME'] : 'username'
+const password = process.env['PASSWORD'] ? process.env['PASSWORD'] : 'password'
+
 function connectClient() {
     return new Promise(async resolve => {
         const client = production ? createClient({"url": "redis://redis:6379"}) : createClient();
@@ -43,9 +46,29 @@ function removeSession(id) {
     return new Promise(async resolve => {
         const client = await connectClient();
         const value = await client.get(id)
+        if(!value) return resolve();
         await client.del(id)
-        await client.del(key(JSON.parse(value).ip))
+        const ip = key(JSON.parse(value).ip);
+        const userData = await client.get(ip)
+        if(userData) {
+            const user = JSON.parse(userData);
+            user.sessionId = undefined
+            await client.set(ip, JSON.stringify(user))
+        }
         logClient.log(`Deleted Session ${id}!`);
+        resolve()
+    })
+}
+
+function removeUserSession(ip) {
+    if(!ip) return new ApiError("no IP given!", "ip-missing")
+    return new Promise(async resolve => {
+        const client = await connectClient();
+        const userRaw = await client.get(key(ip))
+        if(!userRaw) return resolve(new ApiError("session not found!", "session-notfound"))
+        const user = JSON.parse(userRaw)
+        if(user.sessionId) await client.del(user.sessionId)
+        logClient.log(`Deleted UserSession ${key(ip)}!`);
         resolve()
     })
 }
@@ -85,42 +108,84 @@ function updateSession(id, products) {
     })
 }
 
+function createUserSession(ip) {
+    if(!ip) return new ApiError("no IP given!", "ip-missing")
+    return new Promise(async resolve => {
+        const client = await connectClient();
+        const ipDataRaw = await client.get(key(ip));
+        if(ipDataRaw) return resolve({"authenticated": JSON.parse(ipDataRaw).authenticated});
+        const now = new Date()
+        const expired = new Date()
+        expired.setHours(expired.getHours() + 1)
+        await client.set(key(ip), JSON.stringify({
+            "created": now,
+            "expireIn": expired,
+            "type": "user",
+            "username": key(ip),
+            "authenticated": false
+        }));
+        logClient.log(`UserSession created by ${key(ip)}!`);
+        resolve({"authenticated": false})
+    })
+}
+
+function authenticate(ip, login) {
+    if(!ip) return new ApiError("no IP given!", "ip-missing")
+    if(!login) return new ApiError("no login data given!", "login-missing")
+    return new Promise(async resolve => {
+        const client = await connectClient();
+        const ipDataRaw = await client.get(key(ip));
+        if(!ipDataRaw) return resolve(new ApiError("user session not found!", "usersession-notfound"))
+        if(!(login.username === username && login.password === password)) return resolve({"authenticated": false})
+        const now = new Date()
+        const expired = new Date()
+        expired.setHours(expired.getHours() + 96)
+        await client.set(key(ip), JSON.stringify({
+            "created": now,
+            "expireIn": expired,
+            "type": "user",
+            "username": key(ip),
+            "authenticated": true
+        }));
+        logClient.log(`${key(ip)} authenticated!`);
+        resolve({"authenticated": true})
+    })
+}
+
 function createSession(ip) {
     if(!ip) return new ApiError("no IP given!", "id-missing")
     return new Promise(async resolve => {
         const client = await connectClient();
         const ipDataRaw = await client.get(key(ip));
-        if(ipDataRaw) {
-            const ipData = JSON.parse(ipDataRaw);
-            const session = await client.get(ipData.sessionId);
-            if(session) {
-                logClient.log(`User '${ipData.username}' connected to session ${ipData.sessionId}!`)
-                return resolve({"sessionId": ipData.sessionId})
+        const ipData = JSON.parse(ipDataRaw)
+        if(!ipDataRaw) return new ApiError("not authenticated!", "not-auth")
+        else if(!ipData.authenticated) return new ApiError("not authenticated!", "not-auth")
+        if(ipData.sessionId) {
+            const sessionRaw = await client.get(ipData.sessionId)
+            if(sessionRaw) {
+                const session = JSON.parse(sessionRaw)
+                session.sessionId = ipData.sessionId
+                return resolve(session);
             }
         }
         const sessionId = intformat(flake.next(), 'dec');
         const now = new Date()
         const expired = new Date()
         expired.setHours(expired.getHours() + 1)
-        await client.set(sessionId, JSON.stringify({
+        const result = {
             "created": now,
             "expireIn": expired,
             "ip": ip,
             "state": "pending",
             "products": [],
             "type": "session"
-        }));
-        await client.set(key(ip), JSON.stringify({
-            "sessionId": sessionId,
-            "type": "user",
-            "username": key(ip)
-        }));
+        }
+        await client.set(sessionId, JSON.stringify(result));
+        ipData.sessionId = sessionId;
+        await client.set(key(ip), JSON.stringify(ipData))
         logClient.log(`Session created by ${key(ip)}. ID: ${sessionId}`);
-        resolve({
-            "sessionId": sessionId,
-            "type": "user",
-            "username": key(ip)
-        })
+        result.sessionId = sessionId;
+        resolve(result)
     })
 }
 
@@ -145,7 +210,10 @@ function collectExpiredSessions() {
         const now = new Date().getTime();
         await entries.forEach(async entry => {
             const expireIn = Date.parse(entry.expireIn);
-            if(entry.type === 'session' && (isNaN(expireIn) || now >= Date.parse(entry.expireIn))) await removeSession(entry.id); 
+            if((isNaN(expireIn) || now >= Date.parse(entry.expireIn))) {
+                if(entry.type === 'session') await removeSession(entry.id); 
+                else if(entry.type === 'user') await removeUserSession(entry.id)
+            }
         });
         resolve();
     })
@@ -171,9 +239,12 @@ const sessions = {
     "findAll": findAllSessions,
     "setState": setSessionState,
     "kill": removeSession,
+    "killUser": removeUserSession,
     "collectExpired": collectExpiredSessions,
     "update": updateSession,
     "get": getSession,
+    "login": createUserSession,
+    "auth": authenticate,
     "timedTask": class {
         constructor(task, time=5000) {
             this.task = task;

@@ -312,4 +312,5 @@
 .buy.buyBlocked {
     color: rgb(107, 107, 107);
     text-decoration: none;
+    text-shadow: none;
 }

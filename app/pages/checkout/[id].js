@@ -15,7 +15,17 @@ export default function Checkout({session, productsSession}) {
     const [spamTimer, setSpamTimer] = useState();
 
     useEffect(() => {
-        if(products.length === 0) setTimeout(() => window.location.href = '/', 1000) 
+        setTimeout(() => {
+            fetch(`/api/checkout/get/${session}`).then(res => {
+                if(res.status !== 200) return window.location.href = `/error/database-timeout?from=/checkout/${session}`
+                else return res.json().then(json => {
+                    if(json.products) {
+                        setProducts(json.products)
+                        if(json.products.length === 0) setTimeout(() => {updateSession(); window.location.href = '/'}, 1000)
+                    }
+                })
+            })
+        }, 2000)
     }, [])
 
     function removeProduct(product) {
@@ -25,20 +35,24 @@ export default function Checkout({session, productsSession}) {
         setProducts(a)
         saveSession()
         window.scrollTo(0, document.getElementById("productContainer").scrollHeight);
-        if(products.length === 0) setTimeout(() => window.location.href = '/', 1000) 
+        if(products.length === 0) setTimeout(() => {updateSession(); window.location.href = '/'}, 1000) 
     }
 
     function saveSession() {
         if(!session) return;
         clearTimeout(spamTimer)
-        setSpamTimer(setTimeout(() => fetch(`/api/checkout/update/${session}`, {
+        setSpamTimer(setTimeout(updateSession, 2000));
+    }
+
+    function updateSession() {
+        fetch(`/api/checkout/update/${session}`, {
             "method": "PUT",
             "body": JSON.stringify({
                 "products": products
             })
         }).then(res => {
             if(res.status !== 200) return window.location.href = `/error/database-timeout?from=/checkout/${session}`
-        }), 2000));
+        })
     }
 
     return (
@@ -49,7 +63,7 @@ export default function Checkout({session, productsSession}) {
                     {products.length == 0 ? <h2>Leer</h2> : null}
                     {products.map(product => {
                         return (
-                            <div key={product.id} className={styles.item}>
+                            <div key={product.id + "" + Math.random()} className={styles.item}>
                                 <img alt={`Bild von ${product.name}`} src={product.thumbnail} />
                                 <p className={styles.name}>{product.name}</p>
                                 <p className={styles.tag}>Preis: <span>{product.price}€</span></p>
@@ -64,7 +78,7 @@ export default function Checkout({session, productsSession}) {
                     <img draggable={false} alt="Bild nicht gefunden" src="https://img.icons8.com/pastel-glyph/64/000000/pay.png"/>
                     <img draggable={false} alt="Bild nicht gefunden" src="https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg"/>
                 </div>
-                <h4 onClick={() => window.location.href = '/'} className={styles.return}><div><Image draggable={false} src='/icon/return.svg' alt='return' height='100%' width='100%'/></div>zurück</h4>
+                <h4 onClick={() => {updateSession(); window.location.href = '/'}} className={styles.return}><div><Image draggable={false} src='/icon/return.svg' alt='return' height='100%' width='100%'/></div>zurück</h4>
             </div>
             <ToastContainer
                 position="bottom-left"
@@ -90,7 +104,10 @@ export async function getServerSideProps(context) {
     if(session instanceof Error) {
         if(session.id === 'timeout') return {"props": {}, "redirect": {"destination": `/error/database-timeout?from=/checkout/${sessionId}`, "permanent": false}}
         else if(session.id === 'session-notfound') return {"props": {}, "redirect": {"destination": `/error/session-notfound?from=/checkout/${sessionId}`, "permanent": false}}
-        else return {"props": {}, "redirect": {"destination": `/error/unknown?from=/checkout/${sessionId}`, "permanent": false}}
+        else {
+            logClient.error(session);
+            return {"props": {}, "redirect": {"destination": `/error/unknown?from=/checkout/${sessionId}`, "permanent": false}}
+        }
     }
     return {"props": {"session": sessionId, "productsSession": session.products}}
 }

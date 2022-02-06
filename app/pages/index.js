@@ -11,26 +11,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from '../modules/searchbar'
 import PopupMenu from '../modules/popup_menu'
 
-export default function Home({data}) {
+import { useState } from 'react';
 
-    const [sessionId, setSessionId] = useState(undefined);
+export default function Home({preloadedItems, preloadedProducts, sessionId}) {
 
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        fetch("/api/checkout/create")
-            .then(res => {
-                if(res.status !== 200) return window.location.href = '/error/database-timeout'
-                else return res.json()
-            })
-            .then(json => {setSessionId(json.sessionId); return json.sessionId})
-            .then(id => {
-                if(!id) return window.location.href = '/error/database-timeout'
-                fetch(`/api/checkout/get/${id}`)
-                    .then(res => res.json())
-                    .then(json => setProducts(json.products))
-            })
-    }, [])
+    const [products, setProducts] = useState(preloadedProducts);
 
     const [spamTimer, setSpamTimer] = useState();
 
@@ -53,14 +38,18 @@ export default function Home({data}) {
     function saveSession() {
         if(!sessionId) return;
         clearTimeout(spamTimer)
-        setSpamTimer(setTimeout(() => fetch(`/api/checkout/update/${sessionId}`, {
+        setSpamTimer(setTimeout(updateSession, 2000));
+    }
+
+    function updateSession() {
+        fetch(`/api/checkout/update/${sessionId}`, {
             "method": "PUT",
             "body": JSON.stringify({
                 "products": products
             })
         }).then(res => {
             if(res.status !== 200) return window.location.href = '/error/database-timeout'
-        }), 2000));
+        })
     }
 
     return (
@@ -84,7 +73,7 @@ export default function Home({data}) {
                                 )
                             }) : <p>leer</p>}
                         </div>
-                        {products.length > 0 ? <Link href={`/checkout/${sessionId}`}><a><h3 className={styles.buy}>Kaufen</h3></a></Link>
+                        {products.length > 0 ? <Link onClick={updateSession} href={`/checkout/${sessionId}`}><a><h3 className={styles.buy}>Kaufen</h3></a></Link>
                         : <h3 className={styles.buy + " " + styles.buyBlocked}>Kaufen</h3>}
                     </PopupMenu>
                     <PopupMenu atElement={false} icon='/icon/menu.svg' menuStyle={{"borderRadius": "1rem", "borderWidth": "2px", "boxShadow": "3px 3px 18px 1px rgba(0, 0, 0, 0.3)"}}>
@@ -99,7 +88,7 @@ export default function Home({data}) {
                 <Searchbar className={styles.searchbar}/>
             </div>
             <div className={styles.gridContainer}>
-                <div className={styles.grid}>{data.map(element => {
+                <div className={styles.grid}>{preloadedItems.map(element => {
                     return (
                         <div className={styles.item} key={element.id}>
                             <h3 className={styles.name}>{element.name}</h3>
@@ -130,10 +119,26 @@ export default function Home({data}) {
 }
     
 import database from '../database/index'
-import { useEffect, useState } from 'react';
+import sessions from '../backend/sessions';
+import LogClient from '../backend/logger';
+const logClient = new LogClient('IndexPage');
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
     const db = await database()
     const data = await db.get('products')
-    return {"props": {data}, "revalidate": 10}
+    const user = await new sessions.timedTask(() => {
+        return sessions.login(context.req.connection.remoteAddress);
+    }).start();
+    if(!user.authenticated) return {"props": {}, "redirect": {"destination": `/login`, "permanent": false}}
+    const session = await new sessions.timedTask(() => {
+        return sessions.create(context.req.connection.remoteAddress);
+    }).start();
+    if(session instanceof Error) {
+        if(session.id === 'timeout') return {"props": {}, "redirect": {"destination": `/error/database-timeout`, "permanent": false}}
+        else {
+            logClient.error(session);
+            return {"props": {}, "redirect": {"destination": `/error/unknown`, "permanent": false}}
+        }
+    }
+    return {"props": {"preloadedItems": data, "preloadedProducts": session.products, "sessionId": session.sessionId}}
 }
