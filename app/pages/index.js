@@ -70,10 +70,10 @@ export default function Home({data}) {
                             {products.length > 0 ? products.map(product => {
                                 return (
                                     <div key={product.id + "" + Math.random()} className={stylesCheckout.item}>
-                                        <img src={product.thumbnail} className={stylesCheckout.smallThumbnail}/>
+                                        <img alt={`Bild von ${product.name}`} src={product.thumbnail} className={stylesCheckout.smallThumbnail}/>
                                         <p className={stylesCheckout.name}>{product.name}</p>
                                         <p className={stylesCheckout.tag}>Preis: <span>{product.price}€</span></p>
-                                        <img className={stylesCheckout.close} draggable={false} src='/icon/close.svg' onClick={() => removeProduct(product)}/>
+                                        <img alt='Entfernen' className={stylesCheckout.close} draggable={false} src='/icon/close.svg' onClick={() => removeProduct(product)}/>
                                     </div>
                                 )
                             }) : <p>leer</p>}
@@ -100,7 +100,7 @@ export default function Home({data}) {
                             <Image src={element.thumbnail} width='200%' height='200%' alt={element.name}/>
                             <div className={styles.itemFooter}>
                                 <p>{element.price}€</p>
-                                <img draggable={false} src='/icon/shopping_cart.svg' onClick={() => addProduct(element)}/>
+                                <img alt='Einkaufswagen' draggable={false} src='/icon/shopping_cart.svg' onClick={() => addProduct(element)}/>
                             </div>
                         </div>
                     )

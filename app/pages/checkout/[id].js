@@ -46,10 +46,10 @@ export default function Checkout({session, productsSession}) {
                     {products.map(product => {
                         return (
                             <div key={product.id} className={styles.item}>
-                                <img src={product.thumbnail} />
+                                <img alt={`Bild von ${product.name}`} src={product.thumbnail} />
                                 <p className={styles.name}>{product.name}</p>
                                 <p className={styles.tag}>Preis: <span>{product.price}€</span></p>
-                                <img className={styles.close} draggable={false} src='/icon/close.svg' onClick={() => removeProduct(product)}/>
+                                <img alt='Entfernen' className={styles.close} draggable={false} src='/icon/close.svg' onClick={() => removeProduct(product)}/>
                             </div>
                         )
                     })}

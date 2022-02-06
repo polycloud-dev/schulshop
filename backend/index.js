@@ -6,7 +6,7 @@ const logClient = LogClient.register('Scheduler');
 
 const apiKey = "123";
 
-schedule.scheduleJob('0 * * * * *', async () => {
+schedule.scheduleJob('0 * * * *', async () => {
     await fetch('http://app:3000/api/checkout/collect', {
         "method": "POST",
 	    "headers": {"API-KEY": apiKey}
