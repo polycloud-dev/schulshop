@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import sessions from "../../backend/sessions"
 
 import Image from 'next/image';
-import Image from 'next/head';
+import Head from 'next/head';
 
 export default function Checkout({session, productsSession}) {
 
