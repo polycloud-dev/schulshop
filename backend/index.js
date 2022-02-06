@@ -2,7 +2,7 @@ const schedule = require('node-schedule');
 const fetch = require('node-fetch');
 
 const {LogClient} = require('./logger')
-const logClient = LogClient.register('SessionManager');
+const logClient = LogClient.register('Scheduler');
 
 const apiKey = "123";
 
