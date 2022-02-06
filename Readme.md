@@ -21,21 +21,19 @@ Wenn etwas ähnliches wie `Docker Compose version v*.*.*` in der Konsole zu sehe
 
 ## Starten
 ```sh
-docker-compose up --build
+sh start.sh
 ```
 
 ---
 
 ## Stoppen
 ```sh
-docker-compose down
+sh stop.sh
 ```
 
 ---
 
 ## Aktualisieren
 ```sh
-git pull
-docker-compose down
-docker-compose up --build
+sh update.sh
 ```
