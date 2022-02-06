@@ -37,3 +37,10 @@ sh stop.sh
 ```sh
 sh update.sh
 ```
+
+---
+
+## Attach
+```sh
+sh attach.sh
+```

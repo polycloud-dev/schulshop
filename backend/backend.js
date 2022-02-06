@@ -8,7 +8,7 @@ schedule.scheduleJob('0 * * * * *', async () => {
         "method": "POST",
 	    "headers": {"API-KEY": apiKey}
     });
-    console.log('Job completed!');
+    console.log('Schedule Job completed!');
 });
 
 console.log("Scheduler started!");
