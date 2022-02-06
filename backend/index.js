@@ -1,13 +1,13 @@
 const schedule = require('node-schedule');
 const fetch = require('node-fetch');
 
-import LogClient from '../backend/logger'
+const LogClient = require('./logger')
 const logClient = LogClient.register('SessionManager');
 
 const apiKey = "123";
 
 schedule.scheduleJob('0 * * * * *', async () => {
-    const res = await fetch('http://app:3000/api/checkout/collect', {
+    await fetch('http://app:3000/api/checkout/collect', {
         "method": "POST",
 	    "headers": {"API-KEY": apiKey}
     });
