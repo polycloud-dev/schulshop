@@ -1,6 +1,9 @@
 const schedule = require('node-schedule');
 const fetch = require('node-fetch');
 
+import LogClient from '../backend/logger'
+const logClient = LogClient.register('SessionManager');
+
 const apiKey = "123";
 
 schedule.scheduleJob('0 * * * * *', async () => {
@@ -8,7 +11,7 @@ schedule.scheduleJob('0 * * * * *', async () => {
         "method": "POST",
 	    "headers": {"API-KEY": apiKey}
     });
-    console.log('Schedule Job completed!');
+    logClient.log('Schedule Job completed!');
 });
 
-console.log("Scheduler started!");
+logClient.log("Scheduler started!");

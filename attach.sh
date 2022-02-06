@@ -1,1 +1,1 @@
-docker-compose exec schulshop sh
+docker-compose logs -f
