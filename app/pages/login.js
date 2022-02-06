@@ -20,9 +20,16 @@ export default function Login() {
             else {
                 document.getElementById('username').value = ''
                 document.getElementById('password').value = ''
+                document.getElementById('username').select()
             }
         })
     }
+
+    useEffect(() => {
+        document.addEventListener("keydown", (event) => {
+            if(event.keyCode === 13) login()
+        });
+    }, [])
 
     return (
         <div className={styles.center}>
@@ -36,13 +43,20 @@ export default function Login() {
     )
 }
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import sessions from '../backend/sessions'
 
 export async function getServerSideProps(context) {
     const user = await new sessions.timedTask(() => {
         return sessions.login(context.req.connection.remoteAddress);
     }).start();
-    if(user.authenticated) return {"props": {}, "redirect": {"destination": `/`, "permanent": false}}
+    if(user instanceof Error) {
+        if(user.id === 'timeout') return {"props": {}, "redirect": {"destination": `/error/database-timeout?from=/login`, "permanent": false}}
+        else {
+            logClient.error(user);
+            return {"props": {}, "redirect": {"destination": `/error/unknown?from=/login`, "permanent": false}}
+        }
+    }
+    if(user.authenticated) return {"props": {}, "redirect": {"destination": '/', "permanent": false}}
     else return {"props": {}}
 }

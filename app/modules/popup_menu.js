@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
 import OutsideClickHandler from 'react-outside-click-handler';
 
-const menuDefaultStyle = {"zIndex": "99999", "transition": "opacity 1s", "display": "flex", "flexDirection": "column", "position": "absolute", "width": "fit-content", "padding": "1rem", "border": "gray solid", "backgroundColor": "white"}
-const iconDefaultStyle = {"height": "3rem", "width": "3rem"}
+const defaultStyle = {"zIndex": "99999", "transition": "opacity 1s", "display": "flex", "flexDirection": "column", "position": "absolute", "width": "fit-content", "padding": "1rem", "border": "gray solid", "backgroundColor": "white"}
 
-export default function PopupMenu({children, on, atElement, icon, open, onOpenChanged, className, style, menuClassName, menuStyle, iconClassName, iconStyle}) {
-    if(!icon) icon = '/icon/menu.svg'
-    const menuMergedStyle = atElement === false ? merge(menuDefaultStyle, merge(menuStyle, {"right": "-2rem"})) : merge(menuDefaultStyle, menuStyle);
-    const iconMergedStyle = merge(iconStyle, iconDefaultStyle);
+export default function PopupMenu({children, on, atElement, open, onOpenChanged, className, style}) {
+    var icon = <img style={{"height": "3rem", "width": "3rem"}} draggable="false" src='/icon/menu.svg'/>
+    if(children[0].props.id === 'icon') {
+        icon = children[0]
+        children = children.slice(1);
+    }
+    const mergedStyle = atElement === false ? merge(defaultStyle, merge(style, {"right": "-2rem"})) : merge(defaultStyle, style);
     const [visible, setVisible] = useState(false)
     if(on === undefined) on = 'click'
     function changeVisible(value) {
@@ -18,14 +20,14 @@ export default function PopupMenu({children, on, atElement, icon, open, onOpenCh
         changeVisible(open);
     }, [open])
     return (
-        <div className={className} style={style}>
-            {typeof icon === 'string' ? 
-                on === 'hover' ? <img className={iconClassName} style={iconMergedStyle} draggable="false" src={icon} onClick={() => {if(!visible) {changeVisible(true)}}} onMouseEnter={() => changeVisible(true)} onMouseLeave={() => changeVisible(false)}/>
-                : <img className={iconClassName} style={iconMergedStyle} draggable="false" src={icon} onClick={() => {if(!visible) {changeVisible(true)}}}/>
-            : {icon}}
+        <div>
+            {
+                on === 'hover' ? <div onClick={() => {if(!visible) {changeVisible(true)}}} onMouseEnter={() => changeVisible(true)} onMouseLeave={() => changeVisible(false)}>{icon}</div>
+                : <div onClick={() => {if(!visible) {changeVisible(true)}}}>{icon}</div>
+            }
             {visible && children ? 
-                on === 'click' ? <ClickMenu className={menuClassName} style={menuMergedStyle} changeVisible={changeVisible} content={children}/>
-                : <Menu className={menuClassName} style={menuMergedStyle} content={children}/>
+                on === 'click' ? <ClickMenu className={className} style={mergedStyle} changeVisible={changeVisible} content={children}/>
+                : <Menu className={className} style={mergedStyle} content={children}/>
             : null}
         </div>
     )

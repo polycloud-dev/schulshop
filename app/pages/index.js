@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Searchbar from '../modules/searchbar'
 import PopupMenu from '../modules/popup_menu'
+import ShoppingCart from "../modules/shopping_cart"
 
 import { useState } from 'react';
 
@@ -59,7 +60,8 @@ export default function Home({preloadedItems, preloadedProducts, sessionId}) {
             </Head>
             <div className={styles.header}>
                 <div className={styles.menuContainer}>
-                    <PopupMenu atElement={false} icon='/icon/shopping_cart.svg' menuStyle={{"width": "20rem", "display": "flex", "flexDirection": "column", "alignItems": "center", "borderRadius": "1rem", "borderWidth": "2px", "boxShadow": "3px 3px 18px 1px rgba(0, 0, 0, 0.3)"}}>
+                    <PopupMenu atElement={false} style={{"width": "20rem", "display": "flex", "flexDirection": "column", "alignItems": "center", "borderRadius": "1rem", "borderWidth": "2px", "boxShadow": "3px 3px 18px 1px rgba(0, 0, 0, 0.3)"}}>
+                        <ShoppingCart style={{"height": "3rem", "width": "3rem"}} index={products.length} id='icon'/>
                         <h3>Warenkorb</h3>
                         <div className={styles.container}>
                             {products.length > 0 ? products.map(product => {
@@ -76,7 +78,7 @@ export default function Home({preloadedItems, preloadedProducts, sessionId}) {
                         {products.length > 0 ? <Link onClick={updateSession} href={`/checkout/${sessionId}`}><a><h3 className={styles.buy}>Kaufen</h3></a></Link>
                         : <h3 className={styles.buy + " " + styles.buyBlocked}>Kaufen</h3>}
                     </PopupMenu>
-                    <PopupMenu atElement={false} icon='/icon/menu.svg' menuStyle={{"borderRadius": "1rem", "borderWidth": "2px", "boxShadow": "3px 3px 18px 1px rgba(0, 0, 0, 0.3)"}}>
+                    <PopupMenu atElement={false} style={{"borderRadius": "1rem", "borderWidth": "2px", "boxShadow": "3px 3px 18px 1px rgba(0, 0, 0, 0.3)"}}>
                         <a>Hier</a>
                         <a>kann</a>
                         <a>ihre</a>
