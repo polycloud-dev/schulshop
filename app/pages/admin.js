@@ -8,7 +8,7 @@ export default function Admin({products}) {
             </Head>
             {products.map(element => {
                 return (
-                    <div>
+                    <div key={element.id}>
                         <h1>{element.name}</h1>        
                     </div>
                 )
