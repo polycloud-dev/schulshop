@@ -120,13 +120,15 @@ export default function Home({preloadedItems, preloadedProducts, sessionId}) {
     )
 }
     
-import {get} from '../database/index'
+import dbGet from '../database/index'
 import sessions from '../backend/sessions';
 import LogClient from '../backend/logger';
 const logClient = new LogClient('IndexPage');
 
 export async function getServerSideProps(context) {
-    const data = get('products')
+    const data = await dbGet('products')
+    if(!data) return {"props": {}, "redirect": {"destination": `/error/database-timeout`, "permanent": false}}
+    
     const user = await new sessions.timedTask(() => {
         return sessions.login(context.req.connection.remoteAddress);
     }).start();

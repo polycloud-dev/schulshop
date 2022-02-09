@@ -17,10 +17,14 @@ export default function Admin({products}) {
     )
 }
 
-import {get} from '../database/index'
+import dbGet from '../database/index'
 
 export async function getServerSideProps(context) {
     //check if localhost
     if(context.req.headers.host.search(/(localhost)/i) !== 0) return {"notFound": true};
-    return {"props": {"products": get('products')}}
+
+    const data = await dbGet('products')
+    if(!data) return {"props": {}, "redirect": {"destination": `/error/database-timeout`, "permanent": false}}
+    
+    return {"props": {"products": data}}
 }

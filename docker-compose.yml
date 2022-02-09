@@ -10,7 +10,7 @@ services:
       - "3000:3000"
     depends_on:
       - redis
-      # - db
+      - database
     environment:
       - PRODUCTION=TRUE
       - USERNAME=username
@@ -28,16 +28,11 @@ services:
     depends_on:
       - app
       - redis
-  # db:
-  #   image: postgres
-  #   restart: always
-  #   environment:
-  #     - POSTGRESS_PASSWORD=admin
-  #   volumes:
-  #     - ./database:/var/lib/postgresql/data
-  #   networks:
-  #     - network
-  #   container_name: db-schulshop
+  database:
+    build: ./database
+    networks:
+      - network
+    container_name: database-schulshop
 networks:
   network:
     driver: bridge
