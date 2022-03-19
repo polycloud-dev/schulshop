@@ -8,6 +8,8 @@ import ApiError from './apiError';
 import LogClient from '../backend/logger'
 const logClient = LogClient.register('SessionManager');
 
+import {createIntent} from './payment';
+
 const flake = new FlakeId();
 
 const production = process.env['PRODUCTION'] === 'TRUE';
@@ -19,7 +21,7 @@ function connectClient() {
     return new Promise(async resolve => {
         const client = production ? createClient({"url": "redis://redis:6379"}) : createClient();
         client.on('error', (err) => {
-            logClient.log('Failed to connect to redis!');
+            logClient.error('Failed to connect to redis!');
         });
         client.on('ready', () => {
             resolve(client);
@@ -113,19 +115,21 @@ function createUserSession(ip) {
     return new Promise(async resolve => {
         const client = await connectClient();
         const ipDataRaw = await client.get(key(ip));
-        if(ipDataRaw) return resolve({"authenticated": JSON.parse(ipDataRaw).authenticated});
+        if(ipDataRaw) return resolve(JSON.parse(ipDataRaw));
         const now = new Date()
         const expired = new Date()
         expired.setHours(expired.getHours() + 1)
-        await client.set(key(ip), JSON.stringify({
+        const result = {
             "created": now,
             "expireIn": expired,
             "type": "user",
             "username": key(ip),
-            "authenticated": false
-        }));
+            "authenticated": false,
+            "stripe-intent": undefined
+        }
+        await client.set(key(ip), JSON.stringify(result));
         logClient.log(`UserSession created by ${key(ip)}!`);
-        resolve({"authenticated": false})
+        resolve(result)
     })
 }
 
@@ -137,18 +141,43 @@ function authenticate(ip, login) {
         const ipDataRaw = await client.get(key(ip));
         if(!ipDataRaw) return resolve(new ApiError("user session not found!", "usersession-notfound"))
         if(!(login.username === username && login.password === password)) return resolve({"authenticated": false})
-        const now = new Date()
+        const user = JSON.parse(ipDataRaw);
         const expired = new Date()
         expired.setHours(expired.getHours() + 96)
-        await client.set(key(ip), JSON.stringify({
-            "created": now,
-            "expireIn": expired,
-            "type": "user",
-            "username": key(ip),
-            "authenticated": true
-        }));
-        logClient.log(`${key(ip)} authenticated!`);
+        user.expired = expired
+        user.authenticated = true
+        await client.set(key(ip), JSON.stringify(user));
+        logClient.log(`User ${key(ip)} authenticated!`);
         resolve({"authenticated": true})
+    })
+}
+
+function createUserIntent(ip, products, force=false) {
+    if(!ip) return new ApiError("no IP given!", "ip-missing")
+    if(!products) return new ApiError("no products given!", "products-missing")
+    return new Promise(async resolve => {
+        const client = await connectClient()
+        const ipDataRaw = await client.get(key(ip))
+        if(!ipDataRaw) return resolve(new ApiError("user session not found!", "usersession-notfound"))
+        const user = JSON.parse(ipDataRaw)
+        if(user['stripe-intent'] !== undefined && !force) resolve(user['stripe-intent'])
+        const expired = new Date()
+        expired.setHours(expired.getHours() + 96)
+        user.expired = expired
+        user['stripe-intent'] = await createIntent(products)
+        await client.set(key(ip), JSON.stringify(user))
+        logClient.log(`User ${key(ip)} requested intent!`);
+        resolve(user['stripe-intent'])
+    })
+}
+
+function getUser(ip) {
+    if(!id) return new ApiError("no IP given!", "ip-missing")
+    return new Promise(async resolve => {
+        const client = await connectClient();
+        const value = await client.get(key(ip));
+        if(!value) return resolve(new ApiError("user session not found!", "usersession-notfound"))
+        resolve(JSON.parse(value));
     })
 }
 
@@ -245,6 +274,8 @@ const sessions = {
     "get": getSession,
     "login": createUserSession,
     "auth": authenticate,
+    "getUser": getUser,
+    "createIntent": createUserIntent,
     "timedTask": class {
         constructor(task, time=5000) {
             this.task = task;

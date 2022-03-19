@@ -8,6 +8,7 @@
     }
     .menuContainer {
         right: 4rem;
+        position: sticky;
     }
     .searchbar {
         width: fit-content;
@@ -62,6 +63,7 @@
     }
     .menuContainer {
         right: 1.5rem;
+        position: absolute;
     }
     .header {
         min-height: 12rem;
@@ -216,26 +218,26 @@
 }
 
 .menuContainer {
-    position: absolute;
     display: flex;
     float: left;
     top: 2rem;
+    margin-left: auto;
     user-select: none;
 }
 
-.menuContainer img {
+.menuItem {
     height: 2.5rem;
     width: 2.5rem;
-    margin: 0 .5rem;
+    margin: auto .5rem;
     transition: box-shadow .4s, background-color .4s;
 }
 
-.menuContainer img:hover {
+.menuItem:hover {
     background-color: rgba(0, 0, 0, 0.05);
     box-shadow: 3px 3px 18px 1px rgba(0, 0, 0, 0.14);
 }
 
-.menuContainer img:active {
+.menuItem:active {
     background-color: rgba(0, 0, 0, 0.07);
     box-shadow: 3px 3px 18px 1px rgba(0, 0, 0, 0.212);
 }

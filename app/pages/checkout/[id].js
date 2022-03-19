@@ -9,11 +9,37 @@ import sessions from "../../backend/sessions"
 import Image from 'next/image';
 import Head from 'next/head';
 
-export default function Checkout({session, productsSession}) {
+import {Button, Modal} from '@mantine/core'
+import { publicKey } from '../../backend/payment';
+
+import {Elements} from "@stripe/react-stripe-js";
+import CheckoutForm from "../../modules/stripeCheckout";
+
+import {loadStripe} from "@stripe/stripe-js";
+
+const URL = (process.env.PRODUCTION === 'TRUE' || !process.env.URL ? 'http://localhost:3000' : process.env.URL)
+
+export default function Checkout({session, productsSession, publicKey}) {
 
     const [products, setProducts] = useState(productsSession);
-
     const [spamTimer, setSpamTimer] = useState();
+
+    const [modalOpen, setModalOpen] = useState(false)
+
+    const [clientSecret, setClientSecret] = useState();
+
+    function parsePrice(price) {
+        return (parseFloat(price)/100).toFixed(2);
+    }
+
+    function loadStripeCheckout() {
+        fetch('/api/checkout/intent', {"method": "POST", "body": JSON.stringify({"products": products})})
+            .then(res => res.json())
+            .then(res => {
+                setClientSecret(res.clientSecret)
+                setModalOpen(true)
+            })
+    }
 
     useEffect(() => {
         setTimeout(() => {
@@ -56,6 +82,14 @@ export default function Checkout({session, productsSession}) {
         })
     }
 
+    function calculateOrderAmount() {
+        var all = 0;
+        products.forEach(element => {
+            all += element.price
+        });
+        return all;
+    }
+
     return (
         <div className={styles.center}>
             <Head>
@@ -70,23 +104,34 @@ export default function Checkout({session, productsSession}) {
                             <div key={product.id + "" + Math.random()} className={styles.item}>
                                 <img alt={`Bild von ${product.name}`} src={product.thumbnail} />
                                 <p className={styles.name}>{product.name}</p>
-                                <p className={styles.tag}>Preis: <span>{product.price}€</span></p>
+                                <p className={styles.tag}>Preis: <span>{parsePrice(product.price)}€</span></p>
                                 <img alt='Entfernen' className={styles.close} draggable={false} src='/icon/close.svg' onClick={() => removeProduct(product)}/>
                             </div>
                         )
                     })}
                     
                 </div>
-                
-                <div className={styles.payment}>
-                    <img draggable={false} alt="Bild nicht gefunden" src="https://img.icons8.com/pastel-glyph/64/000000/pay.png"/>
-                    <img draggable={false} alt="Bild nicht gefunden" src="https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg"/>
-                </div>
+                <h4>Gesamt: {parsePrice(calculateOrderAmount())}€</h4>
+                {clientSecret ? <Modal
+                    opened={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    hideCloseButton
+                    centered
+                    size='auto'
+                >
+                    {console.log(`${URL}/success/${session}`)}
+                    <div style={{"display": "flex", "justifyContent": "center", "alignItems": "center"}}>
+                        <Elements options={{clientSecret, "appearance": {"theme": "stripe"}}} stripe={loadStripe(publicKey)}>
+                            <CheckoutForm returnUrl={`${URL}/success/${session}`}/>
+                        </Elements>
+                    </div>
+                </Modal> : null}
+                <Button style={{"marginTop": "auto"}} onClick={() => loadStripeCheckout()}>Kaufen</Button>
                 <h4 onClick={() => {updateSession(); window.location.href = '/'}} className={styles.return}><div><Image draggable={false} src='/icon/return.svg' alt='return' height='100%' width='100%'/></div>zurück</h4>
             </div>
             <ToastContainer
                 position="bottom-left"
-                autoClose={2000}
+                autoClose={1000}
                 hideProgressBar
                 newestOnTop={false}
                 closeOnClick
@@ -94,7 +139,7 @@ export default function Checkout({session, productsSession}) {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                limit={6}
+                limit={2}
             />
         </div>
     )
@@ -102,6 +147,10 @@ export default function Checkout({session, productsSession}) {
 
 export async function getServerSideProps(context) {
     const sessionId = context.query.id;
+    const user = await new sessions.timedTask(() => {
+        return sessions.login(context.req.connection.remoteAddress);
+    }).start();
+    if(!user.authenticated) return {"props": {}, "redirect": {"destination": `/login`, "permanent": false}}
     const session = await new sessions.timedTask(() => {
         return sessions.get(sessionId)
     }).start();
@@ -113,5 +162,5 @@ export async function getServerSideProps(context) {
             return {"props": {}, "redirect": {"destination": `/error/unknown?from=/checkout/${sessionId}`, "permanent": false}}
         }
     }
-    return {"props": {"session": sessionId, "productsSession": session.products}}
+    return {"props": {"session": sessionId, "productsSession": session.products, "publicKey": publicKey}}
 }

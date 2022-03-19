@@ -7,7 +7,7 @@ export default function Login() {
 
     function login() {
         clearTimeout(spamTimer)
-        setSpamTimer(setTimeout(() => setFailed(false), 500));
+        setSpamTimer(setTimeout(() => setFailed(false), 800));
         fetch('/api/login', {"method": "POST", "body": JSON.stringify({
             "username": document.getElementById('username').value,
             "password": document.getElementById('password').value

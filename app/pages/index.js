@@ -9,15 +9,17 @@ import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Searchbar from '../modules/searchbar'
-import PopupMenu from '../modules/popup_menu'
 import ShoppingCart from "../modules/shopping_cart"
 
 import { useState } from 'react';
 
+import { Drawer, Menu } from '@mantine/core';
+
 export default function Home({preloadedItems, preloadedProducts, sessionId}) {
 
-    const [products, setProducts] = useState(preloadedProducts);
+    const [cartOpen, setCartOpen] = useState(false);
 
+    const [products, setProducts] = useState(preloadedProducts);
     const [spamTimer, setSpamTimer] = useState();
 
     function addProduct(product) {
@@ -53,6 +55,10 @@ export default function Home({preloadedItems, preloadedProducts, sessionId}) {
         })
     }
 
+    function parsePrice(price) {
+        return (parseFloat(price)/100).toFixed(2);
+    }
+
     return (
         <div className={styles.main}>
             <Head>
@@ -60,8 +66,17 @@ export default function Home({preloadedItems, preloadedProducts, sessionId}) {
             </Head>
             <div className={styles.header}>
                 <div className={styles.menuContainer}>
-                    <PopupMenu atElement={false} style={{"width": "20rem", "display": "flex", "flexDirection": "column", "alignItems": "center", "borderRadius": "1rem", "borderWidth": "2px", "boxShadow": "3px 3px 18px 1px rgba(0, 0, 0, 0.3)"}}>
-                        <ShoppingCart style={{"height": "3rem", "width": "3rem"}} index={products.length} id='icon'/>
+                    {/* style={{"height": "3rem", "width": "3rem"}} */}
+                    <div onClick={() => setCartOpen(true)}><ShoppingCart className={styles.menuItem} index={products.length} id='icon'/></div>
+                    <Drawer
+                        opened={cartOpen}
+                        onClose={() => setCartOpen(false)}
+                        padding="xl"
+                        size="md"
+                        position='right'
+                        noScrollLock
+                        hideCloseButton
+                    >
                         <h3>Warenkorb</h3>
                         <div className={styles.container}>
                             {products.length > 0 ? products.map(product => {
@@ -69,7 +84,7 @@ export default function Home({preloadedItems, preloadedProducts, sessionId}) {
                                     <div key={product.id + "" + Math.random()} className={stylesCheckout.item}>
                                         <img alt={`Bild von ${product.name}`} src={product.thumbnail} className={stylesCheckout.smallThumbnail}/>
                                         <p className={stylesCheckout.name}>{product.name}</p>
-                                        <p className={stylesCheckout.tag}>Preis: <span>{product.price}€</span></p>
+                                        <p className={stylesCheckout.tag}>Preis: <span>{parsePrice(product.price)}€</span></p>
                                         <img alt='Entfernen' className={stylesCheckout.close} draggable={false} src='/icon/close.svg' onClick={() => removeProduct(product)}/>
                                     </div>
                                 )
@@ -77,14 +92,15 @@ export default function Home({preloadedItems, preloadedProducts, sessionId}) {
                         </div>
                         {products.length > 0 ? <Link onClick={updateSession} href={`/checkout/${sessionId}`}><a><h3 className={styles.buy}>Kaufen</h3></a></Link>
                         : <h3 className={styles.buy + " " + styles.buyBlocked}>Kaufen</h3>}
-                    </PopupMenu>
-                    <PopupMenu atElement={false} style={{"borderRadius": "1rem", "borderWidth": "2px", "boxShadow": "3px 3px 18px 1px rgba(0, 0, 0, 0.3)"}}>
-                        <a>Hier</a>
-                        <a>kann</a>
-                        <a>ihre</a>
-                        <a>Werbung</a>
-                        <a>stehen!</a>
-                    </PopupMenu>
+                    </Drawer>
+                    <Menu control={<img className={styles.menuItem} src="/icon/menu.svg" />}>
+                        <Menu.Label>Einstellungen</Menu.Label>
+                        <Menu.Item>Hier</Menu.Item>
+                        <Menu.Item>kann</Menu.Item>
+                        <Menu.Item>ihre</Menu.Item>
+                        <Menu.Item>Webung</Menu.Item>
+                        <Menu.Item>stehen</Menu.Item>
+                    </Menu>
                 </div>
                 <h1 onClick={() => setTimeout(() => window.open('https://asg-er.de', '_blank').focus(), 600)} className={styles.title}>ASG Schulshop</h1>
                 <Searchbar className={styles.searchbar}/>
@@ -96,7 +112,7 @@ export default function Home({preloadedItems, preloadedProducts, sessionId}) {
                             <h3 className={styles.name}>{element.name}</h3>
                             <Image src={element.thumbnail} width='200%' height='200%' alt={element.name}/>
                             <div className={styles.itemFooter}>
-                                <p>{element.price}€</p>
+                                <p>{parsePrice(element.price)}€</p>
                                 <img alt='Einkaufswagen' draggable={false} src='/icon/shopping_cart.svg' onClick={() => addProduct(element)}/>
                             </div>
                         </div>
@@ -106,7 +122,7 @@ export default function Home({preloadedItems, preloadedProducts, sessionId}) {
             <div className={styles.footer}></div>
             <ToastContainer
                 position="bottom-left"
-                autoClose={2000}
+                autoClose={1000}
                 hideProgressBar
                 newestOnTop={false}
                 closeOnClick
@@ -114,7 +130,7 @@ export default function Home({preloadedItems, preloadedProducts, sessionId}) {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                limit={6}
+                limit={2}
             />
         </div>
     )

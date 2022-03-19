@@ -1,11 +1,59 @@
-.container {
+@media only screen {
+    .container {
+        width: 25rem;
+    }
+    .center {
+        padding: 1rem;
+    }
+    .main {
+        border: solid rgb(53, 53, 53) 2px;
+        min-height: 50rem;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .container {
+        width: auto;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    
+    .center {
+        padding: 0;
+    }
+    .main {
+        border: none;
+    }
+}
+
+@media screen and (max-height: 800px) {
+    .main {
+        min-height: auto;
+    }
+}
+
+.main {
+    max-height: 100%;
+    padding: 1rem;
+    border-radius: 1rem;
+    justify-content: center;
+    margin: auto;
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    width: 25rem;
+}
+
+.container {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+    margin: 1rem auto;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
 }
 
 .item {
@@ -75,35 +123,8 @@
     flex-wrap: nowrap;
 }
 
-.main {
-    border: solid rgb(53, 53, 53) 2px;
-    border-radius: 1rem;
-    padding: 1rem;
-    justify-content: center;
-    height: 40rem;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-}
-
 .main h2 {
     margin: 1rem auto;
-}
-
-.payment {
-    margin-top: auto;
-    border: solid;
-    border-width: 0;
-    border-top-width: 1px;
-    border-color: gray;
-    display: flex;
-    height: 3rem;
-    width: 100%;
-}
-
-.payment img {
-    margin: 0 auto;
-    object-fit: contain;
 }
 
 .return {
@@ -128,3 +149,28 @@
     margin: auto 0;
     margin-right: .2rem;
 }
+
+.stripeButton {
+    background: #5469d4;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    border-radius: 4px;
+    border: 0;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: block;
+    transition: all 0.2s ease;
+    box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+    width: 100%;
+  }
+  
+  .stripe-button:hover {
+    filter: contrast(115%);
+  }
+  
+  .stripe-button:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }

@@ -1,6 +1,6 @@
-export default function ShoppingCart({index, style}) {
+export default function ShoppingCart({index, className, style}) {
     return (
-        <svg style={style} viewBox='0 0 220 200' width={220} height={200} width xmlns="http://www.w3.org/2000/svg">
+        <svg className={className} style={style} viewBox='0 0 220 200' width='220' height='200' xmlns="http://www.w3.org/2000/svg">
             <image href='/icon/shopping_cart.svg' height='200' width='200'/>
             {index > 0 ? <circle cx="160" cy="145" r="55" fill="orange"/>
             : null}
