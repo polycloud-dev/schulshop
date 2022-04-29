@@ -4,7 +4,7 @@
 - AWS Instance starten
 - Öffentliche IPv4-DNS kopieren
 - SSH in Instance
-`ssh -i "{PATH/TO/KEYPAR.pem}" {Öffentliche IPv4-DNS}`
+`ssh -i "{PATH/TO/KEYPAR.pem}" {AWS Nutzer}@{Öffentliche IPv4-DNS}`
 
 ---
 
