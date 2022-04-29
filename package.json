@@ -8,5 +8,8 @@
     "dev-app": "cd ./app && npm run dev"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "tabler-icons-react": "^1.39.0"
+  }
 }

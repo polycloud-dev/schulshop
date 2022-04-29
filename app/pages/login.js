@@ -48,7 +48,7 @@ import sessions from '../backend/sessions'
 
 export async function getServerSideProps(context) {
     const user = await new sessions.timedTask(() => {
-        return sessions.login(context.req.connection.remoteAddress);
+        return sessions.login(context);
     }).start();
     if(user instanceof Error) {
         if(user.id === 'timeout') return {"props": {}, "redirect": {"destination": `/error/database-timeout?from=/login`, "permanent": false}}

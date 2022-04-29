@@ -12,6 +12,7 @@
     "@stripe/react-stripe-js": "^1.7.0",
     "@stripe/stripe-js": "^1.22.0",
     "biguint-format": "^1.0.2",
+    "cookies": "^0.8.0",
     "flake-idgen": "^1.4.0",
     "fs": "^0.0.1-security",
     "js-search": "^2.0.0",

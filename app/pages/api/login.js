@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     if(req.method === 'POST') {
         const body = JSON.parse(req.body);
         const auth = await new sessions.timedTask(() => {
-            return sessions.auth(req.connection.remoteAddress, body)
+            return sessions.auth({req, res}, body)
         }, 5000).start();
         if(auth instanceof Error) return res.status(auth.status).json({"error": auth.message});
         res.json(auth)

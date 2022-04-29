@@ -1,5 +1,7 @@
 import {createClient} from 'redis';
 
+import Cookies from 'cookies'
+
 import intformat from 'biguint-format';
 import FlakeId from 'flake-idgen';
 
@@ -30,6 +32,49 @@ function connectClient() {
     })
 }
 connectClient()
+
+function validateTracker(tracker, headers, keys) {
+    if(!tracker) return false
+    return new Promise(resolve => {
+        for(const key of keys) {
+            if(tracker[key] !== headers[key]) return resolve(false)
+        }
+        return resolve(true)
+    })
+}
+
+const DEFAULT_TRACK_KEYS = ['ip', 'user-agent', 'accept-lang']
+
+function track({context, keys, create, get}) {
+    if(!keys) keys = DEFAULT_TRACK_KEYS;
+    const cookie_key = 'session'
+    return new Promise(async resolve => {
+        const cookies = new Cookies(context.req, context.res)
+
+        const headers = context.req.headers;
+        headers.ip = context.req.connection.remoteAddress
+
+        function onFailed() {
+            if(!create) return undefined;
+            return new Promise(async resolve => {
+                const tracker = {}
+                keys.forEach(key => tracker[key] = headers[key])
+                const session = await create(tracker)
+                cookies.set(cookie_key, session.id, {"sameSite": "strict", "expires": session.expireIn})
+                return resolve(session)
+            })
+        }
+
+        if(!cookies.get(cookie_key)) return resolve(await onFailed())
+        const session_raw = await get(cookies.get(cookie_key))
+        if(!session_raw) return resolve(await onFailed())
+        const session = JSON.parse(session_raw)
+        session.id = cookies.get(cookie_key)
+
+        if(!(await validateTracker(session['tracker'], headers, keys))) return resolve(await onFailed())
+        else return resolve(session)
+    })
+}
 
 function findAllSessions() {
     return new Promise(async resolve => {
@@ -75,23 +120,6 @@ function removeUserSession(ip) {
     })
 }
 
-function setSessionState(id, state) {
-    if(!id) return new ApiError("no ID given!", "id-missing")
-    if(state !== 'pending' || state !== 'completed' || state !== 'canceled') return new ApiError(`unknown state '${state}'!`, "unknown-state")
-    return new Promise(async resolve => {
-        const client = await connectClient();
-        const value = await client.get(id);
-        const previous = value.state
-        value.state = state;
-        var date = new Date();
-        date.setHours(date.getHours() + 1)
-        value.expireIn = date;
-        await client.set(id, value);
-        logClient.log(`Session state of ${id} changed from '${previous}' to '${state}'!`);
-        resolve();
-    })
-}
-
 function updateSession(id, products) {
     if(!id) return new ApiError("no ID given!", "id-missing")
     if(!products) return new ApiError("no products given!", "products-missing")
@@ -110,64 +138,212 @@ function updateSession(id, products) {
     })
 }
 
-function createUserSession(ip) {
-    if(!ip) return new ApiError("no IP given!", "ip-missing")
+/**
+ * 
+ * @param {*} context 
+ * @returns {{
+ *      created: date
+ *      expireIn: date
+ *      type: "user"
+ *      authenticated: boolean
+ *      'stripe-intent': any
+ *      session: string
+ *      tracker: any
+ *      history: [any]
+ *  }}
+ */
+function createUserSession(context) {
+    if(!context) return new ApiError("no context given!", "ip-missing")
     return new Promise(async resolve => {
         const client = await connectClient();
-        const ipDataRaw = await client.get(key(ip));
-        if(ipDataRaw) return resolve(JSON.parse(ipDataRaw));
-        const now = new Date()
-        const expired = new Date()
-        expired.setHours(expired.getHours() + 1)
-        const result = {
-            "created": now,
-            "expireIn": expired,
-            "type": "user",
-            "username": key(ip),
-            "authenticated": false,
-            "stripe-intent": undefined
-        }
-        await client.set(key(ip), JSON.stringify(result));
-        logClient.log(`UserSession created by ${key(ip)}!`);
-        resolve(result)
+        const session = await track({context,
+            'create': async (tracker) => {
+                return new Promise(async resolve => {
+                    const userId = intformat(flake.next(), 'dec');
+                    const now = new Date()
+                    const expired = new Date()
+                    expired.setHours(expired.getHours() + 1)
+                    const session = await createSession()
+                    logClient.log(`Session created by ${userId}. ID: ${session.id}`);
+                    const result = {
+                        "created": now,
+                        "expireIn": expired,
+                        "type": "user",
+                        "authenticated": false,
+                        "stripe-intent": undefined,
+                        "session": session.id,
+                        "tracker": tracker,
+                        "history": []
+                    }
+                    await client.set(userId, JSON.stringify(result));
+                    logClient.log(`UserSession created by ${userId}!`);
+                    result.id = userId
+                    resolve(result)
+                })
+            },
+            'get': (id) => {
+                return client.get(id) 
+            }
+        })
+        return resolve(session)
     })
 }
 
-function authenticate(ip, login) {
-    if(!ip) return new ApiError("no IP given!", "ip-missing")
+function createPaymentSession(context, user, paymentIntent) {
+    if(!context) return new ApiError("no context given!", "ip-missing")
+    if(!paymentIntent) return new ApiError("no paymentIntent given!", "paymentIntent-missing")
+    if(!user) return new ApiError("no user given!", "user-missing")
+    return new Promise(async resolve => {
+        const client = await connectClient();
+        const session = await track({context,
+            'create': async () => {
+                return new Promise(async resolve => {
+                    const paymentId = intformat(flake.next(), 'dec');
+                    const session = await createSession()
+                    logClient.log(`Session created by ${userId}. ID: ${session.id}`);
+                    const result = {
+                        "created": now,
+                        "type": "payment",
+                        "user": user,
+                        "amount": paymentIntent.amount,
+                    }
+                    await client.set(paymentId, JSON.stringify(result));
+                    logClient.log(`UserSession created by ${userId}!`);
+                    result.id = userId
+                    resolve(result)
+                })
+            },
+            'get': (id) => {
+                return client.get(id) 
+            }
+        })
+        return resolve(session)
+    })
+}
+
+function authenticate(context, login) {
+    if(!context) return new ApiError("no context given!", "ip-missing")
     if(!login) return new ApiError("no login data given!", "login-missing")
     return new Promise(async resolve => {
         const client = await connectClient();
-        const ipDataRaw = await client.get(key(ip));
-        if(!ipDataRaw) return resolve(new ApiError("user session not found!", "usersession-notfound"))
+        
+        const user = await track({context, 'get': (id) => {
+            return client.get(id)
+        }})
+
+        if(!user) return resolve(new ApiError("user session not found!", "usersession-notfound"))
         if(!(login.username === username && login.password === password)) return resolve({"authenticated": false})
-        const user = JSON.parse(ipDataRaw);
+
         const expired = new Date()
         expired.setHours(expired.getHours() + 96)
         user.expired = expired
+
         user.authenticated = true
-        await client.set(key(ip), JSON.stringify(user));
-        logClient.log(`User ${key(ip)} authenticated!`);
+
+        const userId = user.id
+        delete user.id
+
+        await client.set(userId, JSON.stringify(user));
+        logClient.log(`User ${userId} authenticated!`);
+
         resolve({"authenticated": true})
     })
 }
 
-function createUserIntent(ip, products, force=false) {
-    if(!ip) return new ApiError("no IP given!", "ip-missing")
+function createStripeIntent(context, products, force=false) {
+    if(!context) return new ApiError("no context given!", "ip-missing")
     if(!products) return new ApiError("no products given!", "products-missing")
     return new Promise(async resolve => {
+
         const client = await connectClient()
-        const ipDataRaw = await client.get(key(ip))
-        if(!ipDataRaw) return resolve(new ApiError("user session not found!", "usersession-notfound"))
-        const user = JSON.parse(ipDataRaw)
+
+        const user = await track({context, 'get': (id) => {
+            return client.get(id)
+        }})
+
+        if(!user) return resolve(new ApiError("user session not found!", "usersession-notfound"))
+
         if(user['stripe-intent'] !== undefined && !force) resolve(user['stripe-intent'])
+
         const expired = new Date()
         expired.setHours(expired.getHours() + 96)
         user.expired = expired
+
         user['stripe-intent'] = await createIntent(products)
-        await client.set(key(ip), JSON.stringify(user))
-        logClient.log(`User ${key(ip)} requested intent!`);
+
+        const userId = user.id
+        delete user.id
+
+        await client.set(userId, JSON.stringify(user))
+        logClient.log(`User ${userId} requested intent!`);
+        
         resolve(user['stripe-intent'])
+    })
+}
+
+function removeStripeIntent(context) {
+    if(!context) return new ApiError("no context given!", "ip-missing")
+    return new Promise(async resolve => {
+        const client = await connectClient()
+
+        const user = await track({context, 'get': (id) => {
+            return client.get(id)
+        }})
+
+        if(!user) return resolve(new ApiError("user session not found!", "usersession-notfound"))
+
+        if(!user['stripe-intent']) return resolve(true);
+
+        const session = await getSession(user.session)
+
+        session.products = []
+
+        await client.set(user.session, JSON.stringify(session))
+
+        const expired = new Date()
+        expired.setHours(expired.getHours() + 96)
+        user.expired = expired
+
+        user['stripe-intent'] = undefined
+
+        const userId = user.id
+        delete user.id
+
+        await client.set(userId, JSON.stringify(user))
+        logClient.log(`User ${userId} cleared intent!`);
+        
+        resolve(true)
+    })
+}
+
+function confirmStripeIntent(context, payment_intent, payment_intent_client_secret) {
+    if(!context) return new ApiError("no context given!", "ip-missing")
+    if(!payment_intent) return new ApiError("no payment_intent given!", "payment_intent-missing")
+    if(!payment_intent_client_secret) return new ApiError("no payment_intent_client_secret given!", "payment_intent_client_secret-missing")
+    return new Promise(async resolve => {
+        const client = await connectClient()
+
+        const user = await track({context, 'get': (id) => {
+            return client.get(id)
+        }})
+
+        if(!user) return resolve(new ApiError("user session not found!", "usersession-notfound"))
+
+        if(!user['stripe-intent']) return resolve(new ApiError("no stripe intent found!", "stripe-intent-notfound"))
+
+        const session = await getSession(user.session)
+
+        const intent = await confirmIntent(payment_intent, payment_intent_client_secret)
+
+        if(intent.status === "succeeded") {
+            session.products = []
+            await client.set(user.session, JSON.stringify(session))
+            logClient.log(`User ${user.id} confirmed intent!`);
+            resolve(true)
+        } else {
+            logClient.log(`User ${user.id} failed to confirm intent!`);
+            resolve(false)
+        }
     })
 }
 
@@ -181,22 +357,9 @@ function getUser(ip) {
     })
 }
 
-function createSession(ip) {
-    if(!ip) return new ApiError("no IP given!", "id-missing")
+function createSession() {
     return new Promise(async resolve => {
         const client = await connectClient();
-        const ipDataRaw = await client.get(key(ip));
-        const ipData = JSON.parse(ipDataRaw)
-        if(!ipDataRaw) return new ApiError("not authenticated!", "not-auth")
-        else if(!ipData.authenticated) return new ApiError("not authenticated!", "not-auth")
-        if(ipData.sessionId) {
-            const sessionRaw = await client.get(ipData.sessionId)
-            if(sessionRaw) {
-                const session = JSON.parse(sessionRaw)
-                session.sessionId = ipData.sessionId
-                return resolve(session);
-            }
-        }
         const sessionId = intformat(flake.next(), 'dec');
         const now = new Date()
         const expired = new Date()
@@ -204,16 +367,11 @@ function createSession(ip) {
         const result = {
             "created": now,
             "expireIn": expired,
-            "ip": ip,
-            "state": "pending",
             "products": [],
             "type": "session"
         }
         await client.set(sessionId, JSON.stringify(result));
-        ipData.sessionId = sessionId;
-        await client.set(key(ip), JSON.stringify(ipData))
-        logClient.log(`Session created by ${key(ip)}. ID: ${sessionId}`);
-        result.sessionId = sessionId;
+        result.id = sessionId;
         resolve(result)
     })
 }
@@ -264,9 +422,7 @@ function key(ip) {
 
 const sessions = {
     "connect": connectClient,
-    "create": createSession,
     "findAll": findAllSessions,
-    "setState": setSessionState,
     "kill": removeSession,
     "killUser": removeUserSession,
     "collectExpired": collectExpiredSessions,
@@ -275,7 +431,9 @@ const sessions = {
     "login": createUserSession,
     "auth": authenticate,
     "getUser": getUser,
-    "createIntent": createUserIntent,
+    "createIntent": createStripeIntent,
+    "removeIntent": removeStripeIntent,
+    "confirmIntent": confirmStripeIntent,
     "timedTask": class {
         constructor(task, time=5000) {
             this.task = task;

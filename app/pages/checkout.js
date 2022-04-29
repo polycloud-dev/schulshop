@@ -1,19 +1,19 @@
-import styles from '../../styles/Checkout.module.css'
+import styles from '../styles/Checkout.module.css'
 
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useEffect, useState } from "react";
-import sessions from "../../backend/sessions"
+import sessions from "../backend/sessions"
 
 import Image from 'next/image';
 import Head from 'next/head';
 
 import {Button, Modal} from '@mantine/core'
-import { publicKey } from '../../backend/payment';
+import { publicKey } from '../backend/payment';
 
 import {Elements} from "@stripe/react-stripe-js";
-import CheckoutForm from "../../modules/stripeCheckout";
+import CheckoutForm from "../modules/stripeCheckout";
 
 import {loadStripe} from "@stripe/stripe-js";
 
@@ -36,15 +36,15 @@ export default function Checkout({session, productsSession, publicKey}) {
         fetch('/api/checkout/intent', {"method": "POST", "body": JSON.stringify({"products": products})})
             .then(res => res.json())
             .then(res => {
-                setClientSecret(res.clientSecret)
+                setClientSecret(res['client-secret'])
                 setModalOpen(true)
             })
     }
 
     useEffect(() => {
         setTimeout(() => {
-            fetch(`/api/checkout/get/${session}`).then(res => {
-                if(res.status !== 200) return window.location.href = `/error/database-timeout?from=/checkout/${session}`
+            fetch(`/api/checkout/get`).then(res => {
+                if(res.status !== 200) return window.location.href = `/error/database-timeout?from=/checkout`
                 else return res.json().then(json => {
                     if(json.products) {
                         setProducts(json.products)
@@ -72,13 +72,13 @@ export default function Checkout({session, productsSession, publicKey}) {
     }
 
     function updateSession() {
-        fetch(`/api/checkout/update/${session}`, {
+        fetch(`/api/checkout/update`, {
             "method": "PUT",
             "body": JSON.stringify({
                 "products": products
             })
         }).then(res => {
-            if(res.status !== 200) return window.location.href = `/error/database-timeout?from=/checkout/${session}`
+            if(res.status !== 200) return window.location.href = `/error/database-timeout?from=/checkout`
         })
     }
 
@@ -119,10 +119,9 @@ export default function Checkout({session, productsSession, publicKey}) {
                     centered
                     size='auto'
                 >
-                    {console.log(`${URL}/success/${session}`)}
                     <div style={{"display": "flex", "justifyContent": "center", "alignItems": "center"}}>
                         <Elements options={{clientSecret, "appearance": {"theme": "stripe"}}} stripe={loadStripe(publicKey)}>
-                            <CheckoutForm returnUrl={`${URL}/success/${session}`}/>
+                            <CheckoutForm returnUrl={`${URL}/success`}/>
                         </Elements>
                     </div>
                 </Modal> : null}
@@ -145,22 +144,24 @@ export default function Checkout({session, productsSession, publicKey}) {
     )
 }
 
+import LogClient from '../backend/logger';
+const logClient = new LogClient('IndexPage');
+
 export async function getServerSideProps(context) {
-    const sessionId = context.query.id;
     const user = await new sessions.timedTask(() => {
-        return sessions.login(context.req.connection.remoteAddress);
+        return sessions.login(context);
     }).start();
     if(!user.authenticated) return {"props": {}, "redirect": {"destination": `/login`, "permanent": false}}
     const session = await new sessions.timedTask(() => {
-        return sessions.get(sessionId)
+        return sessions.get(user.session)
     }).start();
     if(session instanceof Error) {
-        if(session.id === 'timeout') return {"props": {}, "redirect": {"destination": `/error/database-timeout?from=/checkout/${sessionId}`, "permanent": false}}
-        else if(session.id === 'session-notfound') return {"props": {}, "redirect": {"destination": `/error/session-notfound?from=/checkout/${sessionId}`, "permanent": false}}
+        if(session.id === 'timeout') return {"props": {}, "redirect": {"destination": `/error/database-timeout?from=/checkout`, "permanent": false}}
+        else if(session.id === 'session-notfound') return {"props": {}, "redirect": {"destination": `/error/session-notfound?from=/checkout`, "permanent": false}}
         else {
             logClient.error(session);
-            return {"props": {}, "redirect": {"destination": `/error/unknown?from=/checkout/${sessionId}`, "permanent": false}}
+            return {"props": {}, "redirect": {"destination": `/error/unknown?from=/checkout`, "permanent": false}}
         }
     }
-    return {"props": {"session": sessionId, "productsSession": session.products, "publicKey": publicKey}}
+    return {"props": {"session": user.session, "productsSession": session.products, "publicKey": publicKey}}
 }

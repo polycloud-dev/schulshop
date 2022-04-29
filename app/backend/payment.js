@@ -19,16 +19,20 @@ export function confirmPayment(paymentIntent) {
 }
 
 export function createIntent(items) {
+    const orderAmount = calculateOrderAmount(items)
+    if(orderAmount < 1) return new Error('invalid payment')
     return new Promise(async resolve => {
         // Create a PaymentIntent with the order amount and currency
         const paymentIntent = await stripe.paymentIntents.create({
-            "amount": calculateOrderAmount(items),
+            "amount": orderAmount,
             "currency": "eur",
             "automatic_payment_methods": {
                 "enabled": true,
             },
         });
 
-        resolve({"clientSecret": paymentIntent.client_secret})
+        console.log(paymentIntent);
+
+        resolve({'client-secret': paymentIntent.client_secret, 'id': paymentIntent.id, 'amount': paymentIntent.amount, 'created': paymentIntent.created, 'currency': paymentIntent.currency})
     })
 }
