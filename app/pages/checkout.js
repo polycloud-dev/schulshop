@@ -17,7 +17,7 @@ import CheckoutForm from "../modules/stripeCheckout";
 
 import {loadStripe} from "@stripe/stripe-js";
 
-const URL = `http://${(process.env.PRODUCTION === 'TRUE' || !process.env.URL ? 'localhost:3000' : process.env.URL)}`
+const URL = `http://${(process.env.PRODUCTION === 'TRUE' && process.env.URL ? process.env.URL : 'localhost:3000')}`
 
 export default function Checkout({session, productsSession, publicKey}) {
 
