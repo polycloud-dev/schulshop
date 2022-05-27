@@ -110,6 +110,11 @@
     }
 }
 
+.container {
+    max-height: 80%;
+    overflow: hidden;
+}
+
 .main {
     position: absolute;
     height: 100%;

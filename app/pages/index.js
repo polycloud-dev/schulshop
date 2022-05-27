@@ -13,7 +13,7 @@ import ShoppingCart from "../modules/shopping_cart"
 
 import { useState } from 'react';
 
-import { Divider, Drawer, Menu } from '@mantine/core';
+import { Divider, Drawer, Menu, ScrollArea } from '@mantine/core';
 
 import { History } from 'tabler-icons-react';
 
@@ -34,9 +34,9 @@ function AccessShoppingCart(props) {
     return (
         <>
             <div onClick={() => setCartOpen(true)}><ShoppingCart className={styles.menuItem} index={props.products.length} id='icon' /></div>
-            <Drawer opened={cartOpen} onClose={() => setCartOpen(false)} padding="xl" size="md" position='right' noScrollLock hideCloseButton>
+            <Drawer opened={cartOpen} onClose={() => setCartOpen(false)} padding="xl" size="md" position='right' hideCloseButton overlayBlur={3}>
                 <h3>Warenkorb</h3>
-                <div className={styles.container}>
+                <ScrollArea className={styles.container}>
                     {props.products.length > 0 ? props.products.map(product => {
                         return <div key={product.id + "" + Math.random()} className={stylesCheckout.item}>
                             <img alt={`Bild von ${product.name}`} src={product.thumbnail} className={stylesCheckout.smallThumbnail} />
@@ -45,7 +45,7 @@ function AccessShoppingCart(props) {
                             <img alt='Entfernen' className={stylesCheckout.close} draggable={false} src='/icon/close.svg' onClick={() => props.removeProduct(product)} />
                         </div>;
                     }) : <p>leer</p>}
-                </div>
+                </ScrollArea>
                 {props.products.length > 0 ? <Link onClick={props.updateSession} href={`/checkout`}><a><h3 className={styles.buy}>Kaufen</h3></a></Link> : <h3 className={styles.buy + " " + styles.buyBlocked}>Kaufen</h3>}
             </Drawer>
         </>
