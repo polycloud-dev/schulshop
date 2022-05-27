@@ -13,7 +13,7 @@ import ShoppingCart from "../modules/shopping_cart"
 
 import { useState } from 'react';
 
-import { Drawer, Menu } from '@mantine/core';
+import { Divider, Drawer, Menu } from '@mantine/core';
 
 import { History } from 'tabler-icons-react';
 
@@ -59,9 +59,50 @@ function AccessBar(props) {
     </div>);
 }
 
-function Grid({items, addProduct}) {
+function BundleGrid({products, bundles, addBundledProducts}) {
+
+    const bundledProducts = {}
+
+    function map() {
+        bundles.forEach(bundle => {
+            let price = 0;
+            const collected = []
+
+            Object.keys(bundle.content).forEach(lesson => {
+                bundle.content[lesson].forEach(productId => {
+                    const product = products.find(product => product.id === productId);
+                    collected.push(product);
+                    price += product.price;
+                })
+            });
+            bundledProducts[bundle.id] = {price, collected};
+        })
+    }
+    map()
+
     return <div className={styles.gridContainer}>
-        <div className={styles.grid}>{items.map(element => {
+        <div className={styles.grid}>{bundles.map(element => {
+            return (
+                <div className={styles.item} key={element.id}>
+                    <h3 className={styles.name}>{element.name}</h3>
+                    <div style={{'margin': 'auto'}}>
+                        {Object.keys(element.content).map(key => {
+                            return <>{key}<br/></>
+                        })}
+                    </div>
+                    <div className={styles.itemFooter}>
+                        <p>{parsePrice(bundledProducts[element.id].price)}€</p>
+                        <img alt='Einkaufswagen' draggable={false} src='/icon/shopping_cart.svg' onClick={() => addBundledProducts(bundledProducts[element.id].collected)} />
+                    </div>
+                </div>
+            );
+        })}</div>
+    </div>;
+}
+
+function ProductGrid({products, addProduct}) {
+    return <div className={styles.gridContainer}>
+        <div className={styles.grid}>{products.map(element => {
             return (
                 <div className={styles.item} key={element.id}>
                     <h3 className={styles.name}>{element.name}</h3>
@@ -85,6 +126,16 @@ export default function Home({ items, preloadedProducts, sessionId }) {
         toast('Zum Warenkorb hinzugefügt!', { "theme": "dark", "icon": "🛒" });
         const a = products
         a.push(product)
+        setProducts(a)
+        saveSession()
+    }
+
+    function addBundledProducts(new_products) {
+        toast('Zum Warenkorb hinzugefügt!', { "theme": "dark", "icon": "🛒" });
+        const a = products
+        new_products.forEach(product => {
+            a.push(product)
+        })
         setProducts(a)
         saveSession()
     }
@@ -129,7 +180,18 @@ export default function Home({ items, preloadedProducts, sessionId }) {
                 <h1 onClick={() => setTimeout(() => window.open('https://asg-er.de', '_blank').focus(), 600)} className={styles.title}>ASG Schulshop</h1>
                 <Searchbar className={styles.searchbar} search={search}/>
             </div>
-            <Grid items={items} parsePrice={parsePrice} addProduct={addProduct} />
+            <Divider 
+                size="sm"
+                label="Bundles"
+                labelPosition='center'
+            />
+            <BundleGrid bundles={items.bundles} products={items.products} addBundledProducts={addBundledProducts} />
+            <Divider 
+                size="sm"
+                label="Einzelne Produkte"
+                labelPosition='center'
+            />
+            <ProductGrid products={items.products} addProduct={addProduct} />
             <div className={styles.footer}></div>
             <ToastContainer
                 position="bottom-left"
@@ -153,8 +215,9 @@ import LogClient from '../backend/logger';
 const logClient = new LogClient('IndexPage');
 
 export async function getServerSideProps(context) {
-    const data = await dbGet('products')
-    if (!data) return { "props": {}, "redirect": { "destination": `/error/database-timeout`, "permanent": false } }
+    const products = await dbGet('products')
+    const bundles = await dbGet('bundles')
+    if (!products || !bundles) return { "props": {}, "redirect": { "destination": `/error/database-timeout`, "permanent": false } }
 
     const user = await new sessions.timedTask(() => {
         return sessions.login(context);
@@ -170,5 +233,5 @@ export async function getServerSideProps(context) {
             return { "props": {}, "redirect": { "destination": `/error/unknown`, "permanent": false } }
         }
     }
-    return { "props": { "items": data, "preloadedProducts": session.products, "sessionId": user.session } }
+    return { "props": { "items": {products, bundles}, "preloadedProducts": session.products, "sessionId": user.session } }
 }
