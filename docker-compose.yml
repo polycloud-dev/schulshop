@@ -15,7 +15,7 @@ services:
       - PRODUCTION=TRUE
       - USERNAME=username
       - PASSWORD=password
-      - URL=localhost
+      - URL=127.0.0.1
   redis:
     image: redis
     networks:
