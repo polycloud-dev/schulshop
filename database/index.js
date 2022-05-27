@@ -47,4 +47,4 @@ app.get('/:key', (req, res) => {
 //     }
 // })
 
-app.listen(PORT, () => logClient.log(`started server on http://localhost:${PORT}`))
+app.listen(PORT, () => logClient.log(`started server on http://0.0.0.0:${PORT}`))
