@@ -16,11 +16,13 @@ services:
       - USERNAME=username
       - PASSWORD=password
       - URL=127.0.0.1
+    restart: unless-stopped
   redis:
     image: redis
     networks:
       - network
     container_name: redis-schulshop
+    restart: unless-stopped
   backend:
     build: ./backend
     networks:
@@ -29,11 +31,13 @@ services:
     depends_on:
       - app
       - redis
+    restart: unless-stopped
   database:
     build: ./database
     networks:
       - network
     container_name: database-schulshop
+    restart: unless-stopped
 networks:
   network:
     driver: bridge
