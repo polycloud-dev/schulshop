@@ -27,3 +27,6 @@
 ### Session
 * jeder im gleichen Netz hat gleiche IP
 * Track User mit IP, Browser, OS, (Screen size)
+
+## Fehler fixen
+Vermutlich im Scheduler
