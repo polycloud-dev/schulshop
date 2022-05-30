@@ -29,4 +29,4 @@
 * Track User mit IP, Browser, OS, (Screen size)
 
 ## Fehler fixen
-Vermutlich im Scheduler
+Fehler liegt im App/backend. Manche Teile verwenden noch nur die IP als key
