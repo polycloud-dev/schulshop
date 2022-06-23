@@ -5,6 +5,7 @@ import App from './App/App';
 import reportWebVitals from './reportWebVitals';
 import theme from './theme.json';
 import { MantineProvider } from '@mantine/core'
+import { ServerProvider } from './modules/servercomponent';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,7 +13,11 @@ root.render(
     <MantineProvider
       theme={theme.light}
     >
-      <App />
+      <ServerProvider
+        host="http://localhost/api"
+      >
+        <App />
+      </ServerProvider>
     </MantineProvider>
   </React.StrictMode>
 );
