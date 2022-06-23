@@ -24,5 +24,11 @@ func main() {
 	r.SetTrustedProxies([]string{})
 
 	r.Static("/", "./app/build")
+
+	// serve routes
+	for _, route := range routes {
+		r.Handle(route.method, route.path, route.handler)
+	}
+
 	r.Run(":3000")
 }
