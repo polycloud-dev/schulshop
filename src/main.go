@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,18 +19,21 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	// serve react app
 	r := gin.New()
 
 	// dont trust proxies
 	r.SetTrustedProxies([]string{})
 
-	r.Static("/", "./app/build")
+	// cors
+	r.Use(cors.Default())
+
+	// serve react app
+	r.Use(static.Serve("/", static.LocalFile("./app/build", true)))
 
 	// serve routes
 	for _, route := range routes {
 		r.Handle(route.method, route.path, route.handler)
 	}
 
-	r.Run(":3000")
+	r.Run(":80")
 }

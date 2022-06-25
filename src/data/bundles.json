@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Gophers",
+        "description": "Ein paar Gophers",
+        "content": [
+            "gopher",
+            "gopher_flash",
+            "gopher_tired"
+        ],
+        "badges": [
+            {
+                "color": "green",
+                "text": "nachhaltig"
+            }
+        ],
+        "created_at": "2022-06-25T15:36:01.331Z"
+    }
+]

@@ -14,4 +14,7 @@ type Route struct {
 
 var routes = []Route{
 	{"GET", "/api/bundles", handler.GetBundles},
+	{"GET", "/api/classbundles", handler.GetClassBundles},
+	{"GET", "/api/products", handler.GetProducts},
+	{"GET", "/image/:id", handler.GetImage},
 }

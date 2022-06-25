@@ -1,21 +1,32 @@
 import { useServer } from "../modules/servercomponent";
 import { useState, useEffect } from "react";
 
-export default function ServerComponent({ children, result, error, loading, onFailed, path }) {
+export default function ServerComponent({ children, result, error, loading, onFailed, path, noCache }) {
 
     if(children && typeof children !== 'function') throw new Error("ServerComponent does not accept children");
+    else result = children;
     
     if(!children && (!result || typeof result !== "function")) throw new Error("ServerComponent requires a result function");
-    
+
     if(!onFailed || typeof onFailed !== "function") onFailed = (_, retries) => {
         if(retries < 3) return 'retry'
         return 'abort'
     };
 
-    const { host } = useServer()
+    const { host, cache, setCache } = useServer(path)
 
-    const [cachedData, setCachedData] = useState(null);
-    const [state, setState] = useState({
+    if(noCache) {
+        cache = undefined
+        setCache = () => {}
+    }
+
+    const [state, setState] = useState(cache ? 
+        {
+            state: 'success',
+            data: cache,
+            error: null, 
+        }
+        : {
         state: 'loading',
         data: null,
         error: null
@@ -37,7 +48,8 @@ export default function ServerComponent({ children, result, error, loading, onFa
             // check if response is json
             if(response.headers.get('content-type') === 'application/json') data = await response.json();
             else data = await response.text();
-            setCachedData(data);
+            
+            setCache(data);
             setState({
                 data,
                 error: null,
@@ -46,8 +58,8 @@ export default function ServerComponent({ children, result, error, loading, onFa
         }catch(error) {
             const action = onFailed(error, tries);
             if(action === 'retry') await fetchData(tries+1);
-            else if(action === 'ignore' && cachedData) setState({
-                data: cachedData,
+            else if(action === 'ignore' && cache) setState({
+                data: cache,
                 error: null,
                 state: 'success',
             })
