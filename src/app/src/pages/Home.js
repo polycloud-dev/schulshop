@@ -179,9 +179,9 @@ export default function HomePage() {
                 style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}
                 spacing='xl'
             >
-                {data.map(bundle => {
+                {Object.keys(data).map(key => {
 
-                    const key = bundle.name;
+                    const bundle = data[key]
 
                     const content = bundle.content;
                     const bundle_products = content.map(product => {
