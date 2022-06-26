@@ -11,6 +11,9 @@ function formatCurrency(price) {
 
 export default function HomePage() {
 
+    const CARD_WIDTH = 200;
+    const CARD_HEIGHT = 350;
+
     return (
         <>
             <Container
@@ -20,18 +23,17 @@ export default function HomePage() {
             </Container>
             <div
                 style={{
-                    marginTop: '3rem',
+                    margin: '3rem 0',
                     padding: '0 1rem',
                 }}
             >
-                <LabelDivider label={'Klassenpakete'} />
-                <ClassBundles />
+                <ClassBundles card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
 
                 <LabelDivider label={'Pakete'} />
-                <Bundles />
+                <Bundles card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
 
                 <LabelDivider label={'Einzelne Produkte'} />
-                <Products />
+                <Products card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
             </div>
         </>
     );
@@ -101,7 +103,59 @@ export default function HomePage() {
         )
     }
 
-    function BundleCards({ data }) {
+    function CardBody({ badges, name, description, price, height }) {
+        return (
+            <Container
+                p={0}
+                style={{
+                    margin: 0,
+                    width: '100%',
+                    height: height/2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexWrap: 'wrap',
+                }}
+            >
+                <Group
+                    position='right'
+                    my={2}
+                    spacing={2}
+                >
+                    {badges}
+                </Group>
+                <Title
+                    style={{
+                        fontSize: '1.2rem',
+                    }}
+                    align='center'
+                >
+                    {name}
+                </Title>
+                <Text
+                    color='dimmed'
+                    align='center'
+                    style={{
+                        maxHeight: '30%',
+                        overflow: 'hidden',
+                    }}
+                >
+                    {description}
+                </Text>
+
+                <Group
+                    mt='auto'
+                    mb='md'
+                >
+                    <Button>Kaufen</Button>
+                    <Text
+                        color='cyan'
+                    >{formatCurrency(price)}€</Text>
+                </Group>
+            </Container>
+        )
+    }
+
+    function BundleCards({ data, width, height }) {
 
         const theme = useMantineTheme()
 
@@ -151,8 +205,8 @@ export default function HomePage() {
                             shadow='xl'
                             p='lg'
                             style={{
-                                width: 200,
-                                height: 300,
+                                width: width,
+                                height: height,
                                 backgroundColor: theme.colors.gray[1],
                             }}
                             key={key}
@@ -164,45 +218,13 @@ export default function HomePage() {
                                     {
                                         bundle_products.map(product => {
                                             return (
-                                                <Image height={150} width={200/bundle_products.length} fit='cover' src={`http://localhost/image/${product.image}`} alt={product.name} />
+                                                <Image height={height/2} width={width/bundle_products.length} fit='cover' src={`http://localhost/image/${product.image}`} alt={product.name} />
                                             )
                                         })
                                     }
                                 </Group>
                             </Card.Section>
-                            <Stack
-                                spacing={0}
-                            >
-                                <Group
-                                    position='right'
-                                    my={2}
-                                    spacing={2}
-                                >
-                                    {badges[key]}
-                                </Group>
-                                <Title
-                                    style={{
-                                        fontSize: '1.2rem',
-                                    }}
-                                    align='center'
-                                >
-                                    {bundle.name}
-                                </Title>
-                                <Text
-                                    color='dimmed'
-                                    align='center'
-                                    mb='auto'
-                                    // TODO: fix margin
-                                >
-                                    {bundle.description}
-                                </Text>
-                                <Group>
-                                    <Button>Kaufen</Button>
-                                    <Text
-                                        color='cyan'
-                                    >{formatCurrency(total_price)}€</Text>
-                                </Group>
-                            </Stack>
+                            <CardBody badges={badges[key]} name={bundle.name} description={bundle.description} price={total_price} height={height} />
                         </Card>
                     )
                 })}
@@ -210,7 +232,7 @@ export default function HomePage() {
         )
     }
 
-    function ProductCards({ data }) {
+    function ProductCards({ data, height, width }) {
 
         const theme = useMantineTheme()
 
@@ -236,43 +258,16 @@ export default function HomePage() {
                             shadow='xl'
                             p='lg'
                             style={{
-                                width: 200,
-                                height: 300,
+                                width: width,
+                                height: height,
                                 backgroundColor: theme.colors.gray[1],
                             }}
                             key={key}
                         >
                             <Card.Section>
-                                <Image height={150} fit='contain' src={`http://localhost/image/${product.image}`} alt={product.name} />
+                                <Image height={height/2} fit='contain' src={`http://localhost/image/${product.image}`} alt={product.name} />
                             </Card.Section>
-                            <Group
-                                position='right'
-                                my={2}
-                                spacing={2}
-                            >
-                                {badges[key]}
-                            </Group>
-                            <Title
-                                style={{
-                                    fontSize: '1.2rem',
-                                }}
-                                align='center'
-                            >
-                                {product.name}
-                            </Title>
-                            <Text
-                                color='dimmed'
-                                align='center'
-                            >
-                                {product.description}
-                            </Text>
-                            <Space h={'lg'} />
-                            <Group>
-                                <Button>Kaufen</Button>
-                                <Text
-                                    color='cyan'
-                                >{formatCurrency(product.price)}€</Text>
-                            </Group>
+                            <CardBody badges={badges[key]} name={product.name} description={product.description} price={product.price} height={height} />
                         </Card>
                     )
                 })}
@@ -280,38 +275,43 @@ export default function HomePage() {
         )
     }
 
-    function Products() {
+    function Products({ card_width, card_height }) {
         return <ServerComponent
             path='/products'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
             {(data) => {
-                return <ProductCards data={data} />;
+                return <ProductCards data={data} width={card_width} height={card_height} />;
             }}
         </ServerComponent>;
     }
 
-    function ClassBundles() {
+    function ClassBundles({ card_width, card_height }) {
         return <ServerComponent
             path='/classbundles'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
             {(data) => {
-                return <BundleCards data={data} />;
+                if(Object.keys(data).length > 0) {
+                    return <>
+                        <LabelDivider label={'Klassenpakete'} />
+                        <BundleCards data={data} width={card_width} height={card_height} />;
+                    </>
+                }
             }}
         </ServerComponent>;
     }
 
-    function Bundles() {
+    function Bundles({ card_width, card_height }) {
         return <ServerComponent
             path='/bundles'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
             {(data) => {
-                return <BundleCards data={data} />;
+                return <BundleCards data={data} width={card_width} height={card_height} />;
             }}
         </ServerComponent>;
     }
