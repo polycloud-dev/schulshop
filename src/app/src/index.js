@@ -11,6 +11,7 @@ import HomePage from './pages/Home';
 import NotFoundPage from './pages/NotFound';
 import SustainablePage from './pages/Sustainable';
 import AboutPage from './pages/About';
+import { ShoppingCartProvider } from './modules/shoppingcart';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -21,7 +22,9 @@ root.render(
       <ServerProvider
         host="http://localhost/api"
       >
-        <RouteProvider />
+        <ShoppingCartProvider>
+          <RouteProvider />
+        </ShoppingCartProvider>
       </ServerProvider>
     </MantineProvider>
   </React.StrictMode>
