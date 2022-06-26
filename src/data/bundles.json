@@ -1,5 +1,5 @@
-[
-    {
+{
+    "gophers": {
         "name": "Gophers",
         "description": "Ein paar Gophers",
         "content": [
@@ -15,7 +15,7 @@
         ],
         "created_at": "2022-06-25T15:36:01.331Z"
     },
-    {
+    "smart_gophers": {
         "name": "Schlaue Gophers",
         "description": "Ein paar schlaue Gophers",
         "content": [
@@ -30,4 +30,4 @@
         ],
         "created": "2018-01-01T00:00:00.000Z"
     }
-]
+}
