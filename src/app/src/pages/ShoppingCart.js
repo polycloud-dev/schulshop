@@ -366,7 +366,7 @@ export default function ShoppingCartPage() {
                 }).then(res => res.json())
                 .then(res => {
                     if(res.success) {
-                        confirmOrder()
+                        confirmOrder({order_id: res.order_id})
                         navigate('/bestellt')
                     } else {
                         console.log('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')

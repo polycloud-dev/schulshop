@@ -279,8 +279,8 @@ export function ShoppingCartProvider({ children }) {
         return true
     }
 
-    function confirmOrder() {
-        setIsOrdered(true);
+    function confirmOrder({order_id}) {
+        setIsOrdered({ordered: true, order_id});
         // reset cart
         setCart([]);
     }

@@ -9,12 +9,12 @@ export default function OrderedPage() {
     const { isOrdered } = useShoppingCart()
     const navigate = useNavigate()
 
+    const [order_id, setOrderId] = useState(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
-
-    const order_number = '1234'
 
     useEffect(() => {
         if(!isOrdered) navigate('/')
+        else setOrderId(isOrdered.order_id)
     }, [isOrdered, navigate])
 
     if(!isOrdered) {
@@ -69,7 +69,7 @@ export default function OrderedPage() {
                     letterSpacing: ".3rem",
                 }}
             >
-                {order_number}
+                {order_id}
             </Text>
             <Text
                 color='dimmed'

@@ -9,6 +9,8 @@ import (
 	"hash/fnv"
 	"os"
 
+	"math/rand"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +20,7 @@ type Product struct {
 }
 
 type Order struct {
+	Id          int
 	Name        string    `json:"name"`
 	SchoolClass string    `json:"school_class"`
 	Email       string    `json:"email"`
@@ -86,11 +89,15 @@ func PostOrder(c *gin.Context) {
 	agent := c.Request.Header.Get("User-Agent")
 	order.CustomerId = hash(ip + agent)
 
+	// generate order id
+	// TODO: better way to generate order id
+	order.Id = rand.Intn(100000)
+
 	out, err := json.Marshal(order)
 	if err != nil {
 		panic(err)
 	}
 	println("Order:", string(out))
 
-	c.JSON(200, gin.H{"success": "Order received"})
+	c.JSON(200, gin.H{"success": "Order received", "order_id": order.Id})
 }
