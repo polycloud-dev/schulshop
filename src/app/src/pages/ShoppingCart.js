@@ -350,7 +350,6 @@ export default function ShoppingCartPage() {
             if(!name.error && !schoolClass.error && !email.error) {
 
                 const products = getRawCart()
-                console.log(products);
 
                 fetch(`${process.env.REACT_APP_API_HOST}/api/order`, {
                     method: 'POST',

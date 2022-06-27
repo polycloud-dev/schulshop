@@ -291,10 +291,8 @@ export function ShoppingCartProvider({ children }) {
 
         for(let i = 0; i < bundles.length; i++) {
             const bundle = bundles[i];
-            console.log('bundle', bundle);
             for(let j = 0; j < bundle.content.length; j++) {
                 const product = bundle.content[j];
-                console.log('product', product);
                 // if product is in cart, increase quantity
                 const index = products.findIndex(cartItem => cartItem.id === product.id);
                 if(index !== -1) {
