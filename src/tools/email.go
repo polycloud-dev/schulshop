@@ -8,23 +8,23 @@ import (
 func SendEmail() {
 
 	// Sender data.
-	from := "tom@bexar.de"
-	password := "Dl5co$d4Pl"
+	from := ""
+	password := ""
 
 	// Receiver email address.
 	to := []string{
-		"heidenreichdd@gmial.com",
+		"",
 	}
 
 	// smtp server configuration.
-	smtpHost := "smtp.strato.de"
-	smtpPort := "465"
+	smtpHost := "smtp.gmail.com"
+	smtpPort := "587"
 
 	// Authentication.
 	auth := smtp.PlainAuth("", from, password, smtpHost)
 
-	body := "From:tom@bexar.de\n" +
-			"To:heidenreichdd@gmail.com\n" +
+	body := "From:\n" +
+			"To:\n" +
 			"Subject:Hello!\n\n" +
 			"This is a test email.\n"
 
