@@ -7,6 +7,8 @@ import (
 
 func SendEmail() {
 
+	// TODO: use .env file
+
 	// Sender data.
 	from := ""
 	password := ""
@@ -24,9 +26,9 @@ func SendEmail() {
 	auth := smtp.PlainAuth("", from, password, smtpHost)
 
 	body := "From:\n" +
-			"To:\n" +
-			"Subject:Hello!\n\n" +
-			"This is a test email.\n"
+		"To:\n" +
+		"Subject:Hello!\n\n" +
+		"This is a test email.\n"
 
 	// Sending email.
 	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, []byte(body))
