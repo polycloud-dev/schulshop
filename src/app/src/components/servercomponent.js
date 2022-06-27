@@ -1,7 +1,7 @@
 import { useServer } from "../modules/servercomponent";
 import { useState, useEffect } from "react";
 
-export default function ServerComponent({ children, result, error, loading, onFailed, path, noCache }) {
+export default function ServerComponent({ children, result, error, loading, onFailed, path }) {
 
     if(children && typeof children !== 'function') throw new Error("ServerComponent does not accept children");
     else result = children;
@@ -14,11 +14,6 @@ export default function ServerComponent({ children, result, error, loading, onFa
     };
 
     const { host, cache, setCache } = useServer(path)
-
-    if(noCache) {
-        cache = undefined
-        setCache = () => {}
-    }
 
     const [state, setState] = useState(cache ? 
         {
@@ -48,7 +43,7 @@ export default function ServerComponent({ children, result, error, loading, onFa
             // check if response is json
             if(response.headers.get('content-type') === 'application/json') data = await response.json();
             else data = await response.text();
-            
+
             setCache(data);
             setState({
                 data,
@@ -72,8 +67,8 @@ export default function ServerComponent({ children, result, error, loading, onFa
     }
 
     useEffect(() => {
-        fetchData();
-    }, [host]);
+        fetchData()
+    }, []);
 
     if(state.state === 'success') return result(state.data);
     else if(state.state === 'error') {

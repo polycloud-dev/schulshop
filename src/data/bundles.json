@@ -3,9 +3,18 @@
         "name": "Gophers",
         "description": "Ein paar Gophers",
         "content": [
-            "gopher",
-            "gopher_flash",
-            "gopher_tired"
+            {
+                "id": "gopher",
+                "quantity": 1
+            },
+            {
+                "id": "gopher_flash",
+                "quantity": 1
+            },
+            {
+                "id": "gopher_tired",
+                "quantity": 1
+            }
         ],
         "badges": [
             {
@@ -19,8 +28,14 @@
         "name": "Schlaue Gophers",
         "description": "Ein paar schlaue Gophers",
         "content": [
-            "gopher_smart",
-            "gopher_detective"
+            {
+                "id": "gopher_smart",
+                "quantity": 1
+            },
+            {
+                "id": "gopher_detective",
+                "quantity": 1
+            }
         ],
         "badges": [
             {

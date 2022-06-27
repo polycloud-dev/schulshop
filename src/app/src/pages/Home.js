@@ -1,13 +1,14 @@
-import { Text, Container, Title, Divider, SimpleGrid, Skeleton, Tooltip, Badge, Card, Image, Group, useMantineTheme, Space, Button, Stack } from '@mantine/core';
+import { Text, Container, Title, Divider, SimpleGrid, Skeleton, Tooltip, Badge, Card, Image, Group, useMantineTheme, Button, Indicator, MediaQuery, Space, ActionIcon } from '@mantine/core';
 import ServerComponent from '../components/servercomponent';
-import { ArrowUpRight, Leaf } from 'tabler-icons-react';
+import { ArrowUpRight, Leaf, ShoppingCart as ShoppingCartIcon } from 'tabler-icons-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useServer } from '../modules/servercomponent';
-
-function formatCurrency(price) {
-    return (price/100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-}
+import useShoppingCart from '../modules/shoppingcart';
+import { showNotification } from '@mantine/notifications';
+import { useMediaQuery } from '@mantine/hooks';
+import HelpMenu from '../components/helpmenu';
+import Link from '../components/link';
 
 export default function HomePage() {
 
@@ -17,26 +18,88 @@ export default function HomePage() {
     return (
         <>
             <Container
-                style={{userSelect: 'none', flexDirection: 'row', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}
+                style={{
+                    userSelect: 'none',
+                    flexDirection: 'row',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
             >
                 <WelcomeTitle/>
             </Container>
-            <div
-                style={{
-                    margin: '3rem 0',
-                    padding: '0 1rem',
+            <HeadMenu />
+            <MediaQuery
+                query='(min-width: 600px)'
+                styles={{
+                    marginTop: '2rem'
                 }}
             >
-                <ClassBundles card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
+                <div
+                    style={{
+                        padding: '0 1rem'
+                    }}
+                >
+                    <ClassBundles card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
 
-                <LabelDivider label={'Pakete'} />
-                <Bundles card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
+                    <LabelDivider label={'Pakete'} />
+                    <Bundles card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
 
-                <LabelDivider label={'Einzelne Produkte'} />
-                <Products card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
-            </div>
-        </>
-    );
+                    <LabelDivider label={'Einzelne Produkte'} />
+                    <Products card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
+                </div>
+            </MediaQuery>
+            <Space h='2rem' />
+        </>);
+
+    function HeadMenu() {
+
+        const matches_0 = useMediaQuery('(max-width: 1200px)');
+        const matches_1 = useMediaQuery('(max-width: 800px)');
+
+        return (
+            <Group
+                mt={matches_0 ? matches_1 ? '3rem' : '1rem' :  '0'}
+                position={matches_1 ? 'center': 'right'}
+                mr={matches_1 ? '0': '4rem'}
+                spacing='xl'
+            >
+                <Link text='Über uns' path='/about' tooltip='Das sind wir' />
+                <Link text='Kontakt' path='/kontakt' tooltip='Hier kann man uns erreichen' />
+                <HelpMenu />
+                <ShoppingCart />
+            </Group>
+        )
+    }
+
+    function ShoppingCart() {
+
+        const { size, cart } = useShoppingCart();
+
+        const navigate = useNavigate();
+
+        function handleClick() {
+            navigate('/einkaufswagen');
+        }
+
+        return (
+            <ActionIcon
+                variant='hover'
+                onClick={handleClick}
+            >
+                <Indicator
+                    position="bottom-end"
+                    size={20}
+                    offset={4}
+                    label={size()}
+                    disabled={cart.length === 0}
+                >
+                    <ShoppingCartIcon size={30} />
+                </Indicator>
+            </ActionIcon>
+        )
+    }
     
     function getBadges(badges, created_at) {
         let badgeList = [];
@@ -103,7 +166,51 @@ export default function HomePage() {
         )
     }
 
-    function CardBody({ badges, name, description, price, height }) {
+    function CardBody({ item, badges, name, description, price, old_price=undefined, height }) {
+        
+        const { addToCart, formatCurrency } = useShoppingCart()
+
+        function addItem() { 
+            if(addToCart(item)) {
+                showNotification({
+                    title: 'Produkt hinzugefügt',
+                    message: `${name} wurde zum Warenkorb hinzugefügt`,
+                    autoClose: 1500,
+                })
+            }
+        }
+
+        function getPriceTag() {
+
+            function Tag({price}) {
+                return (
+                    <Text
+                        color='cyan'
+                    >{formatCurrency(price)}€</Text>
+                )
+            }
+
+            if(old_price) {
+                return (
+                    <Group
+                        direction='column'
+                        spacing={0}
+                        position='center'
+                    >
+                        <Text
+                            color='dimmed'
+                            style={{
+                                textDecoration: 'line-through'
+                            }}
+                            size='xs'
+                            my={0}
+                        >{formatCurrency(old_price)}€</Text>
+                        <Tag price={price} />
+                    </Group>
+                )
+            }else return <Tag price={price} />
+        }
+
         return (
             <Container
                 p={0}
@@ -134,22 +241,18 @@ export default function HomePage() {
                 <Text
                     color='dimmed'
                     align='center'
-                    style={{
-                        maxHeight: '30%',
-                        overflow: 'hidden',
-                    }}
+                    lineClamp={2}
                 >
                     {description}
                 </Text>
-
                 <Group
                     mt='auto'
                     mb='md'
                 >
-                    <Button>Kaufen</Button>
-                    <Text
-                        color='cyan'
-                    >{formatCurrency(price)}€</Text>
+                    <Button
+                        onClick={addItem}
+                    >Kaufen</Button>
+                    {getPriceTag()} 
                 </Group>
             </Container>
         )
@@ -185,10 +288,14 @@ export default function HomePage() {
 
                     const content = bundle.content;
                     const bundle_products = content.map(product => {
-                        return products[product]
+                        return products[product.id]
                     }).filter(product => product !== undefined)
 
                     const total_price = bundle_products.reduce((acc, product) => {
+                        return acc + product.price
+                    }, 0)
+                    const total_old_price = bundle_products.reduce((acc, product) => {
+                        if(product.old_price) return acc + product.old_price
                         return acc + product.price
                     }, 0)
 
@@ -218,13 +325,22 @@ export default function HomePage() {
                                     {
                                         bundle_products.map(product => {
                                             return (
-                                                <Image height={height/2} width={width/bundle_products.length} fit='cover' src={`http://localhost/image/${product.image}`} alt={product.name} />
+                                                <Image height={height/2} width={width/bundle_products.length} fit='cover' src={`${process.env.API_HOST || 'http://localhost'}/image/${product.image}`} alt={product.name} />
                                             )
                                         })
                                     }
                                 </Group>
                             </Card.Section>
-                            <CardBody badges={badges[key]} name={bundle.name} description={bundle.description} price={total_price} height={height} />
+                            <CardBody
+                                key={key}
+                                item={{'id': key, 'type': 'bundle', 'content': content}}
+                                badges={badges[key]}
+                                name={bundle.name}
+                                description={bundle.description}
+                                price={total_price}
+                                old_price={total_old_price !== total_price ? total_old_price : undefined}
+                                height={height}
+                            />
                         </Card>
                     )
                 })}
@@ -237,6 +353,8 @@ export default function HomePage() {
         const theme = useMantineTheme()
 
         const [badges, setBadges] = useState({})
+
+        if(!data) return 'AHHH'
 
         return (
             <SimpleGrid
@@ -265,9 +383,17 @@ export default function HomePage() {
                             key={key}
                         >
                             <Card.Section>
-                                <Image height={height/2} fit='contain' src={`http://localhost/image/${product.image}`} alt={product.name} />
+                                <Image height={height/2} fit='contain' src={`${process.env.REACT_APP_API_HOST}/image/${product.image}`} alt={product.name} />
                             </Card.Section>
-                            <CardBody badges={badges[key]} name={product.name} description={product.description} price={product.price} height={height} />
+                            <CardBody
+                                badges={badges[key]}
+                                name={product.name}
+                                description={product.description}
+                                price={product.price}
+                                old_price={product.old_price}
+                                height={height}
+                                item={{'id': key, 'type': 'product'}}
+                            />
                         </Card>
                     )
                 })}
@@ -320,7 +446,9 @@ export default function HomePage() {
         return <Title
             align='center'
             mt='xl'
-            style={{ fontSize: '3rem'}}
+            style={{ 
+                fontSize: '3rem',
+            }}
         >
             Willkommen beim {' '}
             <GradientName/>

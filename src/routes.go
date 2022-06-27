@@ -17,4 +17,5 @@ var routes = []Route{
 	{"GET", "/api/classbundles", handler.GetClassBundles},
 	{"GET", "/api/products", handler.GetProducts},
 	{"GET", "/image/:id", handler.GetImage},
+	{"POST", "/api/order", handler.PostOrder},
 }

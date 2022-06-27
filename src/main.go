@@ -3,9 +3,11 @@ package main
 import (
 	"os"
 
-	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+
+	"github.com/gin-contrib/cors"
+
+	"github.com/gin-contrib/static"
 )
 
 func main() {
