@@ -1,8 +1,16 @@
 import { Container, Text, Title } from '@mantine/core'
-import { Mail } from 'tabler-icons-react'
+import { BrandAmongus, Mail } from 'tabler-icons-react'
 import Link from "../components/link"
+import { useState, useEffect } from 'react'
 
 export default function ContactPage() {
+
+    const [mailIcon, setMailIcon] = useState(<Mail size={'1.2rem'} />)
+
+    useEffect(() => {
+        if(Math.random() > 0.999) setMailIcon(<BrandAmongus size={'1.2rem'} />)
+    }, [])
+
     return (
         <Container>
             <Title size='md'>Kontakt</Title>
@@ -13,9 +21,7 @@ export default function ContactPage() {
                 mt='xl'
             >
                 Unsere Mailadresse: {' '}
-                <Mail
-                    size={'1.2rem'}
-                />
+                {mailIcon}
                 {' '}
                 <Link
                     component="span"

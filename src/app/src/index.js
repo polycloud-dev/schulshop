@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './global.css';
 import reportWebVitals from './reportWebVitals';
 import theme from './theme.json';
 import { MantineProvider } from '@mantine/core'
 import { ServerProvider } from './modules/servercomponent';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { ShoppingCartProvider } from './modules/shoppingcart';
 import { NotificationsProvider } from '@mantine/notifications';
 
@@ -49,9 +49,17 @@ function RouteProvider() {
           <Route path='/kontakt' element={<ContactPage />} />
           <Route path='/einkaufswagen' element={<ShoppingCartPage />} />
           <Route path='/bestellt' element={<OrderedPage />} />
+          <Route path='/printer' element={<PrinterEasterEgg />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </Router>
   )
+}
+
+function PrinterEasterEgg() {
+  useEffect(() => {
+    window.location.href = 'https://www.youtube.com/watch?v=jeg_TJvkSjg&t=42s'
+  }, [])
+  return "How did you find me??"
 }

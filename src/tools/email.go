@@ -1,40 +1,87 @@
 package tools
 
 import (
+	"crypto/tls"
 	"fmt"
+	"log"
+	"net"
+	"net/mail"
 	"net/smtp"
+	"os"
 )
+
+// StartTLS Email Example
 
 func SendEmail() {
 
-	// TODO: use .env file
+	from := mail.Address{"", os.Getenv("EMAIL_FROM") + ".tld"}
+	to := mail.Address{"", os.Getenv("EMAIL_TO") + ".tld"}
+	subj := "This is the email subject"
+	body := "This is an example body.\n With two lines."
 
-	// Sender data.
-	from := ""
-	password := ""
+	// Setup headers
+	headers := make(map[string]string)
+	headers["From"] = from.String()
+	headers["To"] = to.String()
+	headers["Subject"] = subj
 
-	// Receiver email address.
-	to := []string{
-		"",
+	// Setup message
+	message := ""
+	for k, v := range headers {
+		message += fmt.Sprintf("%s: %s\r\n", k, v)
+	}
+	message += "\r\n" + body
+
+	// Connect to the SMTP Server
+	servername := os.Getenv("SMTP_SERVER") + ":" + os.Getenv("SMTP_PORT")
+
+	host, _, _ := net.SplitHostPort(servername)
+
+	auth := smtp.PlainAuth("", os.Getenv("EMAIL_FROM") + ".tld", os.Getenv("EMAIL_PASSWORD"), host)
+
+	// TLS config
+	tlsconfig := &tls.Config{
+		InsecureSkipVerify: true,
+		ServerName:         host,
 	}
 
-	// smtp server configuration.
-	smtpHost := "smtp.gmail.com"
-	smtpPort := "587"
-
-	// Authentication.
-	auth := smtp.PlainAuth("", from, password, smtpHost)
-
-	body := "From:\n" +
-		"To:\n" +
-		"Subject:Hello!\n\n" +
-		"This is a test email.\n"
-
-	// Sending email.
-	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, []byte(body))
+	c, err := smtp.Dial(servername)
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Panic(err)
 	}
-	fmt.Println("Email Sent!")
+
+	c.StartTLS(tlsconfig)
+
+	// Auth
+	if err = c.Auth(auth); err != nil {
+		log.Panic(err)
+	}
+
+	// To && From
+	if err = c.Mail(from.Address); err != nil {
+		log.Panic(err)
+	}
+
+	if err = c.Rcpt(to.Address); err != nil {
+		log.Panic(err)
+	}
+
+	// Data
+	w, err := c.Data()
+	if err != nil {
+		log.Panic(err)
+	}
+
+	_, err = w.Write([]byte(message))
+	if err != nil {
+		log.Panic(err)
+	}
+
+	err = w.Close()
+	if err != nil {
+		log.Panic(err)
+	}
+
+	c.Quit()
+
 }

@@ -1,2 +1,4 @@
 vendor
 server.exe
+
+.env

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import useShoppingCart from '../modules/shoppingcart'
 import { useNavigate } from 'react-router-dom'
 import { useServer } from '../modules/servercomponent'
+import useSafeState, { StateProvider } from '../modules/statemanager'
 
 export default function ShoppingCartPage() {
 
@@ -12,44 +13,46 @@ export default function ShoppingCartPage() {
     const navigate = useNavigate()
 
     return (
-        <Container
-            mt='4rem'
-            style={{
-                textAlign: 'center',
-                maxWidth: '30rem',
-            }}
-        >
-            <Logo size='7rem' />
-            <Title>Warenkorb</Title>
-            <Divider my='xl' />
-            <Group
-                position='center'
+        <StateProvider>
+            <Container
+                mt='4rem'
+                style={{
+                    textAlign: 'center',
+                    maxWidth: '30rem',
+                }}
             >
-                {cart.length === 0 ? (
-                    <Text
-                        size='xl'
-                        color='dimmed'
-                        my='xl'
-                    >
-                        Warenkorb ist leer
-                    </Text>
-                ) : 
-                cart.map(item => {
-                    return (
-                        <Item item={item} />
-                    )
-                })}
-            </Group>
-            <Divider my='xl' />
-            <Form />
-            <Text
-                mt='xl'
-                color='dimmed'
-            >
-                Nur Bargeldzahlung <br/>
-                Abholung: Raum A007
-            </Text>
-        </Container>
+                <Logo size='7rem' />
+                <Title>Warenkorb</Title>
+                <Divider my='xl' />
+                <Group
+                    position='center'
+                >
+                    {cart.length === 0 ? (
+                        <Text
+                            size='xl'
+                            color='dimmed'
+                            my='xl'
+                        >
+                            Warenkorb ist leer
+                        </Text>
+                    ) : 
+                    cart.map(item => {
+                        return (
+                            <Item item={item} />
+                        )
+                    })}
+                </Group>
+                <Divider my='xl' />
+                <Form />
+                <Text
+                    mt='xl'
+                    color='dimmed'
+                >
+                    Nur Bargeldzahlung <br/>
+                    Abholung: Raum A007
+                </Text>
+            </Container>
+        </StateProvider>
     )
 
     function Item({ item }) {
@@ -84,7 +87,7 @@ export default function ShoppingCartPage() {
 
         const theme = useMantineTheme()
 
-        const [open, setOpen] = useState(false)
+        const [open, setOpen] = useSafeState('bundle_open_' + item.uniqueId)
 
         const [cachedBundles, setBundles] = useState({})
         const [cachedProducts, setProducts] = useState({})
