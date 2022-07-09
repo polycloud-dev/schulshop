@@ -325,7 +325,7 @@ export default function HomePage() {
                                     {
                                         bundle_products.map(product => {
                                             return (
-                                                <Image height={height/2} width={width/bundle_products.length} fit='cover' src={`${process.env.API_HOST || 'http://localhost'}/images/${product.image}`} alt={product.name} />
+                                                <Image height={height/2} width={width/bundle_products.length} fit='cover' src={`${process.env.REACT_APP_API_HOST}/images/${product.image}`} alt={product.name} />
                                             )
                                         })
                                     }
