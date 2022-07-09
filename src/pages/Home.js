@@ -403,7 +403,7 @@ export default function HomePage() {
 
     function Products({ card_width, card_height }) {
         return <ServerComponent
-            path='/data/products.json'
+            path='/products.json'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
@@ -415,7 +415,7 @@ export default function HomePage() {
 
     function ClassBundles({ card_width, card_height }) {
         return <ServerComponent
-            path='/data/classbundles.json'
+            path='/classbundles.json'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
@@ -432,7 +432,7 @@ export default function HomePage() {
 
     function Bundles({ card_width, card_height }) {
         return <ServerComponent
-            path='/data/bundles.json'
+            path='/bundles.json'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >

@@ -24,7 +24,7 @@ root.render(
       theme={theme.light}
     >
       <ServerProvider
-        host={`${process.env.REACT_APP_API_HOST}/api`}
+        host={`${process.env.REACT_APP_API_HOST}/data`}
       >
         <ShoppingCartProvider>
           <NotificationsProvider>
