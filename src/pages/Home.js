@@ -415,7 +415,7 @@ export default function HomePage() {
 
     function ClassBundles({ card_width, card_height }) {
         return <ServerComponent
-            path='/classbundles.json'
+            path='/class_bundles.json'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
