@@ -266,7 +266,7 @@ export default function ShoppingCartPage() {
                         alignItems: 'center',
                     }}
                 >
-                    <Image width='3rem' height='3rem' fit='contain' src={`${process.env.REACT_APP_API_HOST}/image/${product.image}`} alt={product.name} />
+                    <Image width='3rem' height='3rem' fit='contain' src={`${process.env.REACT_APP_API_HOST}/images/${product.image}`} alt={product.name} />
                 </Card.Section>
                 <Group
                     position='apart'
