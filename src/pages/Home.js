@@ -325,7 +325,7 @@ export default function HomePage() {
                                     {
                                         bundle_products.map(product => {
                                             return (
-                                                <Image height={height/2} width={width/bundle_products.length} fit='cover' src={`${process.env.API_HOST || 'http://localhost'}/image/${product.image}`} alt={product.name} />
+                                                <Image height={height/2} width={width/bundle_products.length} fit='cover' src={`${process.env.API_HOST || 'http://localhost'}/images/${product.image}`} alt={product.name} />
                                             )
                                         })
                                     }
@@ -383,7 +383,7 @@ export default function HomePage() {
                             key={key}
                         >
                             <Card.Section>
-                                <Image height={height/2} fit='contain' src={`${process.env.REACT_APP_API_HOST}/image/${product.image}`} alt={product.name} />
+                                <Image height={height/2} fit='contain' src={`${process.env.REACT_APP_API_HOST}/images/${product.image}`} alt={product.name} />
                             </Card.Section>
                             <CardBody
                                 badges={badges[key]}
@@ -403,7 +403,7 @@ export default function HomePage() {
 
     function Products({ card_width, card_height }) {
         return <ServerComponent
-            path='/products'
+            path='/data/products.json'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
@@ -415,7 +415,7 @@ export default function HomePage() {
 
     function ClassBundles({ card_width, card_height }) {
         return <ServerComponent
-            path='/classbundles'
+            path='/data/classbundles.json'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
@@ -432,7 +432,7 @@ export default function HomePage() {
 
     function Bundles({ card_width, card_height }) {
         return <ServerComponent
-            path='/bundles'
+            path='/data/bundles.json'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
