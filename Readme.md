@@ -29,3 +29,63 @@ mit FTP auf den Server verschieben.
 
 ## Produkte ändern
 Im Ordner `/data` die JSON-Dateien anpassen.
+
+## Produkte und Bundles
+### Produkte bearbeiten
+Beispiel:
+```json
+{
+    "umschlag_rot": {
+        "name": "Roter Umschlag",
+        "description": "Ein roter Umschlag.",
+        "image": "umschlag_rot.png",
+        "price": 1200,
+        "created_at": "2018-01-01T00:00:00.000Z",
+        "badges": [
+            {
+                "text": "Empfohlen",
+                "color": "yellow"
+            }
+        ]
+    }
+}
+```
+* Alle Keys müssen vorhanden sein.
+* `price` ist der Preis * 100 um Rechenfehler zu vermeiden. -> hier kostet der Umschlag also 12.00€
+* `created_at` kann beliebiges ISO-Date sein, aber wenn es das wirklich Erstellungsdatum ist, wird ein `Neu`-Badge bei dem Produkt angezeigt. Das aktuelle ISO-Date kann man z.B. mit Node bekommen:
+    * Terminal öffnen
+    * `$ node `
+    * Dann `> new Date()`
+* `badges`-Array kann leer sein. `color` sind einfach css-Colors
+
+### Bundles bearbeiten
+`bundles.json` und `class_bundles.json` haben den gleichen Aufbau.
+Beispiel:
+```json
+{
+    "klasse-5a": {
+        "name": "Klasse 5a",
+        "description": "Das Klassen paket von der 5a",
+        "content": [
+            {
+                "id": "umschlag_rot",
+                "quantity": 1
+            },
+            {
+                "id": "umschlag_blau",
+                "quantity": 1
+            }
+        ],
+        "badges": [
+            {
+                "color": "green",
+                "text": "nachhaltig"
+            }
+        ],
+        "created_at": "2022-06-25T15:36:01.331Z"
+    }
+}
+```
+Funktioniert ähnlich wie `products.json`.
+<br/>
+`id` in `content` muss eine ID von einem Produkt von `products.json` sein.
