@@ -103,7 +103,7 @@ export default function OrderedPage() {
                         size="lg"
                     >
                         Hast du dir deine Bestellnummer aufgeschrieben?<br/>
-                        Die Nummer wird danach nicht mehr gezeigt werden.
+                        Die Nummer wird nicht mehr angezeigt.
                     </Text>
                     <Group>
                         <Button

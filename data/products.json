@@ -3,7 +3,7 @@
         "name": "Heft Kariert Schattenrand",
         "description": "A4 Heft Kariert mit Schattenrand",
         "price": 1000,
-        "image": "heft_a4_kariert_schattenrand.jpg",
+        "image": "heft_a4_kariert_schattenrand.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -11,7 +11,7 @@
         "name": "Heft Kariert weißer Rand",
         "description": "A4 Heft Kariert mit weißem Rand",
         "price": 1000,
-        "image": "heft_a4_kariert_weißrand.jpg",
+        "image": "heft_a4_kariert_weißrand.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -19,7 +19,7 @@
         "name": "Heft Kariert ohne Rand",
         "description": "A4 Heft Kariert ohne Rand",
         "price": 1000,
-        "image": "heft_a4_kariert_ohnerand.jpg",
+        "image": "heft_a4_kariert_ohnerand.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -27,7 +27,7 @@
         "name": "Heft Liniert Schattenrand",
         "description": "A4 Heft Liniert mit Schattenrand",
         "price": 1000,
-        "image": "heft_a4_liniert_schattenrand.jpg",
+        "image": "heft_a4_liniert_schattenrand.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -35,7 +35,7 @@
         "name": "Heft Liniert weißer Rand",
         "description": "A4 Heft Liniert mit weißem Rand",
         "price": 1000,
-        "image": "heft_a4_liniert_weißrand.jpg",
+        "image": "heft_a4_liniert_weißrand.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -43,7 +43,7 @@
         "name": "Heft Liniert ohne Rand",
         "description": "A4 Heft Liniert ohne Rand",
         "price": 1000,
-        "image": "heft_a4_liniert_ohnerand.jpg",
+        "image": "heft_a4_liniert_ohnerand.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -51,7 +51,7 @@
         "name": "Musikheft",
         "description": "A4 Musikheft",
         "price": 1000,
-        "image": "heft_a4_musik.jpg",
+        "image": "heft_a4_musik.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -59,7 +59,7 @@
         "name": "Schnellhefter mit Notenlinien",
         "description": "A4 Schnellhefter mit Notenlinien",
         "price": 1000,
-        "image": "schnellhefter_a4_notenlinien.jpg",
+        "image": "schnellhefter_a4_notenlinien.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -67,7 +67,7 @@
         "name": "Schnellhefter Kariert",
         "description": "A4 Schnellhefter Kariert",
         "price": 1000,
-        "image": "schnellhefter_a4_kariert.jpg",
+        "image": "schnellhefter_a4_kariert.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -75,7 +75,7 @@
         "name": "Schnellhefter Liniert",
         "description": "A4 Schnellhefter Liniert",
         "price": 1000,
-        "image": "schnellhefter_a4_liniert.jpg",
+        "image": "schnellhefter_a4_liniert.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -83,7 +83,7 @@
         "name": "Arbeitsheft Mathe",
         "description": "A4 Arbeitsheft Mathe",
         "price": 1000,
-        "image": "arbeitsheft_mathe.jpg",
+        "image": "arbeitsheft_mathe.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -91,7 +91,7 @@
         "name": "Arbeitsheft Deutsch",
         "description": "A4 Arbeitsheft Deutsch",
         "price": 1000,
-        "image": "arbeitsheft_deutsch.jpg",
+        "image": "arbeitsheft_deutsch.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -99,7 +99,7 @@
         "name": "Workbook",
         "description": "A4 Workbook",
         "price": 1000,
-        "image": "workbook.jpg",
+        "image": "workbook.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -107,7 +107,7 @@
         "name": "Karteikarten",
         "description": "DIN A7 Karteikarten",
         "price": 1000,
-        "image": "karteikarten_a7.jpg",
+        "image": "karteikarten_a7.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -115,7 +115,7 @@
         "name": "Vokabelheft",
         "description": "A5 Vokabelheft",
         "price": 1000,
-        "image": "vokabelheft_a5.jpg",
+        "image": "vokabelheft_a5.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -123,7 +123,7 @@
         "name": "Vokabelheft",
         "description": "A4 Vokabelheft",
         "price": 1000,
-        "image": "vokabelheft_a4.jpg",
+        "image": "vokabelheft_a4.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -131,7 +131,7 @@
         "name": "Ringbuch dünn",
         "description": "A4 Ringbuch dünn",
         "price": 1000,
-        "image": "ringbuch_dünn.jpg",
+        "image": "ringbuch_dünn.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -139,7 +139,7 @@
         "name": "6er Registerblätter",
         "description": "6er Registerblätter",
         "price": 1000,
-        "image": "registerblätter_6.jpg",
+        "image": "registerblätter_6.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -147,7 +147,7 @@
         "name": "Collegeblock Liniert",
         "description": "A4 Collegeblock Liniert",
         "price": 1000,
-        "image": "collegeblock_liniert.jpg",
+        "image": "collegeblock_liniert.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -155,7 +155,7 @@
         "name": "Collegeblock Kariert",
         "description": "A4 Collegeblock Kariert",
         "price": 1000,
-        "image": "collegeblock_kariert.jpg",
+        "image": "collegeblock_kariert.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -163,7 +163,7 @@
         "name": "Umschlaghefter",
         "description": "Umschlaghefter",
         "price": 1000,
-        "image": "umschlaghefter.jpg",
+        "image": "umschlaghefter.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     },
@@ -188,7 +188,7 @@
         "name": "Umschlag A5",
         "description": "A5 Umschlag",
         "price": 1000,
-        "image": "umschlag_a5.jpg",
+        "image": "umschlag_a5.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": [
             {
@@ -205,7 +205,15 @@
         "name": "Schnellhefter",
         "description": "Schnellhefter",
         "price": 1000,
-        "image": "schnellhefter.jpg",
+        "image": "schnellhefter.png",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "geodreieck": {
+        "name": "Geodreieck",
+        "description": "Geodreieck",
+        "price": 1000,
+        "image": "geodreieck.png",
         "created_at": "2022-07-14T20:02:19.741Z",
         "badges": []
     }

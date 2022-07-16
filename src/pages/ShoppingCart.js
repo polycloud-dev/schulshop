@@ -414,7 +414,7 @@ export default function ShoppingCartPage() {
 
                 const products = getRawCart()
 
-                fetch(`${process.env.REACT_APP_API_HOST}/api/order`, {
+                fetch(`${process.env.REACT_APP_EMAIL_HOST}/api/order`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -528,9 +528,9 @@ export default function HomePage() {
             return <Text
                 component="span"
                 variant='gradient'
-                gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
+                gradient={{ from: 'indigo', to: 'cyan'}}
                 style={{ fontSize: 'inherit' }}
-            >Schulshop</Text>;
+            >Schulshop</Text>
         }
     }
 }
