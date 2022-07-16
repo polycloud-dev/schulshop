@@ -1,56 +1,212 @@
 {
-    "gopher": {
-        "name": "Gopher",
-        "description": "Ein Gopher",
-        "image": "gopher.png",
-        "price": 1200,
-        "created_at": "2018-01-01T00:00:00.000Z",
+    "heft_a4_kariert_schattenrand": {
+        "name": "Heft Kariert Schattenrand",
+        "description": "A4 Heft Kariert mit Schattenrand",
+        "price": 1000,
+        "image": "heft_a4_kariert_schattenrand.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "heft_a4_kariert_weißrand": {
+        "name": "Heft Kariert weißer Rand",
+        "description": "A4 Heft Kariert mit weißem Rand",
+        "price": 1000,
+        "image": "heft_a4_kariert_weißrand.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "heft_a4_kariert_ohnerand": {
+        "name": "Heft Kariert ohne Rand",
+        "description": "A4 Heft Kariert ohne Rand",
+        "price": 1000,
+        "image": "heft_a4_kariert_ohnerand.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "heft_a4_liniert_schattenrand": {
+        "name": "Heft Liniert Schattenrand",
+        "description": "A4 Heft Liniert mit Schattenrand",
+        "price": 1000,
+        "image": "heft_a4_liniert_schattenrand.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "heft_a4_liniert_weißrand": {
+        "name": "Heft Liniert weißer Rand",
+        "description": "A4 Heft Liniert mit weißem Rand",
+        "price": 1000,
+        "image": "heft_a4_liniert_weißrand.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "heft_a4_liniert_ohnerand": {
+        "name": "Heft Liniert ohne Rand",
+        "description": "A4 Heft Liniert ohne Rand",
+        "price": 1000,
+        "image": "heft_a4_liniert_ohnerand.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "heft_a4_musik": {
+        "name": "Musikheft",
+        "description": "A4 Musikheft",
+        "price": 1000,
+        "image": "heft_a4_musik.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "schnellhefter_a4_notenlinien": {
+        "name": "Schnellhefter mit Notenlinien",
+        "description": "A4 Schnellhefter mit Notenlinien",
+        "price": 1000,
+        "image": "schnellhefter_a4_notenlinien.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "schnellhefter_a4_kariert": {
+        "name": "Schnellhefter Kariert",
+        "description": "A4 Schnellhefter Kariert",
+        "price": 1000,
+        "image": "schnellhefter_a4_kariert.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "schnellhefter_a4_liniert": {
+        "name": "Schnellhefter Liniert",
+        "description": "A4 Schnellhefter Liniert",
+        "price": 1000,
+        "image": "schnellhefter_a4_liniert.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "arbeitsheft_mathe": {
+        "name": "Arbeitsheft Mathe",
+        "description": "A4 Arbeitsheft Mathe",
+        "price": 1000,
+        "image": "arbeitsheft_mathe.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "arbeitsheft_deutsch": {
+        "name": "Arbeitsheft Deutsch",
+        "description": "A4 Arbeitsheft Deutsch",
+        "price": 1000,
+        "image": "arbeitsheft_deutsch.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "workbook": {
+        "name": "Workbook",
+        "description": "A4 Workbook",
+        "price": 1000,
+        "image": "workbook.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "karteikarten_a7": {
+        "name": "Karteikarten",
+        "description": "DIN A7 Karteikarten",
+        "price": 1000,
+        "image": "karteikarten_a7.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "vokabelheft_a5": {
+        "name": "Vokabelheft",
+        "description": "A5 Vokabelheft",
+        "price": 1000,
+        "image": "vokabelheft_a5.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "vokabelheft_a4": {
+        "name": "Vokabelheft",
+        "description": "A4 Vokabelheft",
+        "price": 1000,
+        "image": "vokabelheft_a4.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "ringbuch_dünn": {
+        "name": "Ringbuch dünn",
+        "description": "A4 Ringbuch dünn",
+        "price": 1000,
+        "image": "ringbuch_dünn.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "registerblätter_6": {
+        "name": "6er Registerblätter",
+        "description": "6er Registerblätter",
+        "price": 1000,
+        "image": "registerblätter_6.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "collegeblock_liniert": {
+        "name": "Collegeblock Liniert",
+        "description": "A4 Collegeblock Liniert",
+        "price": 1000,
+        "image": "collegeblock_liniert.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "collegeblock_kariert": {
+        "name": "Collegeblock Kariert",
+        "description": "A4 Collegeblock Kariert",
+        "price": 1000,
+        "image": "collegeblock_kariert.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "umschlaghefter": {
+        "name": "Umschlaghefter",
+        "description": "Umschlaghefter",
+        "price": 1000,
+        "image": "umschlaghefter.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
+    },
+    "umschlag_a4": {
+        "name": "Umschlag A4",
+        "description": "A4 Umschlag",
+        "price": 1000,
+        "image": "umschlaege_a4.png",
+        "created_at": "2022-07-14T20:02:19.741Z",
         "badges": [
             {
-                "text": "Empfohlen",
-                "color": "yellow"
+                "text": "Farben",
+                "variant": "gradient",
+                "gradient": {
+                    "from": "#25b33f",
+                    "to": "#19b9d1"
+                }
             }
         ]
     },
-    "gopher_flash": {
-        "name": "Flash Gopher",
-        "description": "Ein schneller Gopher",
-        "image": "gopher_flash.png",
-        "price": 2200,
-        "created_at": "2022-06-25T15:36:01.331Z",
+    "umschlag_a5": {
+        "name": "Umschlag A5",
+        "description": "A5 Umschlag",
+        "price": 1000,
+        "image": "umschlag_a5.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
         "badges": [
             {
-                "text": "Schnell",
-                "color": "red"
+                "text": "Farben",
+                "variant": "gradient",
+                "gradient": {
+                    "from": "#25b33f",
+                    "to": "#19b9d1"
+                }
             }
         ]
     },
-    "gopher_tired": {
-        "name": "Tired Gopher",
-        "description": "Ein müder Gopher",
-        "image": "gopher_tired.png",
-        "price": 1400,
-        "created_at": "2018-01-01T00:00:00.000Z"
-    },
-    "gopher_smart": {
-        "name": "Smart Gopher",
-        "description": "Ein schlauer Gopher",
-        "image": "gopher_smart.png",
-        "price": 1800,
-        "created_at": "2018-01-01T00:00:00.000Z",
-        "badges": [
-            {
-                "text": "Schlau",
-                "color": "gray"
-            }
-        ]
-    },
-    "gopher_detective": {
-        "name": "Detective Gopher",
-        "description": "Ein Detektiv-Gopher",
-        "image": "gopher_detective.png",
-        "price": 2800,
-        "old_price": 3000,
-        "created_at": "2022-06-25T15:36:01.331Z"
+    "schnellhefter": {
+        "name": "Schnellhefter",
+        "description": "Schnellhefter",
+        "price": 1000,
+        "image": "schnellhefter.jpg",
+        "created_at": "2022-07-14T20:02:19.741Z",
+        "badges": []
     }
 }

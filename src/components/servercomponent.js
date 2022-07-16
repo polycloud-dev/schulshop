@@ -1,5 +1,5 @@
 import { useServer } from "../modules/servercomponent";
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; 
 
 export default function ServerComponent({ children, result, error, loading, onFailed, path }) {
 
@@ -68,6 +68,7 @@ export default function ServerComponent({ children, result, error, loading, onFa
 
     useEffect(() => {
         fetchData()
+        // eslint-disable-next-line
     }, []);
 
     if(state.state === 'success') return result(state.data);

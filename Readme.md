@@ -56,7 +56,7 @@ Beispiel:
     * Terminal öffnen
     * `$ node `
     * Dann `> new Date()`
-* `badges`-Array kann leer sein. `color` sind einfach css-Colors
+* `badges`-Array kann leer sein. [Hier mehr](https://github.com/tom-heidenreich/schulshop/Readme.md#Badges)
 
 ### Bundles bearbeiten
 `bundles.json` und `class_bundles.json` haben den gleichen Aufbau.
@@ -89,3 +89,23 @@ Beispiel:
 Funktioniert ähnlich wie `products.json`.
 <br/>
 `id` in `content` muss eine ID von einem Produkt von `products.json` sein.
+
+# Badges
+Diese Keys gibt es:
+| Name | Type | Description |
+|--|--|--|
+| text`*` | `string` | Der Text, der angezeigt wird |
+| variant | `"color" \| "gradient"` | Wie der Badge aussehen soll. Default: `color` |
+| color | `string` | css-Color Name oder Hexcode |
+| gradient | `Gradient` | Gradient für den Badge |
+
+<br/>
+
+Gradient
+| Name | Type | Description |
+| -- | -- | -- |
+| from`*` | `string` | css-Color Name oder Hexcode |
+| to`*` | `string` | css-Color Name oder Hexcode |
+| deg | `number` | linear gradient deg |
+
+`*` required

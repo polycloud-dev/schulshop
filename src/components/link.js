@@ -12,7 +12,7 @@ export default function Link({ text, path, tooltip, ...props }) {
         <Text
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
-            onClick={() => navigate(path)}
+            onClick={() => {if(path) navigate(path)}}
             underline={isHover}
             style={{
                 cursor: 'pointer',

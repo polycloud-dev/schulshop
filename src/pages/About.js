@@ -33,7 +33,7 @@ export default function AboutPage() {
                     (die auf jede Klasse zugeschnitten sind) erstellen. Diese können die Schülerinnen und Schüler schon vor Beginn des neuen Schuljahres bestellen.
                     Am ersten bzw. zweiten Schultag werden diese Pakete dann den entsprechenden Schülerinnen und Schülern in die Klassen geliefert.
                 </Text>
-                <Group
+                {/* <Group
                     mt='4rem'
                     position='center'
                 >
@@ -47,7 +47,7 @@ export default function AboutPage() {
                     >
                         Die Website sieht super aus.
                     </Blockquote>
-                </Group>
+                </Group> */}
                 <Space h='2rem' />
             </Container>
         </>

@@ -36,13 +36,17 @@ export default function ShoppingCartPage() {
                             Warenkorb ist leer
                         </Text>
                     ) : 
-                    cart.map(item => {
-                        return (
-                            <Item item={item} />
-                        )
-                    })}
+                    <>
+                        {cart.map(item => {
+                            return (
+                                <Item item={item} />
+                            )
+                        })}
+                        <Total />
+                    </>
+                    }
                 </Group>
-                <Divider my='xl' />
+                <Divider my='md' />
                 <Form />
                 <Text
                     mt='xl'
@@ -54,6 +58,56 @@ export default function ShoppingCartPage() {
             </Container>
         </StateProvider>
     )
+
+    function Total() {
+
+        const { cart, formatCurrency } = useShoppingCart()
+        const { cachedFetch } = useServer('/products')
+
+        const [products, setProducts] = useState([])
+
+        useEffect(() => {
+            // fetch
+            cachedFetch().then(data => {
+                setProducts(data)
+            }).catch(err => {
+                console.log(err)
+            }
+        )}, [cachedFetch])
+
+        const items = []
+
+        cart.forEach(item => {
+            if(item.type === 'bundle') {
+                item.content.forEach(item => {
+                    items.push(item)
+                })
+            } else items.push(item)
+        })
+
+        const total = items.reduce((acc, item) => {
+            const product = products[item.id]
+            const price = product ? product.price * item.quantity : 0
+            return acc + price
+        }, 0)
+
+        return (
+            <Group
+                position='center'
+                mt='xl'
+                spacing={4}
+            >
+                <Text>
+                    Gesamt:
+                </Text>
+                <Text
+                    color='cyan'
+                >
+                    {formatCurrency(total)}€
+                </Text>
+            </Group>
+        )
+    }
 
     function Item({ item }) {
         if(item.type === 'product') return <ProductItem item={item} />
@@ -105,12 +159,17 @@ export default function ShoppingCartPage() {
         }, [bundleServer, productServer])
 
         const bundle = cachedBundles[item.id]
-        const products = item.content.map(entry => cachedProducts[entry.id]).filter(product => product !== undefined)
+        const products = item.content.map(entry => {
+            const product = cachedProducts[entry.id]
+            if(!product) return
+            product.quantity = entry.quantity
+            return product
+        }).filter(product => product !== undefined)
 
         if(!bundle || !products) return <></>
 
         const total_price = products.reduce((acc, product) => {
-            return acc + product.price
+            return acc + product.price * product.quantity
         }, 0)
 
         return (
@@ -340,6 +399,7 @@ export default function ShoppingCartPage() {
             // example: "John Doe" or "John Foo Doe"
             if(!name.value) setName({ error: 'Name ist benötigt' })
             else if(!name.value.match(/^[a-zA-ZäöüÄÖÜß]+\s[a-zA-ZäöüÄÖÜß]+/)) setName({ value: name.value, error: 'Bitte geben Sie einen gültigen Namen ein.' })
+            else if(name.value && name.value.length > 30) setName({ value: name.value, error: 'Bitte geben Sie einen gültigen Namen ein.' })
             // check if school class is valid
             // school class has to be a number between 1 and 12 and a character between a and z
             // example: 12a or 5b
@@ -348,7 +408,7 @@ export default function ShoppingCartPage() {
             // check if email is valid
             // example: mail@mail.com or 123@abc.xy
             if(email.value && !email.value.match(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)) setEmail({ value: email.value, error: 'Bitte geben Sie eine gültige Email-Adresse ein.' })
-        
+
             // if there are no errors, submit the form
             if(!name.error && !schoolClass.error && !email.error) {
 

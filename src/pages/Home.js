@@ -43,10 +43,8 @@ export default function HomePage() {
                 >
                     <ClassBundles card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
 
-                    <LabelDivider label={'Pakete'} />
                     <Bundles card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
 
-                    <LabelDivider label={'Einzelne Produkte'} />
                     <Products card_width={CARD_WIDTH} card_height={CARD_HEIGHT} />
                 </div>
             </MediaQuery>
@@ -111,11 +109,17 @@ export default function HomePage() {
                 'color': 'cyan',
             })
         }
+        // trim to 3 badges
+        if(badgeList.length > 2) {
+            badgeList = badgeList.slice(0, 2);
+        }
+
         return badgeList.map(badge => {
             return (
                 <Badge
                     color={badge.color}
-                    variant={'outline'}
+                    gradient={badge.gradient}
+                    variant={badge.variant || 'outline'}
                     key={badge.text}
                 >
                     {badge.text}
@@ -230,21 +234,31 @@ export default function HomePage() {
                 >
                     {badges}
                 </Group>
-                <Title
+                <Container
                     style={{
-                        fontSize: '1.2rem',
+                        maxHeight: '5rem',
+                        overflow: 'hidden',
                     }}
-                    align='center'
                 >
-                    {name}
-                </Title>
-                <Text
-                    color='dimmed'
-                    align='center'
-                    lineClamp={2}
-                >
-                    {description}
-                </Text>
+                    <Title
+                        style={{
+                            fontSize: name.length > 15 ? '1rem' : '1.2rem',
+                        }}
+                        align='center'
+                    >
+                        {name}
+                    </Title>
+                    <Text
+                        color='dimmed'
+                        align='center'
+                        lineClamp={2}
+                        style={{
+                            fontSize: description.length > 18 ? '0.8rem' : '1rem',
+                        }}
+                    >
+                        {description}
+                    </Text>
+                </Container>
                 <Group
                     mt='auto'
                     mb='md'
@@ -287,16 +301,21 @@ export default function HomePage() {
                     const bundle = data[key]
 
                     const content = bundle.content;
+                    if(!content) return 'error'
+
                     const bundle_products = content.map(product => {
-                        return products[product.id]
+                        const result = products[product.id]
+                        if(!result) return
+                        result.quantity = product.quantity
+                        return result
                     }).filter(product => product !== undefined)
 
                     const total_price = bundle_products.reduce((acc, product) => {
-                        return acc + product.price
+                        return acc + product.price * product.quantity
                     }, 0)
                     const total_old_price = bundle_products.reduce((acc, product) => {
-                        if(product.old_price) return acc + product.old_price
-                        return acc + product.price
+                        if(product.old_price) return acc + product.old_price * product.quantity
+                        return acc + product.price * product.quantity
                     }, 0)
 
                     if(!badges[key]) {
@@ -354,8 +373,6 @@ export default function HomePage() {
 
         const [badges, setBadges] = useState({})
 
-        if(!data) return 'AHHH'
-
         return (
             <SimpleGrid
                 columns={1}
@@ -403,19 +420,24 @@ export default function HomePage() {
 
     function Products({ card_width, card_height }) {
         return <ServerComponent
-            path='/products.json'
+            path='/products'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
             {(data) => {
-                return <ProductCards data={data} width={card_width} height={card_height} />;
+                if(Object.keys(data).length > 0) {
+                    return <>
+                        <LabelDivider label={'Einzelne Produkte'} />
+                        <ProductCards data={data} width={card_width} height={card_height} />
+                    </>
+                }
             }}
-        </ServerComponent>;
+        </ServerComponent>
     }
 
     function ClassBundles({ card_width, card_height }) {
         return <ServerComponent
-            path='/class_bundles.json'
+            path='/class_bundles'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
@@ -423,7 +445,7 @@ export default function HomePage() {
                 if(Object.keys(data).length > 0) {
                     return <>
                         <LabelDivider label={'Klassenpakete'} />
-                        <BundleCards data={data} width={card_width} height={card_height} />;
+                        <BundleCards data={data} width={card_width} height={card_height} />
                     </>
                 }
             }}
@@ -432,12 +454,17 @@ export default function HomePage() {
 
     function Bundles({ card_width, card_height }) {
         return <ServerComponent
-            path='/bundles.json'
+            path='/bundles'
             error={<ErrorCards />}
             loading={<SkeletonCards />}
         >
             {(data) => {
-                return <BundleCards data={data} width={card_width} height={card_height} />;
+                if(Object.keys(data).length > 0) {
+                    return <>
+                        <LabelDivider label={'Pakete'} />
+                        <BundleCards data={data} width={card_width} height={card_height} />
+                    </>
+                }
             }}
         </ServerComponent>;
     }
