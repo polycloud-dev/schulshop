@@ -1,220 +1,242 @@
 {
-    "heft_a4_kariert_schattenrand": {
-        "name": "Heft Kariert Schattenrand",
-        "description": "A4 Heft Kariert mit Schattenrand",
-        "price": 1000,
-        "image": "heft_a4_kariert_schattenrand.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "heft_a4_kariert_weißrand": {
-        "name": "Heft Kariert weißer Rand",
-        "description": "A4 Heft Kariert mit weißem Rand",
-        "price": 1000,
-        "image": "heft_a4_kariert_weißrand.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "heft_a4_kariert_ohnerand": {
-        "name": "Heft Kariert ohne Rand",
-        "description": "A4 Heft Kariert ohne Rand",
-        "price": 1000,
-        "image": "heft_a4_kariert_ohnerand.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "heft_a4_liniert_schattenrand": {
-        "name": "Heft Liniert Schattenrand",
-        "description": "A4 Heft Liniert mit Schattenrand",
-        "price": 1000,
-        "image": "heft_a4_liniert_schattenrand.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "heft_a4_liniert_weißrand": {
-        "name": "Heft Liniert weißer Rand",
-        "description": "A4 Heft Liniert mit weißem Rand",
-        "price": 1000,
-        "image": "heft_a4_liniert_weißrand.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "heft_a4_liniert_ohnerand": {
-        "name": "Heft Liniert ohne Rand",
-        "description": "A4 Heft Liniert ohne Rand",
-        "price": 1000,
-        "image": "heft_a4_liniert_ohnerand.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "heft_a4_musik": {
-        "name": "Musikheft",
-        "description": "A4 Musikheft",
-        "price": 1000,
-        "image": "heft_a4_musik.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "schnellhefter_a4_notenlinien": {
-        "name": "Schnellhefter mit Notenlinien",
-        "description": "A4 Schnellhefter mit Notenlinien",
-        "price": 1000,
-        "image": "schnellhefter_a4_notenlinien.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "schnellhefter_a4_kariert": {
-        "name": "Schnellhefter Kariert",
-        "description": "A4 Schnellhefter Kariert",
-        "price": 1000,
-        "image": "schnellhefter_a4_kariert.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "schnellhefter_a4_liniert": {
-        "name": "Schnellhefter Liniert",
-        "description": "A4 Schnellhefter Liniert",
-        "price": 1000,
-        "image": "schnellhefter_a4_liniert.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
     "arbeitsheft_mathe": {
-        "name": "Arbeitsheft Mathe",
-        "description": "A4 Arbeitsheft Mathe",
-        "price": 1000,
+        "name": "Mathe Arbeitsheft",
+        "description": "Mathe Arbeitsheft",
         "image": "arbeitsheft_mathe.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "arbeitsheft_deutsch": {
-        "name": "Arbeitsheft Deutsch",
-        "description": "A4 Arbeitsheft Deutsch",
         "price": 1000,
-        "image": "arbeitsheft_deutsch.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
     },
-    "workbook": {
-        "name": "Workbook",
-        "description": "A4 Workbook",
+    "collegeblock_kariert_schattenrand": {
+        "name": "Collegeblock kariert",
+        "description": "Collegeblock kariert mit Schattenrand",
+        "image": "collegeblock_kariert_schattenrand.png",
         "price": 1000,
-        "image": "workbook.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
     },
-    "karteikarten_a7": {
-        "name": "Karteikarten",
-        "description": "DIN A7 Karteikarten",
+    "collegeblock_liniert_schattenrand": {
+        "name": "Collegeblock liniert",
+        "description": "Collegeblock liniert mit Schattenrand",
+        "image": "collegeblock_liniert_schattenrand.png",
         "price": 1000,
-        "image": "karteikarten_a7.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
     },
-    "vokabelheft_a5": {
-        "name": "Vokabelheft",
-        "description": "A5 Vokabelheft",
+    "collegeblock_liniert_weissrand": {
+        "name": "Collegeblock liniert",
+        "description": "Collegeblock liniert mit weissen Rand",
+        "image": "collegeblock_liniert_weissrand.png",
         "price": 1000,
-        "image": "vokabelheft_a5.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "vokabelheft_a4": {
-        "name": "Vokabelheft",
-        "description": "A4 Vokabelheft",
-        "price": 1000,
-        "image": "vokabelheft_a4.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "ringbuch_dünn": {
-        "name": "Ringbuch dünn",
-        "description": "A4 Ringbuch dünn",
-        "price": 1000,
-        "image": "ringbuch_dünn.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "registerblätter_6": {
-        "name": "6er Registerblätter",
-        "description": "6er Registerblätter",
-        "price": 1000,
-        "image": "registerblätter_6.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "collegeblock_liniert": {
-        "name": "Collegeblock Liniert",
-        "description": "A4 Collegeblock Liniert",
-        "price": 1000,
-        "image": "collegeblock_liniert.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "collegeblock_kariert": {
-        "name": "Collegeblock Kariert",
-        "description": "A4 Collegeblock Kariert",
-        "price": 1000,
-        "image": "collegeblock_kariert.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "umschlaghefter": {
-        "name": "Umschlaghefter",
-        "description": "Umschlaghefter",
-        "price": 1000,
-        "image": "umschlaghefter.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
-    },
-    "umschlag_a4": {
-        "name": "Umschlag A4",
-        "description": "A4 Umschlag",
-        "price": 1000,
-        "image": "umschlaege_a4.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": [
-            {
-                "text": "Farben",
-                "variant": "gradient",
-                "gradient": {
-                    "from": "#25b33f",
-                    "to": "#19b9d1"
-                }
-            }
-        ]
-    },
-    "umschlag_a5": {
-        "name": "Umschlag A5",
-        "description": "A5 Umschlag",
-        "price": 1000,
-        "image": "umschlag_a5.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": [
-            {
-                "text": "Farben",
-                "variant": "gradient",
-                "gradient": {
-                    "from": "#25b33f",
-                    "to": "#19b9d1"
-                }
-            }
-        ]
-    },
-    "schnellhefter": {
-        "name": "Schnellhefter",
-        "description": "Schnellhefter",
-        "price": 1000,
-        "image": "schnellhefter.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
     },
     "geodreieck": {
         "name": "Geodreieck",
-        "description": "Geodreieck",
-        "price": 1000,
+        "description": "",
         "image": "geodreieck.png",
-        "created_at": "2022-07-14T20:02:19.741Z",
-        "badges": []
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "heft_a4_kariert_weissrand": {
+        "name": "Heft A4 kariert",
+        "description": "Heft A4 kariert mit weissen Rand",
+        "image": "heft_a4_kariert_weissrand.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "heft_a4_liniert_schattenrand": {
+        "name": "Heft A4 liniert",
+        "description": "Heft A4 liniert mit Schattenrand",
+        "image": "heft_a4_liniert_schattenrand.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "heft_a4_musik": {
+        "name": "Musikheft",
+        "description": "Heft A4 mit Notenlinien",
+        "image": "heft_a4_musik.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "heft_a5_liniert": {
+        "name": "Heft A5 liniert",
+        "description": "Heft A5 liniert",
+        "image": "heft_a5_liniert.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "ordner_gelb": {
+        "name": "Ordner gelb",
+        "description": "",
+        "image": "ordner_gelb.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "registerblaetter_6": {
+        "name": "6er Registerblaetter",
+        "description": "",
+        "image": "registerblaetter_6.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "ringbuch_duenn": {
+        "name": "Ringbuch",
+        "description": "Duennes Ringbuch",
+        "image": "ringbuch_duenn.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "schnellhefter_heft": {
+        "name": "Heft mit Schnellhefter",
+        "description": "Mit integrierten Schnellhefter",
+        "image": "schnellhefter_heft.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "schnellhefter_rot": {
+        "name": "Schnellhefter Rot",
+        "description": "",
+        "image": "schnellhefter_rot.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_braun": {
+        "name": "Umschlag braun",
+        "description": "",
+        "image": "umschlag_braun.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_schwarz": {
+        "name": "Umschlag schwarz",
+        "description": "",
+        "image": "umschlag_schwarz.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_weiss": {
+        "name": "Umschlag weiss",
+        "description": "",
+        "image": "umschlag_weiss.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_cyan": {
+        "name": "Umschlag cyan",
+        "description": "",
+        "image": "umschlag_cyan.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_dunkelblau": {
+        "name": "Umschlag dunkelblau",
+        "description": "",
+        "image": "umschlag_dunkelblau.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_dunkelgruen": {
+        "name": "Umschlag dunkelgruen",
+        "description": "",
+        "image": "umschlag_dunkelgruen.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_dunkelrot": {
+        "name": "Umschlag dunkelrot",
+        "description": "",
+        "image": "umschlag_dunkelrot.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_gelb": {
+        "name": "Umschlag gelb",
+        "description": "",
+        "image": "umschlag_gelb.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_grau": {
+        "name": "Umschlag grau",
+        "description": "",
+        "image": "umschlag_grau.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_hellblau": {
+        "name": "Umschlag hellblau",
+        "description": "",
+        "image": "umschlag_hellblau.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_hellgruen": {
+        "name": "Umschlag hellgruen",
+        "description": "",
+        "image": "umschlag_hellgruen.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_lila": {
+        "name": "Umschlag lila",
+        "description": "",
+        "image": "umschlag_lila.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_orange": {
+        "name": "Umschlag orange",
+        "description": "",
+        "image": "umschlag_orange.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_pink": {
+        "name": "Umschlag pink",
+        "description": "",
+        "image": "umschlag_pink.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "umschlag_rot": {
+        "name": "Umschlag rot",
+        "description": "",
+        "image": "umschlag_rot.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
+    },
+    "vokabelheft_a5_liniert": {
+        "name": "Vokabelheft A5 liniert",
+        "description": "",
+        "image": "vokabelheft_a5_liniert.png",
+        "price": 1000,
+        "badges": [],
+        "created_at": "2022-07-17T16:25:26.792Z"
     }
 }
