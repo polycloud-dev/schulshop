@@ -27,7 +27,7 @@ export default function HomePage() {
                     alignItems: 'center',
                 }}
             >
-                <WelcomeTitle/>
+                <WelcomeTitle />
             </Container>
             <HeadMenu />
             <MediaQuery
@@ -58,9 +58,9 @@ export default function HomePage() {
 
         return (
             <Group
-                mt={matches_0 ? matches_1 ? '3rem' : '1rem' :  '0'}
-                position={matches_1 ? 'center': 'right'}
-                mr={matches_1 ? '0': '4rem'}
+                mt={matches_0 ? matches_1 ? '3rem' : '1rem' : '0'}
+                position={matches_1 ? 'center' : 'right'}
+                mr={matches_1 ? '0' : '4rem'}
                 spacing='xl'
             >
                 <Link text='Über uns' path='/about' tooltip='Das sind wir' />
@@ -98,19 +98,19 @@ export default function HomePage() {
             </ActionIcon>
         )
     }
-    
+
     function getBadges(badges, created_at) {
         let badgeList = [];
-        if(badges) badgeList = JSON.parse(JSON.stringify(badges))
+        if (badges) badgeList = JSON.parse(JSON.stringify(badges))
         // check if 5 or fewer days ago
-        if(Math.floor((new Date() - new Date(created_at)) / (1000 * 60 * 60 * 24)) <= 5) {
+        if (Math.floor((new Date() - new Date(created_at)) / (1000 * 60 * 60 * 24)) <= 5) {
             badgeList.push({
                 'text': 'Neu',
                 'color': 'cyan',
             })
         }
         // trim to 3 badges
-        if(badgeList.length > 2) {
+        if (badgeList.length > 2) {
             badgeList = badgeList.slice(0, 2);
         }
 
@@ -157,7 +157,7 @@ export default function HomePage() {
         return (
             <SimpleGrid
                 columns={1}
-                style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}
+                style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}
                 spacing='xl'
                 my='md'
             >
@@ -171,12 +171,12 @@ export default function HomePage() {
         )
     }
 
-    function CardBody({ item, badges, name, description, price, old_price=undefined, height }) {
-        
+    function CardBody({ item, badges, name, description, price, old_price = undefined, height }) {
+
         const { addToCart, formatCurrency } = useShoppingCart()
 
-        function addItem() { 
-            if(addToCart(item)) {
+        function addItem() {
+            if (addToCart(item)) {
                 showNotification({
                     title: 'Produkt hinzugefügt',
                     message: `${name} wurde zum Warenkorb hinzugefügt`,
@@ -187,7 +187,7 @@ export default function HomePage() {
 
         function getPriceTag() {
 
-            function Tag({price}) {
+            function Tag({ price }) {
                 return (
                     <Text
                         color='cyan'
@@ -195,7 +195,7 @@ export default function HomePage() {
                 )
             }
 
-            if(old_price) {
+            if (old_price) {
                 return (
                     <Group
                         direction='column'
@@ -213,7 +213,7 @@ export default function HomePage() {
                         <Tag price={price} />
                     </Group>
                 )
-            }else return <Tag price={price} />
+            } else return <Tag price={price} />
         }
 
         return (
@@ -222,7 +222,7 @@ export default function HomePage() {
                 style={{
                     margin: 0,
                     width: '100%',
-                    height: height/2,
+                    height: height / 2,
                     display: 'flex',
                     flexDirection: 'column',
                     flexWrap: 'wrap',
@@ -267,7 +267,7 @@ export default function HomePage() {
                     <Button
                         onClick={addItem}
                     >Kaufen</Button>
-                    {getPriceTag()} 
+                    {getPriceTag()}
                 </Group>
             </Container>
         )
@@ -289,12 +289,13 @@ export default function HomePage() {
             }).catch(err => {
                 console.log(err)
             }
-        )}, [cachedFetch])
+            )
+        }, [cachedFetch])
 
         return (
             <SimpleGrid
                 columns={1}
-                style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}
+                style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}
                 spacing='xl'
             >
                 {Object.keys(data).map(key => {
@@ -302,11 +303,11 @@ export default function HomePage() {
                     const bundle = data[key]
 
                     const content = bundle.content;
-                    if(!content) return 'error'
+                    if (!content) return 'error'
 
                     const bundle_products = content.map(product => {
                         const result = products[product.id]
-                        if(!result) return ''
+                        if (!result) return ''
                         result.quantity = product.quantity
                         return result
                     }).filter(product => product !== undefined)
@@ -315,12 +316,12 @@ export default function HomePage() {
                         return acc + product.price * product.quantity
                     }, 0)
                     const total_old_price = bundle_products.reduce((acc, product) => {
-                        if(product.old_price) return acc + product.old_price * product.quantity
+                        if (product.old_price) return acc + product.old_price * product.quantity
                         return acc + product.price * product.quantity
                     }, 0)
 
                     // kann noch probleme machen, aber bis jetzt geht es
-                    if(!badges[key]) {
+                    if (!badges[key]) {
                         setBadges({
                             ...badges,
                             [key]: getBadges(bundle.badges, bundle.created_at)
@@ -346,7 +347,7 @@ export default function HomePage() {
                                     {
                                         bundle_products.map(product => {
                                             return (
-                                                <Image height={height/2} width={width/bundle_products.length} fit='cover' src={`${process.env.REACT_APP_API_HOST}/images/${product.image}`} alt={product.name} />
+                                                <Image height={height / 2} width={width / bundle_products.length} fit='cover' src={`${process.env.REACT_APP_API_HOST}/images/${product.image}`} alt={product.name} />
                                             )
                                         })
                                     }
@@ -354,7 +355,7 @@ export default function HomePage() {
                             </Card.Section>
                             <CardBody
                                 key={key}
-                                item={{'id': key, 'type': 'bundle', 'content': content}}
+                                item={{ 'id': key, 'type': 'bundle', 'content': content }}
                                 badges={badges[key]}
                                 name={bundle.name}
                                 description={bundle.description}
@@ -377,19 +378,20 @@ export default function HomePage() {
 
         useEffect(() => {
             Object.keys(data).forEach(key => {
-                if(!badges[key]) {
+                if (!badges[key]) {
                     setBadges({
                         ...badges,
                         [key]: getBadges(data[key].badges, data[key].created_at)
                     })
                 }
             }
-        )}, [data, badges])
+            )
+        }, [data, badges])
 
         return (
             <SimpleGrid
                 columns={1}
-                style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}
+                style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}
                 spacing='xl'
             >
                 {Object.keys(data).map(key => {
@@ -407,7 +409,7 @@ export default function HomePage() {
                             key={key}
                         >
                             <Card.Section>
-                                <Image height={height/2} fit='contain' src={`${process.env.REACT_APP_API_HOST}/images/${product.image}`} alt={product.name} />
+                                <Image height={height / 2} fit='contain' src={`${process.env.REACT_APP_API_HOST}/images/${product.image}`} alt={product.name} />
                             </Card.Section>
                             <CardBody
                                 badges={badges[key]}
@@ -416,7 +418,7 @@ export default function HomePage() {
                                 price={product.price}
                                 old_price={product.old_price}
                                 height={height}
-                                item={{'id': key, 'type': 'product'}}
+                                item={{ 'id': key, 'type': 'product' }}
                             />
                         </Card>
                     )
@@ -432,7 +434,7 @@ export default function HomePage() {
             loading={<SkeletonCards />}
         >
             {(data) => {
-                if(Object.keys(data).length > 0) {
+                if (Object.keys(data).length > 0) {
                     return <>
                         <LabelDivider label={'Einzelne Produkte'} />
                         <ProductCards data={data} width={card_width} height={card_height} />
@@ -449,7 +451,7 @@ export default function HomePage() {
             loading={<SkeletonCards />}
         >
             {(data) => {
-                if(Object.keys(data).length > 0) {
+                if (Object.keys(data).length > 0) {
                     return <>
                         <LabelDivider label={'Klassenpakete'} />
                         <BundleCards data={data} width={card_width} height={card_height} />
@@ -466,7 +468,7 @@ export default function HomePage() {
             loading={<SkeletonCards />}
         >
             {(data) => {
-                if(Object.keys(data).length > 0) {
+                if (Object.keys(data).length > 0) {
                     return <>
                         <LabelDivider label={'Pakete'} />
                         <BundleCards data={data} width={card_width} height={card_height} />
@@ -480,12 +482,12 @@ export default function HomePage() {
         return <Title
             align='center'
             mt='xl'
-            style={{ 
+            style={{
                 fontSize: '3rem',
             }}
         >
             Willkommen beim {' '}
-            <GradientName/>
+            <GradientName />
             <DescriptionText />
         </Title>;
 
@@ -500,34 +502,46 @@ export default function HomePage() {
 
             function SustainableText() {
 
-                const [hover, setHover] = useState(false)
-                const navigate = useNavigate();
-
-                return <Tooltip
-                    label={<Text style={{display: 'flex', fontSize: '.8rem'}}>So sind wir nachhaltig<ArrowUpRight size={15} style={{margin: 'auto 0'}} /></Text>}
-                    withArrow
+                return <Text
+                    component="span"
+                    variant='gradient'
+                    gradient={{ from: '#16cc95', to: '#16cc3e', deg: 45 }}
                 >
-                    <Text
-                        component="span"
-                        variant='gradient'
-                        gradient={{ from: '#16cc95', to: '#16cc3e', deg: 45 }}
-                        onMouseEnter={() => setHover(true)}
-                        onMouseLeave={() => setHover(false)}
-                        style={{
-                            cursor: 'pointer',
-                            textDecoration: hover ? 'underline #16cc3e' : 'none',
-                        }}
-                        onClick={() => {
-                            navigate('/nachhaltig')
-                        }}
-                    >
-                        nachhaltig
-                        <Leaf
-                            size={14}
-                            color='#16cc3e' />
-                        {' '}
-                    </Text>
-                </Tooltip>;
+                    nachhaltig
+                    <Leaf
+                        size={14}
+                        color='#16cc3e' />
+                    {' '}
+                </Text>
+
+                // const [hover, setHover] = useState(false)
+                // const navigate = useNavigate();
+
+                // return <Tooltip
+                //     label={<Text style={{display: 'flex', fontSize: '.8rem'}}>So sind wir nachhaltig<ArrowUpRight size={15} style={{margin: 'auto 0'}} /></Text>}
+                //     withArrow
+                // >
+                //     <Text
+                //         component="span"
+                //         variant='gradient'
+                //         gradient={{ from: '#16cc95', to: '#16cc3e', deg: 45 }}
+                //         onMouseEnter={() => setHover(true)}
+                //         onMouseLeave={() => setHover(false)}
+                //         style={{
+                //             cursor: 'pointer',
+                //             textDecoration: hover ? 'underline #16cc3e' : 'none',
+                //         }}
+                //         onClick={() => {
+                //             navigate('/nachhaltig')
+                //         }}
+                //     >
+                //         nachhaltig
+                //         <Leaf
+                //             size={14}
+                //             color='#16cc3e' />
+                //         {' '}
+                //     </Text>
+                // </Tooltip>;
             }
         }
 
@@ -535,7 +549,7 @@ export default function HomePage() {
             return <Text
                 component="span"
                 variant='gradient'
-                gradient={{ from: 'indigo', to: 'cyan'}}
+                gradient={{ from: 'indigo', to: 'cyan' }}
                 style={{ fontSize: 'inherit' }}
             >Schulshop</Text>
         }
