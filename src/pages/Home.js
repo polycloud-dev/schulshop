@@ -13,7 +13,7 @@ import Link from '../components/link';
 export default function HomePage() {
 
     const CARD_WIDTH = 200;
-    const CARD_HEIGHT = 350;
+    const CARD_HEIGHT = 360;
 
     return (
         <>
@@ -159,6 +159,7 @@ export default function HomePage() {
                 columns={1}
                 style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}
                 spacing='xl'
+                my='md'
             >
                 <SkeletonCard />
                 <SkeletonCard />
@@ -236,13 +237,13 @@ export default function HomePage() {
                 </Group>
                 <Container
                     style={{
-                        maxHeight: '5rem',
+                        maxHeight: '6rem',
                         overflow: 'hidden',
                     }}
                 >
                     <Title
                         style={{
-                            fontSize: name.length > 15 ? '1rem' : '1.2rem',
+                            fontSize: name.length > 16 ? '1rem' : '1.2rem',
                         }}
                         align='center'
                     >
@@ -253,7 +254,7 @@ export default function HomePage() {
                         align='center'
                         lineClamp={2}
                         style={{
-                            fontSize: description.length > 18 ? '0.8rem' : '1rem',
+                            fontSize: description.length > 20 ? '0.8rem' : '1rem',
                         }}
                     >
                         {description}
@@ -305,7 +306,7 @@ export default function HomePage() {
 
                     const bundle_products = content.map(product => {
                         const result = products[product.id]
-                        if(!result) return
+                        if(!result) return ''
                         result.quantity = product.quantity
                         return result
                     }).filter(product => product !== undefined)
@@ -318,6 +319,7 @@ export default function HomePage() {
                         return acc + product.price * product.quantity
                     }, 0)
 
+                    // kann noch probleme machen, aber bis jetzt geht es
                     if(!badges[key]) {
                         setBadges({
                             ...badges,
@@ -373,6 +375,17 @@ export default function HomePage() {
 
         const [badges, setBadges] = useState({})
 
+        useEffect(() => {
+            Object.keys(data).forEach(key => {
+                if(!badges[key]) {
+                    setBadges({
+                        ...badges,
+                        [key]: getBadges(data[key].badges, data[key].created_at)
+                    })
+                }
+            }
+        )}, [data, badges])
+
         return (
             <SimpleGrid
                 columns={1}
@@ -381,12 +394,6 @@ export default function HomePage() {
             >
                 {Object.keys(data).map(key => {
                     const product = data[key]
-                    if(!badges[key]) {
-                        setBadges({
-                            ...badges,
-                            [key]: getBadges(product.badges, product.created_at)
-                        })
-                    }
                     return (
                         <Card
                             radius='md'
