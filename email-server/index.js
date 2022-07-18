@@ -43,7 +43,7 @@ app.post('/api/order', async (req, res) => {
 
     console.log(`${user_id}: ${name} - ${school_class} - ${email}`);
 
-    sendMail({ name, school_class, email, products, user_id })
+    sendMail({ name, school_class, email, products, user_id, order_id })
 
     res.json({ success: true, order_id});
 })
@@ -101,12 +101,13 @@ function sendMail(props) {
     })
 }
 
-function generateHTML({ name, school_class, email, products, user_id}) {
+function generateHTML({ name, school_class, email, products, user_id, oder_id }) {
     const html = HTML.replace('$NAME', name)
         .replace('$SCHOOL_CLASS', school_class)
-        .replace('$EMAIL', email)
+        .replace('$EMAIL', email || '<nicht angegeben>')
         .replace('$USER_ID', user_id)
         .replace('$PRODUCTS', products.map(product => `<li><b>ID:</b>${product.id}<br><b>Anzahl:</b>${product.quantity}<br/></li>`).join(''))
+        .replace('$ORDER_ID', oder_id);
     return html;
 }
 
