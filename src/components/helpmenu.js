@@ -1,7 +1,7 @@
-import { Modal, Text, Container, Title, Button, Tooltip } from '@mantine/core'
-import { useState } from 'react'
-import Link from './link';
+import { Button, Container, Modal, Text, Title, Tooltip } from '@mantine/core';
+import { useState } from 'react';
 import { ArrowUpRight } from 'tabler-icons-react';
+import Link from './link';
 
 export default function HelpMenu() {
     
@@ -29,7 +29,7 @@ export default function HelpMenu() {
                     <Text>
                         Es gibt verschiedene Pakete: <br/>
                         Für die 5-6. Klasse gibt es speziell zugeschnittene Pakete, 
-                        mit allem was diese jewilige Klasse benötigt.
+                        mit allem was diese jeweilige Klasse benötigt.
                         Außerdem gibt es noch Standardpakete mit einer Auswahl von
                         verschiedenen Heften. <br/>
                         Alle Pakete können im Warenkorb bearbeitet werden.
