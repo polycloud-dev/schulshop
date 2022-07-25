@@ -1,243 +1,248 @@
 {
+    "S433701": {
+        "name": "A4 kariert, Schattenrand",
+        "description": "A4 kariert, Schattenrand",
+        "image": "a4_kariert_schattenrand.png",
+        "price": 90,
+        "bundle_price": 80,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "S433503": {
+        "name": "A4 kariert, weißer Rand",
+        "description": "A4 kariert, weißer Rand",
+        "image": "a4_kariert_weissrand.png",
+        "price": 90,
+        "bundle_price": 80,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "S433603": {
+        "name": "A4 liniert, Schattenrand",
+        "description": "A4 liniert, Schattenrand",
+        "image": "a4_liniert_schattenrand.png",
+        "price": 90,
+        "bundle_price": 80,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "S433403": {
+        "name": "A4 liniert, weißer Rand",
+        "description": "A4 liniert, weißer Rand",
+        "image": "a4_liniert_weissrand.png",
+        "price": 90,
+        "bundle_price": 80,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "S246403": {
+        "name": "A4 Musikheft",
+        "description": "A4 Musikheft",
+        "image": "a4_musikheft.png",
+        "price": 90,
+        "bundle_price": 80,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "164447197": {
+        "name": "A5 liniert, weißer Rand",
+        "description": "A5 liniert, weißer Rand",
+        "image": "a5_liniert_weissrand.png",
+        "price": 50,
+        "bundle_price": 50,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "B261001": {
+        "name": "Register 5er",
+        "description": "Register 5er",
+        "image": "register_5.png",
+        "price": 170,
+        "bundle_price": 150,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "B261101": {
+        "name": "Register 12er",
+        "description": "Regsiter 12er",
+        "image": "register_12.png",
+        "price": 90,
+        "bundle_price": 80,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "B118601": {
+        "name": "Ordner",
+        "description": "Ordner",
+        "image": "ordner.png",
+        "price": 230,
+        "bundle_price": 210,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
     "arbeitsheft_mathe": {
-        "name": "Mathe Arbeitsheft",
-        "description": "Mathe Arbeitsheft",
+        "name": "Arbeitsheft Mathe",
+        "description": "Arbeitsheft Mathe",
         "image": "arbeitsheft_mathe.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z",
-        "🌊🌊": "🐟🐟🐟🐟🐟🐟"
+        "price": 950,
+        "created_at": "2022-07-25",
+        "badges": []
     },
-    "collegeblock_kariert_schattenrand": {
-        "name": "Collegeblock kariert",
-        "description": "Collegeblock kariert mit Schattenrand",
-        "image": "collegeblock_kariert_schattenrand.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
+    "hausaufgabenheft": {
+        "name": "Hausaufgabenheft",
+        "description": "Hausaufgabenheft",
+        "image": "hausaufgabenheft.png",
+        "price": 350,
+        "created_at": "2022-07-25",
+        "badges": []
     },
-    "collegeblock_liniert_schattenrand": {
-        "name": "Collegeblock liniert",
-        "description": "Collegeblock liniert mit Schattenrand",
-        "image": "collegeblock_liniert_schattenrand.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
+    "B424301": {
+        "name": "Karteikarten DinA7",
+        "description": "Karteikarten DinA7",
+        "image": "karteikarten_a7.png",
+        "price": -9999,
+        "created_at": "2022-07-25",
+        "badges": []
     },
-    "collegeblock_liniert_weissrand": {
-        "name": "Collegeblock liniert",
-        "description": "Collegeblock liniert mit weissen Rand",
-        "image": "collegeblock_liniert_weissrand.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
+    "B243603": {
+        "name": "Ringbuch \"manila\" rot",
+        "description": "Ringbuch \"manila\" rot",
+        "image": "ringbuch.png",
+        "price": 170,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "schnellhefter": {
+        "name": "Schnellhefter",
+        "description": "Schnellhefter",
+        "image": "schnellhefter.png",
+        "price": 90,
+        "created_at": "2022-07-25",
+        "badges": [
+            {
+                "text": "Farben",
+                "gradient": {
+                    "start": "#7cf7bb",
+                    "stop": "#f77cb8"
+                }
+            }
+        ]
+    },
+    "schnellhefterheft_kar_dr": {
+        "name": "Schnellhefterheft kar dR",
+        "description": "Schnellhefterheft kar dR",
+        "image": "schnellhefterheft_kar_dr.png",
+        "price": 140,
+        "bundle_price": 140,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "schnellhefterheft_lin": {
+        "name": "Schnellhefterheft lin",
+        "description": "Schnellhefterheft lin",
+        "image": "schnellhefterheft_lin.png",
+        "price": 140,
+        "bundle_price": 140,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "schnellhefterheft_lin_dr": {
+        "name": "Schnellhefterheft lin dR",
+        "description": "Schnellhefterheft lin dR",
+        "image": "schnellhefterheft_lin_dr.png",
+        "price": 140,
+        "bundle_price": 140,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "schnellhefterheft_mu": {
+        "name": "Schnellhefterheft Mu",
+        "description": "Schnellhefterheft Mu",
+        "image": "schnellhefterheft_mu.png",
+        "price": 220,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "umschlag_a5": {
+        "name": "Umschlag A5",
+        "description": "Umschlag A5",
+        "image": "umschlag_a5.png",
+        "price": 100,
+        "created_at": "2022-07-25",
+        "badges": [
+            {
+                "text": "Farben",
+                "gradient": {
+                    "start": "#7cf7bb",
+                    "stop": "#f77cb8"
+                }
+            }
+        ]
+    },
+    "umschlag_a4": {
+        "name": "Umschlag A4",
+        "description": "Umschlag A4",
+        "image": "umschlag_a4.png",
+        "price": 120,
+        "created_at": "2022-07-25",
+        "badges": [
+            {
+                "text": "Farben",
+                "gradient": {
+                    "start": "#7cf7bb",
+                    "stop": "#f77cb8"
+                }
+            }
+        ]
+    },
+    "collegeblock_lin_27": {
+        "name": "Collegeblock lineatur 27",
+        "description": "Collegeblock lineatur 27",
+        "image": "collegeblock_lin_27.png",
+        "price": -9999,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "collegeblock_lin_28": {
+        "name": "Collegeblock lineatur 28",
+        "description": "Collegeblock lineatur 28",
+        "image": "collegeblock_lin_28.png",
+        "price": -9999,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "collegeblock_lin_25": {
+        "name": "Collegeblock lineatur 25",
+        "description": "Collegeblock lineatur 25",
+        "image": "collegeblock_lin_25.png",
+        "price": 250,
+        "bundle_price": 230,
+        "created_at": "2022-07-25",
+        "badges": []
     },
     "geodreieck": {
         "name": "Geodreieck",
-        "description": "",
+        "description": "Geodreieck",
         "image": "geodreieck.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
+        "price": 1,
+        "created_at": "2022-07-25",
+        "badges": []
     },
-    "heft_a4_kariert_weissrand": {
-        "name": "Heft A4 kariert",
-        "description": "Heft A4 kariert mit weissen Rand",
-        "image": "heft_a4_kariert_weissrand.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
+    "vokabelheft_a5": {
+        "name": "Vokabelheft A5",
+        "description": "Vokabelheft A5",
+        "image": "vokabelheft_a5.png",
+        "price": 1,
+        "bundle_price": 1,
+        "created_at": "2022-07-25",
+        "badges": []
     },
-    "heft_a4_liniert_schattenrand": {
-        "name": "Heft A4 liniert",
-        "description": "Heft A4 liniert mit Schattenrand",
-        "image": "heft_a4_liniert_schattenrand.png",
+    "workbook": {
+        "name": "Workbook",
+        "description": "Workbook",
+        "image": "workbook.png",
         "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "heft_a4_musik": {
-        "name": "Musikheft",
-        "description": "Heft A4 mit Notenlinien",
-        "image": "heft_a4_musik.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "heft_a5_liniert": {
-        "name": "Heft A5 liniert",
-        "description": "Heft A5 liniert",
-        "image": "heft_a5_liniert.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "ordner_gelb": {
-        "name": "Ordner gelb",
-        "description": "",
-        "image": "ordner_gelb.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "registerblaetter_6": {
-        "name": "6er Registerblaetter",
-        "description": "",
-        "image": "registerblaetter_6.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "ringbuch_duenn": {
-        "name": "Ringbuch",
-        "description": "Duennes Ringbuch",
-        "image": "ringbuch_duenn.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "schnellhefter_heft": {
-        "name": "Heft mit Schnellhefter",
-        "description": "Mit integrierten Schnellhefter",
-        "image": "schnellhefter_heft.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "schnellhefter_rot": {
-        "name": "Schnellhefter Rot",
-        "description": "",
-        "image": "schnellhefter_rot.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_braun": {
-        "name": "Umschlag braun",
-        "description": "",
-        "image": "umschlag_braun.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_schwarz": {
-        "name": "Umschlag schwarz",
-        "description": "",
-        "image": "umschlag_schwarz.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_weiss": {
-        "name": "Umschlag weiss",
-        "description": "",
-        "image": "umschlag_weiss.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_cyan": {
-        "name": "Umschlag cyan",
-        "description": "",
-        "image": "umschlag_cyan.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_dunkelblau": {
-        "name": "Umschlag dunkelblau",
-        "description": "",
-        "image": "umschlag_dunkelblau.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_dunkelgruen": {
-        "name": "Umschlag dunkelgruen",
-        "description": "",
-        "image": "umschlag_dunkelgruen.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_dunkelrot": {
-        "name": "Umschlag dunkelrot",
-        "description": "",
-        "image": "umschlag_dunkelrot.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_gelb": {
-        "name": "Umschlag gelb",
-        "description": "",
-        "image": "umschlag_gelb.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_grau": {
-        "name": "Umschlag grau",
-        "description": "",
-        "image": "umschlag_grau.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_hellblau": {
-        "name": "Umschlag hellblau",
-        "description": "",
-        "image": "umschlag_hellblau.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_hellgruen": {
-        "name": "Umschlag hellgruen",
-        "description": "",
-        "image": "umschlag_hellgruen.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_lila": {
-        "name": "Umschlag lila",
-        "description": "",
-        "image": "umschlag_lila.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_orange": {
-        "name": "Umschlag orange",
-        "description": "",
-        "image": "umschlag_orange.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_pink": {
-        "name": "Umschlag pink",
-        "description": "",
-        "image": "umschlag_pink.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "umschlag_rot": {
-        "name": "Umschlag rot",
-        "description": "",
-        "image": "umschlag_rot.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
-    },
-    "vokabelheft_a5_liniert": {
-        "name": "Vokabelheft A5 liniert",
-        "description": "",
-        "image": "vokabelheft_a5_liniert.png",
-        "price": 1000,
-        "badges": [],
-        "created_at": "2022-07-17T16:25:26.792Z"
+        "created_at": "2022-07-25",
+        "badges": []
     }
 }
