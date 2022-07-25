@@ -40,6 +40,7 @@ Beispiel:
         "description": "Ein roter Umschlag.",
         "image": "umschlag_rot.png",
         "price": 1200,
+        "bundle_price": 1100,
         "created_at": "2018-01-01T00:00:00.000Z",
         "badges": [
             {
