@@ -1,1 +1,17 @@
-{}
+{
+    "test": {
+        "name": "Test Bundle",
+        "description": "Das ist ein Testbundle",
+        "content": [
+            {
+                "id": "B243603",
+                "quantity": 4
+            },
+            {
+                "id": "schnellhefter",
+                "variant": "Blau",
+                "quantity": 1
+            }
+        ]
+    }
+}

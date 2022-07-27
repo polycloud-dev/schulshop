@@ -86,7 +86,7 @@ export default function ShoppingCartPage() {
         })
 
         const total = items.reduce((acc, item) => {
-            const product = products[item.id]
+            const product = products[item.id] || products[item.product_id]
             const price = product ? product.price * item.quantity : 0
             return acc + price
         }, 0)
@@ -110,12 +110,12 @@ export default function ShoppingCartPage() {
     }
 
     function Item({ item }) {
-        if(item.type === 'product') return <ProductItem item={item} />
+        if(item.type === 'product' || item.type === 'variant') return <ProductItem item={item} />
         else if(item.type === 'bundle') return <BundleItem item={item} />
         else return <></>
     }
 
-    function ProductItem({ item, bundle, ...props }) {
+    function ProductItem({ item, bundle, max, ...props }) {
 
         const theme = useMantineTheme()
 
@@ -132,7 +132,7 @@ export default function ShoppingCartPage() {
                 p='xs'
                 key={item.id}
             >
-                <ProductCard item={item} bundle={bundle}/>
+                <ProductCard item={item} bundle={bundle} max={max}/>
             </Card>
         )
     }
@@ -161,7 +161,7 @@ export default function ShoppingCartPage() {
         const bundle = cachedBundles[item.id]
         const products = item.content.map(entry => {
             const product = cachedProducts[entry.id]
-            if(!product) return
+            if(!product) return null
             product.quantity = entry.quantity
             return product
         }).filter(product => product !== undefined)
@@ -191,9 +191,17 @@ export default function ShoppingCartPage() {
                     <Group
                         spacing='xs'
                     >   
-                        {item.content.map(product_item => (
-                            <ProductItem item={{...product_item, type: 'product'}} bundle={item} />
-                        ))}
+                        {item.content.map(product_item => {
+                            const bundle_item = bundle.content.find(bundle_item => bundle_item.id === product_item.id)
+                            if(!product_item.variant) return <ProductItem item={{...product_item, type: 'product'}} bundle={item} max={bundle_item.quantity} />
+                            else return <ProductItem item={{
+                                id:`${product_item.id}-${product_item.variant}`,
+                                product_id: product_item.id,
+                                type: 'variant',
+                                variant: product_item.variant,
+                                quantity: product_item.quantity,
+                            }} bundle={item} max={bundle_item.quantity} />
+                        })}
                     </Group>
                 </Collapse>
             </>
@@ -290,7 +298,7 @@ export default function ShoppingCartPage() {
         )
     }
 
-    function ProductCard({ item, bundle=false }) {
+    function ProductCard({ item, bundle=false, max=10 }) {
 
         const { setQuantity, formatCurrency } = useShoppingCart()
 
@@ -302,20 +310,24 @@ export default function ShoppingCartPage() {
         useEffect(() => {
             cachedFetch()
                 .then(data => setProducts(data))
-        }, [])
+        }, [cachedFetch])
 
-        const product = products[item.id]
-
+        const product = products[item.id] || products[item.product_id]
         if(!product) return null
+
+        const variant = item.variant ? product.variants.find(variant => variant.name === item.variant) : undefined
 
         function handleDelete() {
             setQuantity(item, 0, bundle)
         }
 
         function handleChange(value) {
-            if(value < 0 || value > 10) return
+            if(value < 0 || value > max) return
             setQuantity(item, value, bundle)
         }
+
+        const name = `${product.name} ${item.variant ? `"${variant.name}"` : ''}`
+        const image = item.variant ? variant.image : product.image
 
         return (
             <>
@@ -325,7 +337,7 @@ export default function ShoppingCartPage() {
                         alignItems: 'center',
                     }}
                 >
-                    <Image width='3rem' height='3rem' fit='contain' src={`${process.env.REACT_APP_API_HOST}/images/${product.image}`} alt={product.name} />
+                    <Image width='3rem' height='3rem' fit='contain' src={`${process.env.REACT_APP_API_HOST}/images/${image}`} alt={product.name} />
                 </Card.Section>
                 <Group
                     position='apart'
@@ -347,7 +359,7 @@ export default function ShoppingCartPage() {
                                 fontSize: '1.5rem',
                             }}
                         >
-                            {product.name}
+                            {name}
                         </Title>
                         <Text
                             color='dimmed'
@@ -375,7 +387,7 @@ export default function ShoppingCartPage() {
                                 width: '4rem',
                             }}
                             min={1}
-                            max={10}
+                            max={max}
                             onChange={handleChange}
                         />
                     </Group>

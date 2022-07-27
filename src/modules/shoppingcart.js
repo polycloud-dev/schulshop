@@ -17,6 +17,15 @@ export function ShoppingCartProvider({ children }) {
                 "quantity": 1,
             },
             {
+                "id": "gopher-red",
+                "type": "variant",
+                "variant": {
+                    "name": "red",
+                    "image": "123.png"
+                },
+                "quantity": 1
+            },
+            {
                 "id": "gophers".
                 "type": "bundle",
                 "content": [
@@ -50,7 +59,7 @@ export function ShoppingCartProvider({ children }) {
     function addToCart(item, bundle=false) {
         if(!item) return false;
         // if item is a product
-        if(item.type === "product") {
+        if(item.type === "product" || item.type === 'variant') {
             if(!bundle) {
                 // if item is already in cart, increase quantity
                 const index = cart.findIndex(cartItem => cartItem.id === item.id);
@@ -128,7 +137,7 @@ export function ShoppingCartProvider({ children }) {
     function removeFromCart(item, bundle=false) {
         if(!item) return false;
         // if item is a product
-        if(item.type === "product") {
+        if(item.type === "product" || item.type === 'variant') {
             if(!bundle) {
                 // if item is already in cart, decrease quantity
                 const index = cart.findIndex(cartItem => cartItem.id === item.id);
@@ -204,7 +213,7 @@ export function ShoppingCartProvider({ children }) {
     function setQuantity(item, quantity, bundle_parent=false) {
         if(!item) return false;
         // if item is a product
-        if(item.type === "product") {
+        if(item.type === "product" || item.type === 'variant') {
             // if bundle
             if(bundle_parent) {
                 // find bundle
@@ -288,6 +297,13 @@ export function ShoppingCartProvider({ children }) {
     function rawCart() {
         const bundles = cart.filter(cartItem => cartItem.type === "bundle");
         const products = cart.filter(cartItem => cartItem.type === "product");
+        const variants = cart.filter(cartItem => cartItem.type === "variant").map(variant => {
+            return {
+                'id': variant.product_id,
+                'quantity': variant.quantity,
+                'variant': variant.name,
+            }
+        })
 
         for(let i = 0; i < bundles.length; i++) {
             const bundle = bundles[i];
@@ -303,11 +319,12 @@ export function ShoppingCartProvider({ children }) {
             }
         }
 
-        return products;
+        // merge products and variants
+        return [...products, ...variants];
     }
 
     function size() {
-        const products = cart.filter(cartItem => cartItem.type === "product");
+        const products = cart.filter(cartItem => cartItem.type === "product" || cartItem.type === "variant");
         const bundles = cart.filter(cartItem => cartItem.type === "bundle");
 
         let size = 0;

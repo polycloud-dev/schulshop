@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './global.css';
 import reportWebVitals from './reportWebVitals';
 import theme from './theme.json';
 import { MantineProvider } from '@mantine/core'
 import { ServerProvider } from './modules/servercomponent';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ShoppingCartProvider } from './modules/shoppingcart';
 import { NotificationsProvider } from '@mantine/notifications';
 
@@ -16,6 +16,11 @@ import AboutPage from './pages/About';
 import ContactPage from './pages/Contact';
 import ShoppingCartPage from './pages/ShoppingCart';
 import OrderedPage from './pages/Ordered';
+
+import PrinterEasterEgg from './pages/printer';
+import VariantPage from './pages/Variant';
+
+if(window.location.href.includes('www')) window.location.href = window.location.href.replace('www.', '');
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -44,6 +49,7 @@ function RouteProvider() {
       <Routes>
         <Route path='/'>
           <Route index element={<HomePage />} />
+          <Route path='/variant/:id' element={<VariantPage />} />
           <Route path='/nachhaltig' element={<SustainablePage />} />
           <Route path='/about' element={<AboutPage />} />
           <Route path='/kontakt' element={<ContactPage />} />
@@ -55,11 +61,4 @@ function RouteProvider() {
       </Routes>
     </Router>
   )
-}
-
-function PrinterEasterEgg() {
-  useEffect(() => {
-    window.location.href = 'https://www.youtube.com/watch?v=jeg_TJvkSjg&t=42s'
-  }, [])
-  return "How did you find me??"
 }

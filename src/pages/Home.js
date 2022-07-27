@@ -1,6 +1,6 @@
-import { Text, Container, Title, Divider, SimpleGrid, Skeleton, Tooltip, Badge, Card, Image, Group, useMantineTheme, Button, Indicator, MediaQuery, Space, ActionIcon } from '@mantine/core';
+import { Text, Container, Title, Divider, SimpleGrid, Skeleton, Badge, Card, Image, Group, useMantineTheme, Button, Indicator, MediaQuery, Space, ActionIcon } from '@mantine/core';
 import ServerComponent from '../components/servercomponent';
-import { ArrowUpRight, Leaf, ShoppingCart as ShoppingCartIcon } from 'tabler-icons-react';
+import { Leaf, ShoppingCart as ShoppingCartIcon } from 'tabler-icons-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useServer } from '../modules/servercomponent';
@@ -171,7 +171,7 @@ export default function HomePage() {
         )
     }
 
-    function CardBody({ item, badges, name, description, price, old_price = undefined, height }) {
+    function CardBody({ item, badges, name, description, price, old_price = undefined, height, onBuyClick }) {
 
         const { addToCart, formatCurrency } = useShoppingCart()
 
@@ -265,7 +265,7 @@ export default function HomePage() {
                     mb='md'
                 >
                     <Button
-                        onClick={addItem}
+                        onClick={onBuyClick ? onBuyClick : addItem}
                     >Kaufen</Button>
                     {getPriceTag()}
                 </Group>
@@ -372,6 +372,8 @@ export default function HomePage() {
 
     function ProductCards({ data, height, width }) {
 
+        const navigate = useNavigate()
+
         const theme = useMantineTheme()
 
         const [badges, setBadges] = useState({})
@@ -387,6 +389,10 @@ export default function HomePage() {
             }
             )
         }, [data, badges])
+
+        function navigateToVariant(id) {
+            navigate(`/variant/${id}`)
+        }
 
         return (
             <SimpleGrid
@@ -419,6 +425,7 @@ export default function HomePage() {
                                 old_price={product.old_price}
                                 height={height}
                                 item={{ 'id': key, 'type': 'product' }}
+                                onBuyClick={product.variants ? () => navigateToVariant(key) : undefined}
                             />
                         </Card>
                     )

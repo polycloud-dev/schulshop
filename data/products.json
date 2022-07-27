@@ -78,29 +78,39 @@
         "price": 230,
         "bundle_price": 210,
         "created_at": "2022-07-25",
-        "badges": []
+        "badges": [
+            {
+                "text": "Farben",
+                "gradient": {
+                    "start": "#7cf7bb",
+                    "stop": "#f77cb8"
+                }
+            }
+        ],
+        "variants": [
+            {
+                "name": "Gelb",
+                "image": "ordner_gelb.png"
+            },
+            {
+                "name": "Blau",
+                "image": "ordner_blau.png"
+            },
+            {
+                "name": "Rot",
+                "image": "ordner_rot.png"
+            },
+            {
+                "name": "Schwarz",
+                "image": "ordner_schwarz.png"
+            }
+        ]
     },
     "arbeitsheft_mathe": {
         "name": "Arbeitsheft Mathe",
         "description": "Arbeitsheft Mathe",
         "image": "arbeitsheft_mathe.png",
         "price": 950,
-        "created_at": "2022-07-25",
-        "badges": []
-    },
-    "hausaufgabenheft": {
-        "name": "Hausaufgabenheft",
-        "description": "Hausaufgabenheft",
-        "image": "hausaufgabenheft.png",
-        "price": 350,
-        "created_at": "2022-07-25",
-        "badges": []
-    },
-    "B424301": {
-        "name": "Karteikarten DinA7",
-        "description": "Karteikarten DinA7",
-        "image": "karteikarten_a7.png",
-        "price": -9999,
         "created_at": "2022-07-25",
         "badges": []
     },
@@ -125,6 +135,36 @@
                     "start": "#7cf7bb",
                     "stop": "#f77cb8"
                 }
+            }
+        ],
+        "variants": [
+            {
+                "name": "Blau",
+                "image": "schnellhefter_blau.png"
+            },
+            {
+                "name": "Gelb",
+                "image": "schnellhefter_gelb.png"
+            },
+            {
+                "name": "Grün",
+                "image": "schnellhefter_gruen.png"
+            },
+            {
+                "name": "Pink",
+                "image": "schnellhefter_pink.png"
+            },
+            {
+                "name": "Lila",
+                "image": "schnellhefter_lila.png"
+            },
+            {
+                "name": "Rot",
+                "image": "schnellhefter_rot.png"
+            },
+            {
+                "name": "Weiß",
+                "image": "schnellhefter_weiss.png"
             }
         ]
     },
@@ -177,6 +217,16 @@
                     "stop": "#f77cb8"
                 }
             }
+        ],
+        "variants": [
+            {
+                "name": "Hellgrün",
+                "image": "umschlag_a5_hellgruen.png"
+            },
+            {
+                "name": "Dunkelgrün",
+                "image": "umschlag_a5_dunkelgruen.png"
+            }
         ]
     },
     "umschlag_a4": {
@@ -193,23 +243,69 @@
                     "stop": "#f77cb8"
                 }
             }
+        ],
+        "variants": [
+            {
+                "name": "Blau",
+                "image": "umschlag_a4_blau.png"
+            },
+            {
+                "name": "Braun",
+                "image": "umschlag_a4_braun.png"
+            },
+            {
+                "name": "Dunkelgrün",
+                "image": "umschlag_a4_dunkelgruen.png"
+            },
+            {
+                "name": "Grün",
+                "image": "umschlag_a4_gruen.png"
+            },
+            {
+                "name": "Hellblau",
+                "image": "umschlag_a4_hellblau.png"
+            },
+            {
+                "name": "Lila",
+                "image": "umschlag_a4_lila.png"
+            },
+            {
+                "name": "Orange",
+                "image": "umschlag_a4_orange.png"
+            },
+            {
+                "name": "Rot",
+                "image": "umschlag_a4_rot.png"
+            },
+            {
+                "name": "Pink",
+                "image": "umschlag_a4_pink.png"
+            },
+            {
+                "name": "Gelb",
+                "image": "umschlag_a4_gelb.png"
+            },
+            {
+                "name": "Grau",
+                "image": "umschlag_a4_grau.png"
+            },
+            {
+                "name": "Weiß",
+                "image": "umschlag_a4_weiss.png"
+            },
+            {
+                "name": "Schwarz",
+                "image": "umschlag_a4_schwarz.png"
+            },
+            {
+                "name": "Türkis",
+                "image": "umschlag_a4_tuerkis.png"
+            },
+            {
+                "name": "Weinrot",
+                "image": "umschlag_a4_weinrot.png"
+            }
         ]
-    },
-    "collegeblock_lin_27": {
-        "name": "Collegeblock lineatur 27",
-        "description": "Collegeblock lineatur 27",
-        "image": "collegeblock_lin_27.png",
-        "price": -9999,
-        "created_at": "2022-07-25",
-        "badges": []
-    },
-    "collegeblock_lin_28": {
-        "name": "Collegeblock lineatur 28",
-        "description": "Collegeblock lineatur 28",
-        "image": "collegeblock_lin_28.png",
-        "price": -9999,
-        "created_at": "2022-07-25",
-        "badges": []
     },
     "collegeblock_lin_25": {
         "name": "Collegeblock lineatur 25",
