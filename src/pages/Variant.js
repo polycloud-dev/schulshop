@@ -69,7 +69,7 @@ export default function VariantPage() {
                 message: `${product.name} "${selected.name}" wurde zum Warenkorb hinzugefügt`,
                 autoClose: 1500,
             })
-            setTimeout(() => navigate('/'), 1500)
+            setTimeout(() => navigate('/'), 500)
         }
     }
 
@@ -91,11 +91,15 @@ export default function VariantPage() {
             >
                 Varianten
             </Text>
-            <Grid
-                mt='md'
-            >
-                {product.variants.map(variant => (<VariantCard variant={variant} selected={selected} setSelected={setSelected} /> ))}
-            </Grid>
+            <Container>
+                <Grid
+                    mt='md'
+                    justify='flex-start'
+                    gutter='xs'
+                >
+                    {product.variants.map(variant => (<Grid.Col span={2} ><VariantCard variant={variant} selected={selected} setSelected={setSelected} /></Grid.Col> ))}
+                </Grid>
+            </Container>
             <Group
                 mt='xl'
                 mb='md'
