@@ -41,7 +41,7 @@ export default function ServerComponent({ children, result, error, loading, onFa
             }
             var data;
             // check if response is json
-            if(response.headers.get('content-type') === 'application/json') data = await response.json();
+            if(response.headers.get('content-type').includes('application/json')) data = await response.json();
             else data = await response.text();
 
             setCache(data);
