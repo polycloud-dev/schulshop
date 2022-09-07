@@ -216,6 +216,8 @@ export default function HomePage() {
             } else return <Tag price={price} />
         }
 
+        if(!name) return
+
         return (
             <Container
                 p={0}
@@ -288,8 +290,7 @@ export default function HomePage() {
                 setProducts(data)
             }).catch(err => {
                 console.log(err)
-            }
-            )
+            })
         }, [cachedFetch])
 
         return (
@@ -303,7 +304,7 @@ export default function HomePage() {
                     const bundle = data[key]
 
                     const content = bundle.content;
-                    if (!content) return 'error'
+                    if (!content) return null
 
                     const bundle_products = content.map(product => {
                         const result = products[product.id]
@@ -347,7 +348,7 @@ export default function HomePage() {
                                     {
                                         bundle_products.map(product => {
                                             return (
-                                                <Image height={height / 2} width={width / bundle_products.length} fit='cover' src={`${process.env.REACT_APP_API_HOST}/images/${product.image}`} alt={product.name} />
+                                                <Image height={height / 2} width={width / bundle_products.length} fit='cover' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${product.image}`} alt={product.name} />
                                             )
                                         })
                                     }
@@ -402,6 +403,7 @@ export default function HomePage() {
             >
                 {Object.keys(data).map(key => {
                     const product = data[key]
+                    if(!product.name) return null
                     return (
                         <Card
                             radius='md'
@@ -415,7 +417,7 @@ export default function HomePage() {
                             key={key}
                         >
                             <Card.Section>
-                                <Image height={height / 2} fit='contain' src={`${process.env.REACT_APP_API_HOST}/images/${product.image}`} alt={product.name} />
+                                <Image height={height / 2} fit='contain' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${product.image}`} alt={product.name} />
                             </Card.Section>
                             <CardBody
                                 badges={badges[key]}
@@ -441,6 +443,7 @@ export default function HomePage() {
             loading={<SkeletonCards />}
         >
             {(data) => {
+                if(typeof data !== 'object') return <ErrorCards />
                 if (Object.keys(data).length > 0) {
                     return <>
                         <LabelDivider label={'Einzelne Produkte'} />
