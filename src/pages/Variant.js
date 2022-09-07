@@ -69,7 +69,6 @@ export default function VariantPage() {
                 message: `${product.name} "${selected.name}" wurde zum Warenkorb hinzugefügt`,
                 autoClose: 1500,
             })
-            setTimeout(() => navigate('/'), 500)
         }
     }
 
@@ -132,7 +131,7 @@ function VariantCard({ variant, selected, setSelected }) {
                 borderRadius: '0.5rem',
                 height: '6rem',
                 width: '6rem',
-                backgroundImage: `url(${process.env.REACT_APP_API_HOST}/images/${variant.image})`,
+                backgroundImage: `url(${process.env.REACT_APP_IMAGE_HOST}/images/${variant.image})`,
                 backgroundSize: 'cover',
                 display: 'flex',
             }}
