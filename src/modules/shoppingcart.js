@@ -298,29 +298,31 @@ export function ShoppingCartProvider({ children }) {
         const bundles = cart.filter(cartItem => cartItem.type === "bundle");
         const products = cart.filter(cartItem => cartItem.type === "product");
         const variants = cart.filter(cartItem => cartItem.type === "variant").map(variant => {
+            console.log(variant);
             return {
                 'id': variant.product_id,
                 'quantity': variant.quantity,
-                'variant': variant.name,
+                'variant': variant.variant,
+                'type': 'variant',
             }
         })
 
-        for(let i = 0; i < bundles.length; i++) {
-            const bundle = bundles[i];
-            for(let j = 0; j < bundle.content.length; j++) {
-                const product = bundle.content[j];
-                // if product is in cart, increase quantity
-                const index = products.findIndex(cartItem => cartItem.id === product.id);
-                if(index !== -1) {
-                    products[index].quantity += product.quantity;
-                }else {
-                    products.push({'id': product.id, 'quantity': product.quantity});
-                }
-            }
-        }
+        // for(let i = 0; i < bundles.length; i++) {
+        //     const bundle = bundles[i];
+        //     for(let j = 0; j < bundle.content.length; j++) {
+        //         const product = bundle.content[j];
+        //         // if product is in cart, increase quantity
+        //         const index = products.findIndex(cartItem => cartItem.id === product.id);
+        //         if(index !== -1) {
+        //             products[index].quantity += product.quantity;
+        //         }else {
+        //             products.push({'id': product.id, 'quantity': product.quantity});
+        //         }
+        //     }
+        // }
 
         // merge products and variants
-        return [...products, ...variants];
+        return [...products, ...bundles, ...variants];
     }
 
     function size() {
