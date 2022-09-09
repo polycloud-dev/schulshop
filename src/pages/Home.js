@@ -301,25 +301,33 @@ export default function HomePage() {
             >
                 {Object.keys(data).map(key => {
 
+                    if(key === 'default') return null;
+
                     const bundle = data[key]
 
+                    let total_price = bundle.price;
+                    let total_old_price = bundle.old_price;
+
+                    let bundle_products;
+
                     const content = bundle.content;
-                    if (!content) return null
+                    if (content) {
 
-                    const bundle_products = content.map(product => {
-                        const result = products[product.id]
-                        if (!result) return ''
-                        result.quantity = product.quantity
-                        return result
-                    }).filter(product => product !== undefined)
+                        bundle_products = content.map(product => {
+                            const result = products[product.id]
+                            if (!result) return ''
+                            result.quantity = product.quantity
+                            return result
+                        }).filter(product => product !== undefined)
 
-                    const total_price = bundle_products.reduce((acc, product) => {
-                        return acc + product.price * product.quantity
-                    }, 0)
-                    const total_old_price = bundle_products.reduce((acc, product) => {
-                        if (product.old_price) return acc + product.old_price * product.quantity
-                        return acc + product.price * product.quantity
-                    }, 0)
+                        total_price = bundle_products.reduce((acc, product) => {
+                            return acc + product.price * product.quantity
+                        }, 0)
+                        total_old_price = bundle_products.reduce((acc, product) => {
+                            if (product.old_price) return acc + product.old_price * product.quantity
+                            return acc + product.price * product.quantity
+                        }, 0)
+                    }
 
                     // kann noch probleme machen, aber bis jetzt geht es
                     if (!badges[key]) {
@@ -346,11 +354,15 @@ export default function HomePage() {
                                     spacing={0}
                                 >
                                     {
-                                        bundle_products.map(product => {
-                                            return (
-                                                <Image height={height / 2} width={width / bundle_products.length} fit='cover' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${product.image}`} alt={product.name} />
-                                            )
-                                        })
+                                        bundle_products ?
+                                            bundle_products.map(product => {
+                                                return (
+                                                    <Image height={height / 2} width={width / bundle_products.length} fit='cover' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${product.image}`} alt={product.name} />
+                                                )
+                                            })
+                                        : (
+                                            <Image height={height / 2} width={width} fit='contain' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${bundle.image}`} alt={bundle.name} />
+                                        )
                                     }
                                 </Group>
                             </Card.Section>
