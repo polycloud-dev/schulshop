@@ -2,7 +2,7 @@
     "S433701": {
         "name": "A4 kariert, Schattenrand",
         "description": "A4 kariert, Schattenrand",
-        "image": "a4_kariert_schattenrand.png",
+        "image": "a4_liniert_schattenrand.png",
         "price": 90,
         "bundle_price": 80,
         "created_at": "2022-07-25",
@@ -29,7 +29,7 @@
     "S433403": {
         "name": "A4 liniert, weißer Rand",
         "description": "A4 liniert, weißer Rand",
-        "image": "a4_liniert_weissrand.png",
+        "image": "a5_liniert_weissrand.png",
         "price": 90,
         "bundle_price": 80,
         "created_at": "2022-07-25",
@@ -56,7 +56,7 @@
     "B261001": {
         "name": "Register 5er",
         "description": "Register 5er",
-        "image": "register_5.png",
+        "image": "registerblaetter_5.png",
         "price": 170,
         "bundle_price": 150,
         "created_at": "2022-07-25",
@@ -65,7 +65,7 @@
     "B261101": {
         "name": "Register 12er",
         "description": "Regsiter 12er",
-        "image": "register_12.png",
+        "image": "registerblaetter_5.png",
         "price": 90,
         "bundle_price": 80,
         "created_at": "2022-07-25",
@@ -105,14 +105,6 @@
                 "image": "ordner_schwarz.png"
             }
         ]
-    },
-    "arbeitsheft_mathe": {
-        "name": "Arbeitsheft Mathe",
-        "description": "Arbeitsheft Mathe",
-        "image": "arbeitsheft_mathe.png",
-        "price": 950,
-        "created_at": "2022-07-25",
-        "badges": []
     },
     "B243603": {
         "name": "Ringbuch \"manila\" rot",
@@ -171,7 +163,7 @@
     "schnellhefterheft_kar_dr": {
         "name": "Schnellhefterheft kar dR",
         "description": "Schnellhefterheft kar dR",
-        "image": "schnellhefterheft_kar_dr.png",
+        "image": "schnellhefter_heft.png",
         "price": 140,
         "bundle_price": 140,
         "created_at": "2022-07-25",
@@ -180,7 +172,7 @@
     "schnellhefterheft_lin": {
         "name": "Schnellhefterheft lin",
         "description": "Schnellhefterheft lin",
-        "image": "schnellhefterheft_lin.png",
+        "image": "schnellhefter_heft.png",
         "price": 140,
         "bundle_price": 140,
         "created_at": "2022-07-25",
@@ -189,7 +181,7 @@
     "schnellhefterheft_lin_dr": {
         "name": "Schnellhefterheft lin dR",
         "description": "Schnellhefterheft lin dR",
-        "image": "schnellhefterheft_lin_dr.png",
+        "image": "schnellhefter_heft.png",
         "price": 140,
         "bundle_price": 140,
         "created_at": "2022-07-25",
@@ -198,7 +190,7 @@
     "schnellhefterheft_mu": {
         "name": "Schnellhefterheft Mu",
         "description": "Schnellhefterheft Mu",
-        "image": "schnellhefterheft_mu.png",
+        "image": "schnellhefter_heft.png",
         "price": 220,
         "created_at": "2022-07-25",
         "badges": []
@@ -206,7 +198,7 @@
     "umschlag_a5": {
         "name": "Umschlag A5",
         "description": "Umschlag A5",
-        "image": "umschlag_a5.png",
+        "image": "umschlag_a4.png",
         "price": 100,
         "created_at": "2022-07-25",
         "badges": [
@@ -221,11 +213,11 @@
         "variants": [
             {
                 "name": "Hellgrün",
-                "image": "umschlag_a5_hellgruen.png"
+                "image": "umschlag_a4_gruen.png"
             },
             {
                 "name": "Dunkelgrün",
-                "image": "umschlag_a5_dunkelgruen.png"
+                "image": "umschlag_a4_dunkelgruen.png"
             }
         ]
     },
@@ -307,10 +299,26 @@
             }
         ]
     },
+    "collegeblock_liniert": {
+        "name": "Collegeblock liniert",
+        "description": "Collegeblock liniert",
+        "image": "collegeblock_liniert.png",
+        "price": 180,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
+    "collegeblock_kariert": {
+        "name": "Collegeblock kariert",
+        "description": "Collegeblock kariert",
+        "image": "collegeblock_kariert.png",
+        "price": 180,
+        "created_at": "2022-07-25",
+        "badges": []
+    },
     "collegeblock_lin_25": {
-        "name": "Collegeblock lineatur 25",
-        "description": "Collegeblock lineatur 25",
-        "image": "collegeblock_lin_25.png",
+        "name": "Collegeblock liniert, weißer Rand",
+        "description": "Collegeblock liniert, weißer Rand",
+        "image": "collegeblock_liniert_weissrand.png",
         "price": 250,
         "bundle_price": 230,
         "created_at": "2022-07-25",
@@ -330,14 +338,6 @@
         "image": "vokabelheft_a5.png",
         "price": 1,
         "bundle_price": 1,
-        "created_at": "2022-07-25",
-        "badges": []
-    },
-    "workbook": {
-        "name": "Workbook",
-        "description": "Workbook",
-        "image": "workbook.png",
-        "price": 1000,
         "created_at": "2022-07-25",
         "badges": []
     }

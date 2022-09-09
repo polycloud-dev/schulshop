@@ -1,1 +1,16 @@
-{}
+{
+    "heftepacket": {
+        "name": "Heftepacket",
+        "description": "Verschiedene Hefte",
+        "price": 1000,
+        "image": "a4_kariert_weissrand.png",
+        "created_at": "2022-07-25"
+    },
+    "ordnerpacket": {
+        "name": "Ordnerpacket",
+        "description": "Verschiedene Ordner",
+        "price": 850,
+        "image": "ordner.png",
+        "created_at": "2022-07-25"
+    }
+}
