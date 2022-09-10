@@ -328,7 +328,7 @@
         "name": "Geodreieck",
         "description": "Geodreieck",
         "image": "geodreieck.png",
-        "price": 1,
+        "price": 100,
         "created_at": "2022-07-25",
         "badges": []
     },
@@ -336,8 +336,8 @@
         "name": "Vokabelheft A5",
         "description": "Vokabelheft A5",
         "image": "vokabelheft_a5.png",
-        "price": 1,
-        "bundle_price": 1,
+        "price": 100,
+        "bundle_price": 100,
         "created_at": "2022-07-25",
         "badges": []
     }
