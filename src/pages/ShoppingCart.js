@@ -62,32 +62,48 @@ export default function ShoppingCartPage() {
     function Total() {
 
         const { cart, formatCurrency } = useShoppingCart()
-        const { cachedFetch } = useServer('/products')
 
-        const [products, setProducts] = useState([])
+        const [cachedBundles, setBundles] = useState()
+        const [cachedClassBundles, setClassBundles] = useState()
+        const [cachedProducts, setProducts] = useState()
+
+        const bundleServer = useServer('/bundles')
+        const classBundleServer = useServer('/class_bundles')
+        const productServer = useServer('/products')
 
         useEffect(() => {
-            // fetch
-            cachedFetch().then(data => {
-                setProducts(data)
-            }).catch(err => {
-                console.log(err)
-            }
-            )
-        }, [cachedFetch])
+            bundleServer.cachedFetch()
+                .then(data => setBundles(data))
+                .catch(err => console.log(err));
+            classBundleServer.cachedFetch()
+                .then(data => setClassBundles(data))
+                .catch(err => console.log(err));
+            productServer.cachedFetch()
+                .then(data => setProducts(data))
+                .catch(err => console.log(err));
+        }, [bundleServer, productServer, classBundleServer])
+
+        if(!cachedBundles || !cachedProducts || !cachedClassBundles) return null
 
         const items = []
 
         cart.forEach(item => {
             if (item.type === 'bundle') {
+                if(!item.content) {
+                    return items.push(item)
+                }
                 item.content.forEach(item => {
                     items.push(item)
                 })
             } else items.push(item)
         })
 
-        const total = items.reduce((acc, item) => {
-            const product = products[item.id] || products[item.product_id]
+        let total = items.reduce((acc, item) => {
+            if(item.type === 'bundle') {
+                const bundle = cachedBundles[item.id] || cachedClassBundles[item.id]
+                return acc + bundle.price
+            }
+            const product = cachedProducts[item.id] || cachedProducts[item.product_id]
             const price = product ? product.price * item.quantity : 0
             return acc + price
         }, 0)
@@ -145,33 +161,47 @@ export default function ShoppingCartPage() {
         const [open, setOpen] = useSafeState('bundle_open_' + item.uniqueId)
 
         const [cachedBundles, setBundles] = useState({})
+        const [cachedClassBundles, setClassBundles] = useState()
         const [cachedProducts, setProducts] = useState({})
 
         const bundleServer = useServer('/bundles')
+        const classBundleServer = useServer('/class_bundles')
         const productServer = useServer('/products')
 
         useEffect(() => {
             bundleServer.cachedFetch()
                 .then(data => setBundles(data))
                 .catch(err => console.log(err));
+            classBundleServer.cachedFetch()
+                .then(data => setClassBundles(data))
+                .catch(err => console.log(err));
             productServer.cachedFetch()
                 .then(data => setProducts(data))
                 .catch(err => console.log(err));
-        }, [bundleServer, productServer])
+        }, [bundleServer, productServer, classBundleServer])
 
-        const bundle = cachedBundles[item.id]
-        const products = item.content.map(entry => {
-            const product = cachedProducts[entry.id]
-            if (!product) return null
-            product.quantity = entry.quantity
-            return product
-        }).filter(product => product !== undefined)
+        if(!cachedBundles || !cachedProducts || !cachedClassBundles) return null
 
-        if (!bundle || !products) return <></>
+        const bundle = cachedBundles[item.id] || cachedClassBundles[item.id]
 
-        const total_price = products.reduce((acc, product) => {
-            return acc + product.price * product.quantity
-        }, 0)
+        if(!bundle) return <></>
+
+        let total_price = bundle.price
+
+        if(item.content) {
+            const products = item.content.map(entry => {
+                const product = cachedProducts[entry.id]
+                if (!product) return null
+                product.quantity = entry.quantity
+                return product
+            }).filter(product => product !== undefined)
+
+            if (!bundle || !products) return <></>
+
+            total_price = products.reduce((acc, product) => {
+                return acc + product.price * product.quantity
+            }, 0)
+        }
 
         return (
             <>
@@ -242,7 +272,17 @@ export default function ShoppingCartPage() {
                             justifyContent: 'center',
                         }}
                     >
-                        <BoxMultiple size='2.2rem' color={theme.colors.gray[8]} />
+                        {
+                            bundle.image ?
+                                <Image
+                                    height='2.2rem'
+                                    width='2.2rem'
+                                    fit='contain'
+                                    src={`${process.env.REACT_APP_IMAGE_HOST}/images/${bundle.image}`}
+                                    alt={bundle.name}
+                                />
+                            : <BoxMultiple size='2.2rem' color={theme.colors.gray[8]} />
+                        }
                     </Container>
                 </Card.Section>
                 <Group
