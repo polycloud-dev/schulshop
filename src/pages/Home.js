@@ -12,8 +12,13 @@ import Link from '../components/link';
 
 export default function HomePage() {
 
-    const CARD_WIDTH = 200;
-    const CARD_HEIGHT = 360;
+    const matches_0 = useMediaQuery('(max-width: 1200px)');
+    const matches_small = useMediaQuery('(max-width: 800px)');
+    const matches_mobile = useMediaQuery('(max-width: 500px)');
+
+    const CARD_WIDTH = matches_small ? matches_mobile ? 150 : 180 : 200;
+    const CARD_HEIGHT = matches_small ? matches_mobile ? 290 : 324 : 360;
+    const IMAGE_HEIGHT = matches_mobile ? CARD_HEIGHT / 2 - 20 : CARD_HEIGHT / 2;
 
     return (
         <>
@@ -53,14 +58,11 @@ export default function HomePage() {
 
     function HeadMenu() {
 
-        const matches_0 = useMediaQuery('(max-width: 1200px)');
-        const matches_1 = useMediaQuery('(max-width: 800px)');
-
         return (
             <Group
-                mt={matches_0 ? matches_1 ? '3rem' : '1rem' : '0'}
-                position={matches_1 ? 'center' : 'right'}
-                mr={matches_1 ? '0' : '4rem'}
+                mt={matches_0 ? matches_small ? '3rem' : '1rem' : '0'}
+                position={matches_0 ? 'center' : 'right'}
+                mr={matches_0 ? '0' : '4rem'}
                 spacing='xl'
             >
                 <Link text='Über uns' path='/about' tooltip='Das sind wir' />
@@ -234,6 +236,9 @@ export default function HomePage() {
                     position='right'
                     my={2}
                     spacing={2}
+                    style={{
+                        maxHeight: `${matches_small ? '.8' : '1'}rem`,
+                    }}
                 >
                     {badges}
                 </Group>
@@ -245,30 +250,33 @@ export default function HomePage() {
                 >
                     <Title
                         style={{
-                            fontSize: name.length > 16 ? '1rem' : '1.2rem',
+                            fontSize: `${(name.length > 16 ? 1 : 1.2) * (matches_small ? 0.8 : 1)}rem`,
                         }}
                         align='center'
                     >
                         {name}
                     </Title>
-                    <Text
-                        color='dimmed'
-                        align='center'
-                        lineClamp={2}
-                        style={{
-                            fontSize: description.length > 20 ? '0.8rem' : '1rem',
-                        }}
-                    >
-                        {description}
-                    </Text>
+                    {!matches_small ? 
+                        <Text
+                            color='dimmed'
+                            align='center'
+                            lineClamp={2}
+                            style={{
+                                fontSize: description.length > 20 ? '0.8rem' : '1rem',
+                            }}
+                        >
+                            {description}
+                        </Text>
+                    : null}
                 </Container>
                 <Group
                     mt='auto'
-                    mb='md'
+                    mb={matches_mobile ? 0 : 'md'}
                 >
                     <Button
                         onClick={onBuyClick ? onBuyClick : addItem}
                     >Kaufen</Button>
+                    {matches_mobile ? <br /> : null}
                     {getPriceTag()}
                 </Group>
             </Container>
@@ -357,11 +365,11 @@ export default function HomePage() {
                                         bundle_products ?
                                             bundle_products.map(product => {
                                                 return (
-                                                    <Image height={height / 2} width={width / bundle_products.length} fit='cover' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${product.image}`} alt={product.name} />
+                                                    <Image height={IMAGE_HEIGHT} width={width / bundle_products.length} fit='cover' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${product.image}`} alt={product.name} />
                                                 )
                                             })
                                         : (
-                                            <Image height={height / 2} width={width} fit='contain' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${bundle.image}`} alt={bundle.name} />
+                                            <Image height={IMAGE_HEIGHT} width={width} fit='contain' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${bundle.image}`} alt={bundle.name} />
                                         )
                                     }
                                 </Group>
@@ -429,7 +437,7 @@ export default function HomePage() {
                             key={key}
                         >
                             <Card.Section>
-                                <Image height={height / 2} fit='contain' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${product.image}`} alt={product.name} />
+                                <Image height={IMAGE_HEIGHT} fit='contain' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${product.image}`} alt={product.name} />
                             </Card.Section>
                             <CardBody
                                 badges={badges[key]}

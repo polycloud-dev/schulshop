@@ -6,6 +6,7 @@ import useShoppingCart from "../modules/shoppingcart";
 import { ArrowNarrowLeft } from "tabler-icons-react";
 import Link from "../components/link";
 import { showNotification } from "@mantine/notifications";
+import { useMediaQuery } from '@mantine/hooks';
 
 export default function VariantPage() {
 
@@ -18,6 +19,10 @@ export default function VariantPage() {
 
     const [product, setProduct] = useState()
     const { cachedFetch } = useServer('/products')
+
+    const matches_0 = useMediaQuery('(max-width: 1200px)');
+    const matches_small = useMediaQuery('(max-width: 800px)');
+    const matches_mobile = useMediaQuery('(max-width: 480px)');
 
     useEffect(() => {
         cachedFetch()
@@ -96,7 +101,12 @@ export default function VariantPage() {
                     justify='flex-start'
                     gutter='xs'
                 >
-                    {product.variants.map(variant => (<Grid.Col span={2} ><VariantCard variant={variant} selected={selected} setSelected={setSelected} /></Grid.Col> ))}
+                    {product.variants.map(variant => (<Grid.Col span={
+                        matches_mobile ? 6
+                        : matches_small ? 4
+                        : matches_0 ? 3
+                        : 2
+                        } ><VariantCard variant={variant} selected={selected} setSelected={setSelected} /></Grid.Col> ))}
                 </Grid>
             </Container>
             <Group
