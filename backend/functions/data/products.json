@@ -66,8 +66,8 @@
         "name": "Register 12er",
         "description": "Regsiter 12er",
         "image": "registerblaetter_5.png",
-        "price": 90,
-        "bundle_price": 80,
+        "price": 240,
+        "bundle_price": 240,
         "created_at": "2022-07-25",
         "badges": []
     },
