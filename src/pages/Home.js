@@ -516,7 +516,7 @@ export default function HomePage() {
                 fontSize: '3rem',
             }}
         >
-            Willkommen beim {' '}
+            Willkommen beim ASG {' '}
             <GradientName />
             <DescriptionText />
         </Title>;
