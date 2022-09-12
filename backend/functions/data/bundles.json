@@ -1,13 +1,13 @@
 {
     "heftepacket": {
-        "name": "Heftepacket",
+        "name": "Heftepaket",
         "description": "Verschiedene Hefte",
         "price": 1000,
         "image": "a4_kariert_weissrand.png",
         "created_at": "2022-07-25"
     },
     "ordnerpacket": {
-        "name": "Ordnerpacket",
+        "name": "Ordnerpaket",
         "description": "Ordner, Register, 2 Blöcke",
         "price": 850,
         "image": "ordner.png",
