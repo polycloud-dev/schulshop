@@ -1,4 +1,4 @@
-import { Text, Container, Title, Space, Blockquote, Group } from "@mantine/core"
+import { Text, Container, Title, Space } from "@mantine/core"
 import Logo from "../components/logo/logo"
 
 export default function AboutPage() {
