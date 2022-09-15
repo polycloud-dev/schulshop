@@ -1,16 +1,18 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useServer } from "../modules/servercomponent";
-import { Container, Title, Text, Grid, useMantineTheme, Group, Button, Center } from "@mantine/core";
+import { Container, Title, Text, Grid, useMantineTheme, Group, ActionIcon, Center } from "@mantine/core";
 import useShoppingCart from "../modules/shoppingcart";
-import { ArrowNarrowLeft } from "tabler-icons-react";
+import { ArrowNarrowLeft, ShoppingCart } from "tabler-icons-react";
 import Link from "../components/link";
 import { showNotification } from "@mantine/notifications";
 import { useMediaQuery } from '@mantine/hooks';
 
 export default function VariantPage() {
 
-    const { formatCurrency,addToCart } = useShoppingCart()
+    const { formatCurrency, addToCart } = useShoppingCart()
+
+    const theme = useMantineTheme()
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -113,10 +115,18 @@ export default function VariantPage() {
                 mt='xl'
                 mb='md'
             >
-                <Button
-                    disabled={!selected}
-                    onClick={addItem}
-                >Kaufen</Button>
+            <ActionIcon
+                disabled={!selected}
+                onClick={addItem}
+                color={theme.primaryColor}
+                variant='filled'
+                style={{
+                    width: '4rem'
+                }}
+                py='md'
+            >
+                <ShoppingCart size={22} />
+            </ActionIcon>
                 {getPriceTag()}
             </Group>
         </Container>

@@ -1,4 +1,4 @@
-import { Text, Container, Title, Divider, SimpleGrid, Skeleton, Badge, Card, Image, Group, useMantineTheme, Button, Indicator, MediaQuery, Space, ActionIcon } from '@mantine/core';
+import { Text, Container, Title, Divider, SimpleGrid, Skeleton, Badge, Card, Image, Group, useMantineTheme, Indicator, MediaQuery, Space, ActionIcon } from '@mantine/core';
 import ServerComponent from '../components/servercomponent';
 import { Leaf, ShoppingCart as ShoppingCartIcon } from 'tabler-icons-react';
 import { useState, useEffect } from 'react';
@@ -176,6 +176,7 @@ export default function HomePage() {
     function CardBody({ item, badges, name, description, price, old_price = undefined, height, onBuyClick }) {
 
         const { addToCart, formatCurrency } = useShoppingCart()
+        const theme = useMantineTheme();
 
         function addItem() {
             if (addToCart(item)) {
@@ -273,9 +274,17 @@ export default function HomePage() {
                     mt='auto'
                     mb={matches_mobile ? 0 : 'md'}
                 >
-                    <Button
+                    <ActionIcon
                         onClick={onBuyClick ? onBuyClick : addItem}
-                    >Kaufen</Button>
+                        color={theme.primaryColor}
+                        variant='filled'
+                        style={{
+                            width: '4rem'
+                        }}
+                        py='md'
+                    >
+                        <ShoppingCartIcon size={22} />
+                    </ActionIcon>
                     {matches_mobile ? <br /> : null}
                     {getPriceTag()}
                 </Group>
@@ -435,6 +444,12 @@ export default function HomePage() {
                                 backgroundColor: theme.colors.gray[1],
                             }}
                             key={key}
+                            onClick={() => {
+                                // if variant
+                                if (product.variants) {
+                                    navigateToVariant(key)
+                                }
+                            }}
                         >
                             <Card.Section>
                                 <Image height={IMAGE_HEIGHT} fit='contain' src={`${process.env.REACT_APP_IMAGE_HOST}/images/${product.image}`} alt={product.name} />
