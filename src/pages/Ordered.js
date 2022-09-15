@@ -1,4 +1,4 @@
-import { Container, Title, Text,  Button, Modal, Group } from "@mantine/core"
+import { Container, Title, Text,  Button, Modal, Group, useMantineTheme } from "@mantine/core"
 import { useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { AlertCircle, TruckDelivery } from "tabler-icons-react"
@@ -6,11 +6,13 @@ import useShoppingCart from "../modules/shoppingcart"
 
 export default function OrderedPage() {
 
-    const { isOrdered } = useShoppingCart()
+    const { isOrdered, formatCurrency } = useShoppingCart()
     const navigate = useNavigate()
 
     const [order_id, setOrderId] = useState(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const theme = useMantineTheme()
 
     useEffect(() => {
         if(!isOrdered) navigate('/')
@@ -59,6 +61,19 @@ export default function OrderedPage() {
                 size="lg"
             >
                 Die Bestellung war erfolgreich und kann abgeholt werden.
+            </Text>
+            <Text
+                mt='sm'
+            >
+                Gesamt: {' '}
+                <Text
+                    component="span"
+                    color={theme.colors.green[5]}
+                    weight='bold'
+                    size="lg"
+                >
+                    {formatCurrency(isOrdered.total_price)}€
+                </Text>
             </Text>
             <Text
                 color='blue'
