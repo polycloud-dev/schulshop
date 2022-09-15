@@ -445,6 +445,8 @@ export default function ShoppingCartPage() {
 
         const { getRawCart, confirmOrder, size } = useShoppingCart()
 
+        const [isLoading, setLoading] = useState(false)
+
         function submit() {
 
             // these fields are required, because setSate is async
@@ -479,6 +481,7 @@ export default function ShoppingCartPage() {
 
                 const products = getRawCart()
 
+                setLoading(true)
                 fetch(`${process.env.REACT_APP_API_HOST}/order`, {
                     method: 'POST',
                     headers: {
@@ -491,16 +494,21 @@ export default function ShoppingCartPage() {
                         products,
                     }),
                 }).then(res => res.json())
-                    .then(res => {
-                        if (res.success) {
-                            setError(false)
-                            confirmOrder({ order_id: res.order_id })
-                            navigate('/bestellt')
-                        } else {
-                            setError(res.error)
-                            setErrorModalOpen(true)
-                        }
-                    })
+                .then(res => {
+                    setLoading(false)
+                    if (res.success) {
+                        setError(false)
+                        confirmOrder({ order_id: res.order_id, total_price: res.total_price })
+                        navigate('/bestellt')
+                    } else {
+                        setError(res.error)
+                        setErrorModalOpen(true)
+                    }
+                }).catch(err => {
+                    setLoading(false)
+                    setError(err)
+                    setErrorModalOpen(true)
+                })
             }
         }
 
@@ -559,6 +567,7 @@ export default function ShoppingCartPage() {
                     <Button
                         onClick={submit}
                         disabled={size() === 0}
+                        loading={isLoading}
                     >
                         Bestellen
                     </Button>

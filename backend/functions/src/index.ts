@@ -49,6 +49,8 @@ export const order = functions.https.onRequest((req, res) => {
         // extract data
         const { name, school_class, email, products } = req.body;
 
+        let total_price = 0;
+
         if (!name) {
             res.status(400).json({ error: 'Name ist benötigt' })
             return
@@ -110,21 +112,30 @@ export const order = functions.https.onRequest((req, res) => {
                 }
                 // check if product exists
                 // @ts-ignore
-                if (!products_json[product.id]) {
+                const json_product = products_json[product.id]
+                if (!json_product) {
                     res.status(400).json({ value: product, error: 'Produkt ist ungültig.' })
                     return
+                }else {
+                    total_price += json_product.price * product.quantity;
                 }
             }
-            else if (product.type === 'bundle') {
+            else if (product.type === 'bundle' || product.type === 'class_bundle') {
                 // check if bundle exists
                 // @ts-ignore
-                if (!bundles_json[product.id]) {
+                const json_bundle = bundles_json[product.id]
+                if (!json_bundle) {
                     // check if class bundle exists
                     // @ts-ignore
-                    if (!class_bundles_json[product.id]) {
+                    const json_class_bundle = class_bundles_json[product.id]
+                    if (!json_class_bundle) {
                         res.status(400).json({ value: product, error: 'Produkt ist ungültig.' })
                         return
+                    }else {
+                        total_price += json_class_bundle.price;
                     }
+                }else {
+                    total_price += json_bundle.price;
                 }
             }
             else if (product.type === 'variant') {
@@ -145,13 +156,18 @@ export const order = functions.https.onRequest((req, res) => {
                     if (!found_product.variants.find((v: any) => v.name === product.variant)) {
                         res.status(400).json({ value: product, error: 'Produkt ist ungültig.' })
                         return
+                    }else {
+                        total_price += found_product.price * product.quantity;
                     }
                 }
+            }else {
+                res.status(400).json({ value: product, error: 'Unbekanntes Produkt.' })
+                return
             }
         }
 
         // generate order id
-        const order_id = (Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)).substring(0, 6).toUpperCase();
+        const order_id = (Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)).substring(0, 4).toUpperCase();
 
         // generate session id
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -161,63 +177,75 @@ export const order = functions.https.onRequest((req, res) => {
             ...req.body,
             order_id,
             session_id,
+            total_price,
         }
 
         // send email
-        sendEmail(order)
+        if(!sendEmail(order)) {
+            res.status(500).json({ error: 'Email konnte nicht versendet werden.' })
+            return
+        }
 
-        console.log('successfull order', order);
+        functions.logger.log('successfull order', order);
 
-        res.status(200).json({ success: true, order_id });
+        res.status(200).json({ success: true, order_id, total_price });
 
     } catch (error) {
-        console.log(error);
+        functions.logger.error(error);
         res.status(500).send({ error: 'Internal Server Error' });
     }
 });
 
 async function sendEmail(order: any) {
-    const transporter = nodemailer.createTransport({
-        // @ts-ignore
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        secure: process.env.EMAIL_PORT === '465',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASSWORD,
-        },
-    });
-
-    // prepare html
-    let html = fs.readFileSync(path.join(__dirname, '..', '..', 'email.html'), 'utf8');
-    html = html.replace('%{name}', order.name);
-    html = html.replace('%{school_class}', order.school_class);
-    html = html.replace('%{email}', order.email || '<Keine Email-Adresse angegeben>');
-    html = html.replace('%{order_id}', order.order_id);
-    html = html.replace('%{session_id}', order.session_id);
-    html = html.replace('%{products}', order.products.map((product: any) => {
-        if (product.type === 'product') {
+    try {
+        const transporter = nodemailer.createTransport({
             // @ts-ignore
-            return `<li>${product.quantity}x ${products_json[product.id].name}</li>`;
-        }
-        else if (product.type === 'bundle') {
-            // @ts-ignore
-            return `<li>${bundles_json[product.id].name}</li>`;
-        }
-        else if (product.type === 'variant') {
-            // @ts-ignore
-            const found_product = products_json[product.id];
-            return `<li>${product.quantity}x ${found_product.name} (${product.variant})</li>`;
-        }
-        else return ''
-    }).join(''));
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
+            secure: process.env.EMAIL_PORT === '465',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASSWORD,
+            },
+        });
 
-    const info = await transporter.sendMail({
-        from: `"Schulshop" <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_USER,
-        subject: `Bestellung`,
-        html
-    });
+        // prepare html
+        let html = fs.readFileSync(path.join(__dirname, '..', '..', 'email.html'), 'utf8');
+        html = html.replace('%{name}', order.name);
+        html = html.replace('%{school_class}', order.school_class);
+        html = html.replace('%{email}', order.email || '<Keine Email-Adresse angegeben>');
+        html = html.replace('%{order_id}', order.order_id);
+        html = html.replace('%{session_id}', order.session_id);
+        html = html.replace('%{total_price}', (order.total_price/100).toFixed(2) + '€');
+        html = html.replace('%{products}', order.products.map((product: any) => {
+            if (product.type === 'product') {
+                // @ts-ignore
+                return `<li>${product.quantity}x ${products_json[product.id].name}</li>`;
+            }
+            else if (product.type === 'bundle') {
+                // @ts-ignore
+                return `<li>${bundles_json[product.id] ? bundles_json[product.id].name : class_bundles_json[product.id].name + ' Paket'}</li>`;
+            }
+            else if (product.type === 'variant') {
+                // @ts-ignore
+                const found_product = products_json[product.id];
+                return `<li>${product.quantity}x ${found_product.name} (${product.variant})</li>`;
+            }
+            else return ''
+        }).join(''));
 
-    console.log('Message sent: %s', info.messageId);
+        const info = await transporter.sendMail({
+            from: `"Schulshop" <${process.env.EMAIL_USER}>`,
+            to: process.env.EMAIL_USER,
+            subject: `Bestellung`,
+            html
+        });
+
+        functions.logger.log('Message sent: %s', info.messageId);
+        return true
+
+    }catch(e) {
+        functions.logger.error(e);
+        return false
+    }
 }

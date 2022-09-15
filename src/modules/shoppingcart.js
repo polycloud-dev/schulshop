@@ -288,8 +288,8 @@ export function ShoppingCartProvider({ children }) {
         return true
     }
 
-    function confirmOrder({order_id}) {
-        setIsOrdered({ordered: true, order_id});
+    function confirmOrder({ order_id, total_price }) {
+        setIsOrdered({ordered: true, order_id, total_price});
         // reset cart
         setCart([]);
     }
@@ -298,7 +298,6 @@ export function ShoppingCartProvider({ children }) {
         const bundles = cart.filter(cartItem => cartItem.type === "bundle");
         const products = cart.filter(cartItem => cartItem.type === "product");
         const variants = cart.filter(cartItem => cartItem.type === "variant").map(variant => {
-            console.log(variant);
             return {
                 'id': variant.product_id,
                 'quantity': variant.quantity,
