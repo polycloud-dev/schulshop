@@ -340,5 +340,13 @@
         "bundle_price": 100,
         "created_at": "2022-07-25",
         "badges": []
+    },
+    "hausaufgabenheft": {
+        "name": "Hausaufgaben-\nheft",
+        "description": "ASG Hausaufgabenheft",
+        "image": "hausaufgabenheft.png",
+        "price": 350,
+        "created_at": "2022-09-15",
+        "badges": []
     }
 }
