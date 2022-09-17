@@ -1,0 +1,37 @@
+{
+    "5a": {
+        "name": "5a",
+        "description": "Das Klassenpaket von der 5a",
+        "price": 5000,
+        "image": "bundle_5a.png",
+        "created_at": "2022-07-25"
+    },
+    "5b": {
+        "name": "5b",
+        "description": "Das Klassenpaket von der 5b",
+        "price": 5000,
+        "image": "bundle_5b.png",
+        "created_at": "2022-07-25"
+    },
+    "5c": {
+        "name": "5c",
+        "description": "Das Klassenpaket von der 5c",
+        "price": 5000,
+        "image": "bundle_5c.png",
+        "created_at": "2022-07-25"
+    },
+    "5d": {
+        "name": "5d",
+        "description": "Das Klassenpaket von der 5d",
+        "price": 5000,
+        "image": "bundle_5d.png",
+        "created_at": "2022-07-25"
+    },
+    "5e": {
+        "name": "5e",
+        "description": "Das Klassenpaket von der 5e",
+        "price": 5000,
+        "image": "bundle_5e.png",
+        "created_at": "2022-07-25"
+    }
+}

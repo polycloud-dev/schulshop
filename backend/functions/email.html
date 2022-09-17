@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bestellung</title>
+    <style>
+        html {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .center {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+        }
+        h2 {
+            margin-bottom: 0.3rem;
+        }
+        .info {
+            color: rgb(129, 129, 129);
+            font-size: smaller;
+            margin: 0;
+        }
+        .order_id_div {
+            margin-top: 1.2rem;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .order_id_div h3 {
+            margin: 0;
+        }
+        .order_id {
+            color: rgb(30, 118, 201);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .user_info {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .products {
+            margin-top: 1.5rem;
+        }
+        </style>
+</head>
+<body>
+    <div class="center">
+        <h2>Bestellung</h2> 
+        <p class="info">Diese Nachricht wurde von einem Bot generiert.</p>
+        <div class="order_id_div">
+            <h3>Abholnummer</h3>
+            <h3 class="order_id" >%{order_id}</h3>
+        </div>
+        <div class="user_info">
+            <span>Name: <b>%{name}</b></span><br/>
+            <span>Klasse: <b>%{school_class}</b></span><br/>
+            <span>Email: <b>%{email}</b></span><br/>
+            <span>Kundennummer: <b>%{session_id}</b></span><br/>
+            <span>Gesamtpreis: <b>%{total_price}</b></span>
+        </div>
+        <div class="products">
+            <h3>Produkte</h3>
+            <ul>
+                %{products}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
