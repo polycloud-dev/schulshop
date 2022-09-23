@@ -40,6 +40,7 @@ export default function ContactPage() {
                         <Link
                                 component="span"
                                 path='mailto:schulshop@asg-er.de'
+                                external
                                 text={<Center>{mailIcon}schulshop@asg-er.de</Center>}
                                 tooltip='Hier klicken, um direkt zu schreiben'
                             />
