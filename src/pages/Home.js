@@ -547,6 +547,8 @@ export default function HomePage() {
 
             function SustainableText() {
 
+                const navigate = useNavigate()
+
                 return <Text
                     component="span"
                     variant='gradient'
@@ -554,6 +556,7 @@ export default function HomePage() {
                 >
                     nachhaltig
                     <Leaf
+                        onClick={() => navigate('/printer')}
                         size={14}
                         color='#16cc3e' />
                     {' '}
