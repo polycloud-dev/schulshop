@@ -3,7 +3,7 @@ import { Text, Tooltip } from '@mantine/core'
 import { useNavigate } from 'react-router-dom';
 import { ArrowUpRight } from 'tabler-icons-react';
 
-export default function Link({ text, path, tooltip, ...props }) {
+export default function Link({ text, path, tooltip, external=false, ...props }) {
 
     const [isHover, setIsHover] = useState(false);
     const navigate = useNavigate()
@@ -12,7 +12,12 @@ export default function Link({ text, path, tooltip, ...props }) {
         <Text
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
-            onClick={() => {if(path) navigate(path)}}
+            onClick={() => {
+                if(path) {
+                    if(!external) navigate(path)
+                    else window.location.href = path
+                }
+            }}
             underline={isHover}
             style={{
                 cursor: 'pointer',
