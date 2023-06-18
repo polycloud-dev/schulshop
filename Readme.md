@@ -5,7 +5,7 @@ Das ist der Branch für die All-Inkl Version.
 ## Developing
 Das Projekt ist mit 
 * React (Frontend)
-* Python (Backend)
+* Typescript (Backend)
 <br/>
 
 gemacht
